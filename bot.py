@@ -746,9 +746,6 @@ async def handle_all_inputs(message: types.Message):
     except:
         await message.answer(get_translation(message.from_user.id, "invalid_format"))
 
-if __name__ == '__main__':
-    # executor.start_polling(...) removed for webhook
-
 
 if __name__ == '__main__':
     from aiogram.utils.executor import start_webhook
