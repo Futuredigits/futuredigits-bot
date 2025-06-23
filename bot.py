@@ -86,6 +86,20 @@ async def send_welcome(message: types.Message):
     text = get_translation(message.from_user.id, "welcome")
     await message.answer(text, reply_markup=main_menu_keyboard(message.from_user.id))
 
+@dp.message_handler(commands=['help'])
+async def send_help(message: types.Message):
+    help_text = (
+        "📌 *FutureDigits Help Menu*\n\n"
+        "Welcome! Here's what you can do:\n\n"
+        "🔢 /start – Start the bot and choose your language\n"
+        "🌟 Life Path, Soul Urge, Expression, Personality, Destiny, Birthday – Discover insights about yourself\n"
+        "❤️ Compatibility – Compare two people by birthdates\n"
+        "💎 Premium Tools – Explore advanced numerology tools (locked for now)\n"
+        "🌍 /language – Change language (English, Lithuanian, Russian)\n\n"
+        "If you need help at any time, just type /help ✨"
+    )
+    await message.answer(help_text, parse_mode="Markdown")
+
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "back_to_menu"), state="*")
 async def back_to_main_menu(message: types.Message, state: FSMContext):
     await state.finish()
