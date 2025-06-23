@@ -7,6 +7,7 @@ translations = {
         "soul_urge_result_title": "💫 Soul Urge Number:",
         "expression": "🧠 Expression Number",
         "personality": "😎 Personality Number",
+        "personality_result_title": "😎 Personality Number:",
         "enter_personality_name": "Please enter your full name for Personality Number:",
         "destiny": "🌟 Destiny Number",
         "birthday_number": "🎂 Birthday Number",
@@ -138,10 +139,12 @@ translations = {
     "lt": {
         "welcome": "🔮 Sveiki atvykę į FutureDigits!\nĮveskite gimimo datą formatu DD.MM.YYYY ir sužinokite savo Gyvenimo Kelią.",
         "life_path": "🔢 Gyvenimo Kelio Skaičius",
+        "life_path_result_title": "✨ Gyvenimo kelio skaičius:",
         "soul_urge": "💖 Sielos Troškimo Skaičius",
         "soul_urge_result_title": "💫 Sielos Troškimo Skaičius:",
         "expression": "🧠 Saviraiškos Skaičius",
         "personality": "😎 Asmenybės Skaičius",
+        "personality_result_title": "😎 Asmenybės skaičius:",
         "lucky_years_btn": "📅 Sėkmingi Metai",
         "lucky_years": "📅 Sėkmingų Metų Gidas\nSužinokite, kurie metai atneš sėkmę, augimą ar proveržį.",
         "career_profile_btn": "💼 Karjeros Profilis",
@@ -274,6 +277,7 @@ translations = {
     "ru": {
         "welcome": "🔮 Добро пожаловать в FutureDigits!\nОтправьте дату рождения в формате ДД.ММ.ГГГГ, чтобы узнать ваше Число Жизненного Пути.",
         "life_path": "🔢 Число Жизненного Пути",
+        "life_path_result_title": "✨ Число Жизненного Пути:",
         "soul_urge": "💖 Число Душевного Стремления",
         "soul_urge_result_title": "💫 Число Душевного Стремления:",
         "expression": "🧠 Число Выражения",
@@ -293,6 +297,7 @@ translations = {
         "detailed_compatibility": "💎 Подробная Совместимость\nСравните полные нумерологические профили для глубокого понимания отношений.",
         "premium_tool_locked": "🔒 Эта функция доступна только в Premium-версии.",
         "personality": "😎 Число Личности",
+        "personality_result_title": "😎 Число Личности:",
         "enter_personality_name": "Пожалуйста, введите ваше полное имя для Числа Личности:",
         "destiny": "🌟 Число Судьбы",
         "birthday_number": "🎂 Число Дня Рождения",
@@ -407,6 +412,13 @@ translations = {
         "soul_urge_description_11": "Вы вдохновлены высоким духовным призванием. Ваша душа стремится вести людей к свету и пробуждению.",
         "soul_urge_description_22": "Ваша душа хочет создавать великие вещи, которые оставят след в истории. Вы рождены для масштабных дел.",
         "soul_urge_description_33": "Суть вашей души — любовь, исцеление и служение. Вы призваны помогать, вдохновлять и исцелять людей.",
+
+"personality_result_title": {
+  "en": "😎 Personality Number:",
+  "lt": "😎 Asmenybės skaičius:",
+  "ru": "😎 Число Личности:"
+}
+
     },
 "expression_result_title": {
         "en": "🧠 Expression Number:",

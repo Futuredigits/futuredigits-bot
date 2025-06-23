@@ -43,6 +43,13 @@ def get_translation(user_id, key):
     lang = get_user_language(user_id)
     return translations.get(lang, translations['en']).get(key, key)
 
+def get_multilang_translation(user_id, key):
+    lang = get_user_language(user_id)
+    value = translations.get(key)
+    if isinstance(value, dict):
+        return value.get(lang, value.get("en", ""))
+    return value
+
 soul_urge_descriptions = {
     1: "🔹 Independent Leader\nYou are driven by a desire to lead and make your mark. You thrive when you can act independently and inspire others through courage and determination.",
     2: "🔹 Peacemaker\nYour soul craves harmony, cooperation, and meaningful partnerships. You’re highly intuitive and sensitive to the needs of others.",
@@ -536,7 +543,7 @@ async def process_expression(message: types.Message, state: FSMContext):
     key = f"expression_description_{total}"
     description = get_translation(message.from_user.id, key)
 
-    title = get_translation(message.from_user.id, "your_expression_number")
+    title = get_multilang_translation(message.from_user.id, "expression_result_title")
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
     await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
     await state.finish()
@@ -601,7 +608,7 @@ async def process_personality(message: types.Message, state: FSMContext):
 
     description_key = f"personality_description_{total}"
     description = get_translation(message.from_user.id, description_key)
-    title = get_translation(message.from_user.id, "personality_result_title")
+    title = get_multilang_translation(message.from_user.id, "personality_result_title")
 
     await message.answer(f"{title} {total}\n\n{description}")
     await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
@@ -671,7 +678,7 @@ async def process_destiny(message: types.Message, state: FSMContext):
     while total > 9 and total not in [11, 22, 33]:
         total = sum(int(d) for d in str(total))
 
-    title = get_translation(message.from_user.id, "destiny_result_title")
+    title = get_multilang_translation(message.from_user.id, "destiny_result_title")
     description = get_translation(message.from_user.id, f"destiny_description_{total}")
 
     await message.answer(f"{title} {total}\n\n{description}")
