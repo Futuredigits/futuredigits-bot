@@ -2,6 +2,7 @@ translations = {
     "en": {
         "welcome": "🔮 Welcome to FutureDigits!\nSend me your birthdate in format DD.MM.YYYY to discover your Life Path Number.",
         "life_path": "🔢 Life Path Number",
+        "life_path_result_title": "✨ Life Path Number:",
         "soul_urge": "💖 Soul Urge Number",
         "soul_urge_result_title": "💫 Soul Urge Number:",
         "expression": "🧠 Expression Number",
