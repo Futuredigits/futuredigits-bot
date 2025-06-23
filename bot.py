@@ -12,6 +12,14 @@ from states import PersonalityStates
 from states import DestinyStates
 from states import BirthdayStates
 
+import logging
+
+# Setup basic logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 load_dotenv()
 bot = Bot(token=os.getenv("BOT_TOKEN"))
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -762,9 +770,16 @@ async def handle_all_inputs(message: types.Message):
 
 
 if __name__ == '__main__':
+    import logging
     from aiogram import executor
-    from bot import dp
-    executor.start_polling(dp, skip_updates=True)
 
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
 
-
+    try:
+        logging.info("🚀 Starting bot polling...")
+        executor.start_polling(dp, skip_updates=True)
+    except Exception as e:
+        logging.exception("❌ BOT CRASHED WITH EXCEPTION:")
