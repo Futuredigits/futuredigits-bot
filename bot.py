@@ -24,15 +24,6 @@ load_dotenv()
 bot = Bot(token=os.getenv("BOT_TOKEN"))
 dp = Dispatcher(bot, storage=MemoryStorage())
 
-import asyncio
-
-# Clear any existing webhook before polling starts
-async def clear_webhook():
-    await bot.delete_webhook(drop_pending_updates=True)
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(clear_webhook())
-
 def compatibility_score(date1, date2):
     # Simple placeholder: compare Life Path Numbers
     def life_path(date_str):
@@ -797,17 +788,11 @@ async def handle_all_inputs(message: types.Message):
         await message.answer(get_translation(message.from_user.id, "invalid_format"))
 
 
+async def on_startup(dispatcher):
+    await bot.delete_webhook(drop_pending_updates=True)
+    logging.info("✅ Webhook cleared successfully")
+
 if __name__ == '__main__':
-    import logging
     from aiogram import executor
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s'
-    )
-
-    try:
-        logging.info("🚀 Starting bot polling...")
-        executor.start_polling(dp, skip_updates=True)
-    except Exception as e:
-        logging.exception("❌ BOT CRASHED WITH EXCEPTION:")
