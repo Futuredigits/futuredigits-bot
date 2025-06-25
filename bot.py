@@ -30,7 +30,8 @@ import asyncio
 async def clear_webhook():
     await bot.delete_webhook(drop_pending_updates=True)
 
-asyncio.run(clear_webhook())
+loop = asyncio.get_event_loop()
+loop.run_until_complete(clear_webhook())
 
 def compatibility_score(date1, date2):
     # Simple placeholder: compare Life Path Numbers
