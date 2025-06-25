@@ -372,7 +372,7 @@ async def get_first_date(message: types.Message, state: FSMContext):
 async def get_second_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
 
-    # Recognize buttons and redirect properly
+    # Check if user clicked any menu button — redirect properly
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
         "soul_urge": get_translation(message.from_user.id, "soul_urge"),
@@ -407,14 +407,43 @@ async def get_second_date(message: types.Message, state: FSMContext):
             await back_to_main_menu(message, state)
         return
 
-    # Otherwise treat as a date
+    # Otherwise, handle second date input
     try:
-        day, month, year = map(int, text.split('.'))
-        await state.update_data(first_date=text)
-        await CompatibilityStates.next()
-        await message.answer("Now enter the second birthdate (DD.MM.YYYY):")
+        data = await state.get_data()
+        first_date = data.get("first_date")
+        second_date = text
+
+        day1, month1, year1 = map(int, first_date.split('.'))
+        day2, month2, year2 = map(int, second_date.split('.'))
+
+        def get_life_path(d, m, y):
+            total = sum(int(d) for d in f"{d:02}{m:02}{y}")
+            while total > 9 and total not in [11, 22, 33]:
+                total = sum(int(x) for x in str(total))
+            return total
+
+        lp1 = get_life_path(day1, month1, year1)
+        lp2 = get_life_path(day2, month2, year2)
+        compatibility = 100 - abs(lp1 - lp2) * 10
+        compatibility = max(0, min(compatibility, 100))
+
+        lang = get_user_language(message.from_user.id)
+        desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
+        desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
+        title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
+
+        result = (
+            f"{title} {lp1}\n🔹 {desc1}\n\n"
+            f"{title} {lp2}\n🔹 {desc2}\n\n"
+            f"❤️ Compatibility: {compatibility}%"
+        )
+
+        await message.answer(result)
+        await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+        await state.finish()
+
     except:
-        await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
+        await message.answer("❌ Invalid format. Please use DD.MM.YYYY.")
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "soul_urge"))
 async def start_soul_urge(message: types.Message, state: FSMContext):
