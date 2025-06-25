@@ -36,11 +36,9 @@ translations = {
         "relationship_insights": "💘 Relationship & Love Insights\nLearn your love style, emotional needs, and attraction energy.",
         "purpose_analysis": "🌟 Life Purpose Analysis\nUnderstand your soul's mission and align with your true calling.",
         "detailed_compatibility": "💎 Detailed Compatibility Report\nCompare two full numerology profiles for deep relationship insight.",
-        "premium_tool_locked": "🔒 This feature is available only in the Premium version.",
         "enter_destiny_name": "Please enter your full name for Destiny Number:",
         "your_destiny_number": "🌟 Your Destiny Number is",
         "your_birthday_number": "🎂 Your Birthday Number is",
-        "done_choose_tool": "✅ Done! Choose your next tool 👇",
         "birthday_description_1": "You are independent, ambitious, and self-motivated. You thrive when you lead and blaze your own trail.",
         "birthday_description_2": "You are gentle, sensitive, and a natural peacemaker. You shine in cooperation and emotional connection.",
         "birthday_description_3": "You are joyful, expressive, and creative. Your natural charm and imagination draw others to you.",
@@ -71,7 +69,7 @@ translations = {
         "birthday_description_28": "You are courageous, ambitious, and goal-oriented. You possess a pioneering spirit.",
         "birthday_description_29": "You are sensitive, spiritual, and idealistic. You are drawn to serve a higher purpose.",
         "birthday_description_30": "You are joyful, imaginative, and expressive. You uplift others through your words and creativity.",
-        "birthday_description_31": "You are grounded, disciplined, and detail-oriented. You turn ideas into structure and success.", 
+        "birthday_description_31": "You are grounded, disciplined, and detail-oriented. You turn ideas into structure and success.",
         "birthday_result_title": "🎂 Your Birthday Number is:",
         "destiny_description_1": "You are destined to lead, create, and initiate. Your path is about bold action, independence, and forging your own way.",
         "destiny_description_2": "You are here to bring peace and partnership. Your destiny lies in healing, cooperation, and nurturing meaningful relationships.",
@@ -109,7 +107,6 @@ translations = {
         "expression_description_11": "You are a visionary communicator. You express yourself with deep insight, intuition, and a mission to inspire others.",
         "expression_description_22": "You are a master builder. Your expression combines practicality and vision to create lasting impact in the world.",
         "expression_description_33": "You are the master nurturer. Through loving words and healing energy, you uplift others and bring emotional harmony.",
-        "life_path_description_1": "You are a natural leader with strong individuality and a pioneering spirit.",
         "life_path_description_1": "You are a pioneering leader, driven to stand out and forge your own path. Independence and determination shape your destiny.",
         "life_path_description_2": "You are a born diplomat with a deep need for harmony, partnership, and emotional connection. Cooperation is your strength.",
         "life_path_description_3": "You radiate creativity, joy, and optimism. Your voice, talents, and imagination are your greatest tools for uplifting the world.",
@@ -133,18 +130,16 @@ translations = {
         "soul_urge_description_9": "You are deeply compassionate. Your soul is fulfilled when you’re helping others and making a meaningful impact on the world.",
         "soul_urge_description_11": "You are inspired by a higher vision and a deep spiritual calling. Your soul wants to guide, uplift, and enlighten others.",
         "soul_urge_description_22": "Your inner drive is to build lasting, meaningful change. You desire to create something impactful that benefits humanity.",
-        "soul_urge_description_33": "Love and healing are at the core of your being. You are called to serve selflessly and bring light to those in need.",
+        "soul_urge_description_33": "Love and healing are at the core of your being. You are called to serve selflessly and bring light to those in need."
     },
-
     "lt": {
         "welcome": "🔮 Sveiki atvykę į FutureDigits!\nĮveskite gimimo datą formatu DD.MM.YYYY ir sužinokite savo Gyvenimo Kelią.",
         "life_path": "🔢 Gyvenimo Kelio Skaičius",
         "life_path_result_title": "✨ Gyvenimo kelio skaičius:",
         "soul_urge": "💖 Sielos Troškimo Skaičius",
-        "soul_urge_result_title": "💫 Sielos Troškimo Skaičius:",
+        "soul_urge_result_title": "💖 Jūsų Sielos Troškimo Skaičius:",
         "expression": "🧠 Saviraiškos Skaičius",
         "personality": "😎 Asmenybės Skaičius",
-        "personality_result_title": "😎 Asmenybės skaičius:",
         "lucky_years_btn": "📅 Sėkmingi Metai",
         "lucky_years": "📅 Sėkmingų Metų Gidas\nSužinokite, kurie metai atneš sėkmę, augimą ar proveržį.",
         "career_profile_btn": "💼 Karjeros Profilis",
@@ -159,7 +154,6 @@ translations = {
         "relationship_insights": "💘 Meilės ir Santykių Įžvalgos\nSužinokite apie meilės stilių, emocinius poreikius ir trauką.",
         "purpose_analysis": "🌟 Gyvenimo Paskirties Analizė\nSupraskite savo misiją ir suderinkite ją su tikruoju pašaukimu.",
         "detailed_compatibility": "💎 Suderinamumo Ataskaita\nPalyginkite du numerologinius profilius santykių įžvalgai.",
-        "premium_tool_locked": "🔒 Ši funkcija pasiekiama tik su Premium versija.",
         "enter_personality_name": "Įveskite savo pilną vardą Asmenybės Skaičiui:",
         "destiny": "🌟 Likimo Skaičius",
         "birthday_number": "🎂 Gimtadienio Skaičius",
@@ -177,7 +171,6 @@ translations = {
         "enter_destiny_name": "Įveskite savo pilną vardą Likimo Skaičiui:",
         "your_destiny_number": "🌟 Jūsų Likimo Skaičius yra",
         "your_birthday_number": "🎂 Jūsų gimtadienio skaičius yra",
-        "done_choose_tool": "✅ Atlikta! Pasirinkite kitą įrankį 👇",
         "birthday_description_1": "Esate nepriklausomas, ambicingas ir motyvuotas. Jums sekasi, kai galite vadovauti ir eiti savu keliu.",
         "birthday_description_2": "Esate švelnus, jautrus ir gimęs taikdarys. Jums svarbus bendradarbiavimas ir emocinis ryšys.",
         "birthday_description_3": "Esate džiaugsmingas, kūrybiškas ir iškalbingas. Jūsų žavesys ir vaizduotė pritraukia kitus.",
@@ -209,7 +202,7 @@ translations = {
         "birthday_description_29": "Esate jautrus, idealistas ir dvasiškai įžvalgus. Jūsų kelias – tarnystė aukštesniam tikslui.",
         "birthday_description_30": "Esate džiugus, kūrybingas ir iškalbingas. Jūsų žodžiai įkvepia ir gydo.",
         "birthday_description_31": "Esate organizuotas, kantrus ir dėmesingas detalėms. Jūs kuriate struktūrą ir sėkmę.",
-        "birthday_result_title": "🎂 Jūsų gimtadienio skaičius yra:",      
+        "birthday_result_title": "🎂 Jūsų gimtadienio skaičius yra:",
         "destiny_description_1": "Jūsų likimas – vadovauti, kurti ir būti nepriklausomam. Jūs gimėte tam, kad eitumėte savo keliu drąsiai ir savarankiškai.",
         "destiny_description_2": "Jūs esate čia, kad kurtumėte taiką ir ryšius. Jūsų likimas susijęs su bendradarbiavimu, gydymu ir giliu žmogišku ryšiu.",
         "destiny_description_3": "Jūs esate pašauktas(-a) skleisti džiaugsmą, grožį ir kūrybą. Jūsų menas, žodžiai ar charizma įkvepia kitus.",
@@ -258,8 +251,6 @@ translations = {
         "life_path_description_11": "Jūs esate įkvėpimo šaltinis su didele dvasine intuicija. Jūsų užduotis – šviesti ir įkvėpti kitus.",
         "life_path_description_22": "Esate didžių vizijų kūrėjas – galite paversti idėjas realybe, kuri tarnauja žmonijai.",
         "life_path_description_33": "Jūs esate meilės ir užuojautos mokytojas. Jūsų kelias – gydyti, įkvėpti ir pakylėti kitus.",
-        "soul_urge": "💖 Sielos Troškimo Skaičius",
-        "soul_urge_result_title": "💖 Jūsų Sielos Troškimo Skaičius:",
         "soul_urge_description_1": "Jūsų siela trokšta nepriklausomybės ir savarankiškumo. Jumyse gyvena natūralus lyderis, siekiantis valdyti savo likimą.",
         "soul_urge_description_2": "Siekiate harmonijos, artimų ryšių ir širdingų santykių. Jūsų siela klesti taikoje ir meilėje.",
         "soul_urge_description_3": "Jūsų širdis trokšta džiaugsmo, kūrybiškumo ir saviraiškos. Jums gera, kai galite įkvėpti kitus savo žodžiais ar menais.",
@@ -271,15 +262,14 @@ translations = {
         "soul_urge_description_9": "Esate labai atjaučiantis. Jūsų siela randa pilnatvę padedant kitiems ir kuriant teigiamą pokytį.",
         "soul_urge_description_11": "Jūsų viduje rusena stiprus dvasinis pašaukimas. Esate įkvėpėjas, vedantis kitus į šviesą ir aukštesnę sąmonę.",
         "soul_urge_description_22": "Jūsų siela trokšta sukurti kažką reikšmingo ir ilgalaikio. Norite palikti pėdsaką, kuris tarnautų žmonijai.",
-        "soul_urge_description_33": "Jūsų esmė – meilė, užuojauta ir gydymas. Jūsų siela kviečia tarnauti kitiems su atsidavimu ir meile.",
+        "soul_urge_description_33": "Jūsų esmė – meilė, užuojauta ir gydymas. Jūsų siela kviečia tarnauti kitiems su atsidavimu ir meile."
     },
-
     "ru": {
         "welcome": "🔮 Добро пожаловать в FutureDigits!\nОтправьте дату рождения в формате ДД.ММ.ГГГГ, чтобы узнать ваше Число Жизненного Пути.",
         "life_path": "🔢 Число Жизненного Пути",
         "life_path_result_title": "✨ Число Жизненного Пути:",
         "soul_urge": "💖 Число Душевного Стремления",
-        "soul_urge_result_title": "💫 Число Душевного Стремления:",
+        "soul_urge_result_title": "💖 Ваше Число Душевного Стремления:",
         "expression": "🧠 Число Выражения",
         "lucky_years_btn": "📅 Удачные Годы",
         "lucky_years": "📅 Гид по Удачным Годам\nУзнайте, какие годы принесут вам удачу, рост и успех.",
@@ -295,9 +285,7 @@ translations = {
         "relationship_insights": "💘 Любовь и Отношения\nУзнайте о вашем стиле любви, эмоциональных потребностях и притяжении.",
         "purpose_analysis": "🌟 Анализ Предназначения\nПоймите своё жизненное предназначение и следуйте своему призванию.",
         "detailed_compatibility": "💎 Подробная Совместимость\nСравните полные нумерологические профили для глубокого понимания отношений.",
-        "premium_tool_locked": "🔒 Эта функция доступна только в Premium-версии.",
         "personality": "😎 Число Личности",
-        "personality_result_title": "😎 Число Личности:",
         "enter_personality_name": "Пожалуйста, введите ваше полное имя для Числа Личности:",
         "destiny": "🌟 Число Судьбы",
         "birthday_number": "🎂 Число Дня Рождения",
@@ -315,8 +303,7 @@ translations = {
         "enter_destiny_name": "Пожалуйста, введите ваше полное имя для Числа Судьбы:",
         "your_destiny_number": "🌟 Ваше Число Судьбы:",
         "your_birthday_number": "🎂 Ваше число дня рождения:",
-        "done_choose_tool": "✅ Готово! Выберите следующий инструмент 👇",
-        "birthday_result_title": "🎂 Ваше Число Дня Рождения:",
+        "birthday_result_title": "🎂 Ваше число дня рождения:",
         "birthday_description_1": "Вы независимы, целеустремлённы и инициативны. Вам по душе быть лидером и идти своим путём.",
         "birthday_description_2": "Вы мягкий, чувствительный и прирождённый миротворец. Сильны в отношениях и сопереживании.",
         "birthday_description_3": "Вы весёлый, выразительный и креативный. Ваша харизма и фантазия притягивают людей.",
@@ -348,7 +335,6 @@ translations = {
         "birthda_description_29": "Вы идеалист, духовный проводник. Стремитесь служить высшему призванию.",
         "birthda_description_30": "Вы радостны, выразительны и творчески одарены. Несёте свет через слова и искусство.",
         "birthday_description_31": "Вы основательны, терпеливы и внимательны к деталям. Превращаете идеи в результат.",
-        "birthday_result_title": "🎂 Ваше число дня рождения:",
         "destiny_description_1": "Вы рождены, чтобы быть лидером, новатором и идти своим путем. Независимость и решительность — ваша судьба.",
         "destiny_description_2": "Ваша миссия — приносить мир, любовь и гармонию. Вы призваны к партнёрству, исцелению и заботе о близких.",
         "destiny_description_3": "Вы здесь, чтобы вдохновлять радостью и творчеством. Через искусство, слово или харизму вы дарите свет другим.",
@@ -373,7 +359,6 @@ translations = {
         "personality_description_11": "Вы выглядите интуитивным, вдохновляющим и идеалистичным. Вас воспринимают как духовного лидера и визионера.",
         "personality_description_22": "Вы излучаете силу, целеустремлённость и интеллект. Вас видят как строителя больших замыслов.",
         "personality_description_33": "Вы воплощаете любовь, сострадание и заботу. Ваша энергия исцеляет и вдохновляет окружающих.",
-        "expression_description_1": "Вы прирождённый лидер – независимый, амбициозный и целеустремлённый. Вам важно быть первым и вести за собой других.",
         "expression_description_1": "Вы — прирожденный лидер с независимым мышлением. Ваша самовыраженность излучает силу, смелость и индивидуальность.",
         "expression_description_2": "Вы миротворец и надёжный партнёр. Ваша сила — в сотрудничестве, гармонии и эмоциональном интеллекте.",
         "expression_description_3": "Вы самовыражаетесь через творчество, юмор и обаяние. Слова и искусство — ваши сильные стороны.",
@@ -398,8 +383,6 @@ translations = {
         "life_path_description_11": "Вы – вдохновлённый провидец с высоким духовным потенциалом. Ваша миссия – пробуждать других.",
         "life_path_description_22": "Вы – мастер-строитель, способный воплощать великие идеи. Вы здесь, чтобы создавать масштабные перемены.",
         "life_path_description_33": "Вы – учитель любви и сострадания. Ваша душа стремится исцелять и просвещать.",
-        "soul_urge": "💖 Число Душевного Стремления",
-        "soul_urge_result_title": "💖 Ваше Число Душевного Стремления:",
         "soul_urge_description_1": "Вы стремитесь к независимости и контролю над своей жизнью. Ваша душа полна лидерства и силы воли.",
         "soul_urge_description_2": "Вы жаждете гармонии, близости и искренних отношений. Душа находит счастье в любви и единстве.",
         "soul_urge_description_3": "Ваше сердце стремится к радости, творчеству и самовыражению. Вы вдохновляете окружающих своей энергией.",
@@ -411,23 +394,36 @@ translations = {
         "soul_urge_description_9": "Вы глубоко сострадательны. Ваша душа наполняется смыслом, когда вы помогаете другим и делаете мир лучше.",
         "soul_urge_description_11": "Вы вдохновлены высоким духовным призванием. Ваша душа стремится вести людей к свету и пробуждению.",
         "soul_urge_description_22": "Ваша душа хочет создавать великие вещи, которые оставят след в истории. Вы рождены для масштабных дел.",
-        "soul_urge_description_33": "Суть вашей души — любовь, исцеление и служение. Вы призваны помогать, вдохновлять и исцелять людей.",
-
-"personality_result_title": {
-  "en": "😎 Personality Number:",
-  "lt": "😎 Asmenybės skaičius:",
-  "ru": "😎 Число Личности:"
-}
-
+        "soul_urge_description_33": "Суть вашей души — любовь, исцеление и служение. Вы призваны помогать, вдохновлять и исцелять людей."
     },
-"expression_result_title": {
-        "en": "🧠 Expression Number:",
-        "lt": "🧠 Išraiškos skaičius:",
-        "ru": "🧠 Число самовыражения:"
+    "expression_result_title": {
+    "en": "🧠 Expression Number:",
+    "lt": "🧠 Saviraiškos skaičius:",
+    "ru": "🧠 Число Выражения:"
     },
     "destiny_result_title": {
-        "en": "🌟 Destiny Number:",
-        "lt": "🌟 Likimo skaičius:",
-        "ru": "🌟 Число судьбы:"
+    "en": "🌟 Destiny Number:",
+    "lt": "🌟 Likimo skaičius:",
+    "ru": "🌟 Число Судьбы:"
     },
+    "personality_result_title": {
+        "en": "😎 Personality Number:",
+        "lt": "😎 Asmenybės skaičius:",
+        "ru": "😎 Число Личности:"
+    },
+    "birthday_number_result_title": {
+    "en": "🎂 Your Birthday Number is:",
+    "lt": "🎂 Jūsų gimtadienio skaičius yra:",
+    "ru": "🎂 Ваше число дня рождения:"
+},
+    "done_choose_tool": {
+        "en": "✅ Done! Choose your next tool 👇",
+        "lt": "✅ Atlikta! Pasirinkite kitą įrankį 👇",
+        "ru": "✅ Готово! Выберите следующий инструмент 👇"
+    },
+    "premium_tool_locked": {
+        "en": "🔒 This feature is available only in the Premium version.",
+        "lt": "🔒 Ši funkcija pasiekiama tik su Premium versija.",
+        "ru": "🔒 Эта функция доступна только в Premium-версии."
+    }
 }

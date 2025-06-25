@@ -24,6 +24,14 @@ load_dotenv()
 bot = Bot(token=os.getenv("BOT_TOKEN"))
 dp = Dispatcher(bot, storage=MemoryStorage())
 
+import asyncio
+
+# Clear any existing webhook before polling starts
+async def clear_webhook():
+    await bot.delete_webhook(drop_pending_updates=True)
+
+asyncio.run(clear_webhook())
+
 def compatibility_score(date1, date2):
     # Simple placeholder: compare Life Path Numbers
     def life_path(date_str):
@@ -284,13 +292,25 @@ async def calculate_compatibility(message: types.Message):
 
         lp1 = get_life_path(day1, month1, year1)
         lp2 = get_life_path(day2, month2, year2)
-
         compatibility = 100 - abs(lp1 - lp2) * 10
         compatibility = max(0, min(compatibility, 100))
 
-        await message.answer(f"Life Path 1: {lp1}\nLife Path 2: {lp2}\n❤️ Compatibility: {compatibility}%")
+        lang = get_user_language(message.from_user.id)
+        desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
+        desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
+        title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
+
+        result = (
+            f"{title} {lp1}\n🔹 {desc1}\n\n"
+            f"{title} {lp2}\n🔹 {desc2}\n\n"
+            f"❤️ Compatibility: {compatibility}%"
+        )
+
+        await message.answer(result)
     except Exception as e:
         await message.answer("Invalid format. Please send two dates like this:\n`DD.MM.YYYY, DD.MM.YYYY`")
+
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
@@ -608,7 +628,7 @@ async def process_personality(message: types.Message, state: FSMContext):
 
     description_key = f"personality_description_{total}"
     description = get_translation(message.from_user.id, description_key)
-    title = get_multilang_translation(message.from_user.id, "personality_result_title")
+    title = get_translation(message.from_user.id, "personality_result_title")
 
     await message.answer(f"{title} {total}\n\n{description}")
     await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
