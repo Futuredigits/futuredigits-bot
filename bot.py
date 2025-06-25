@@ -794,5 +794,11 @@ async def on_startup(dispatcher):
 
 if __name__ == '__main__':
     from aiogram import executor
+    import time
+
+if __name__ == '__main__':
+    time.sleep(5)  # Give old instance time to exit
+    from aiogram import executor
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+
 
