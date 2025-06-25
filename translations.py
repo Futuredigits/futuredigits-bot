@@ -18,6 +18,7 @@ translations = {
         "invalid_format": "❌ Invalid date format. Please use DD.MM.YYYY.",
         "done_choose_tool": "✅ Done! Choose your next tool 👇",
         "compatibility_explanation": "🔮 Your souls align with shared values and mutual understanding. This connection holds strong potential for deep love, trust, and growth.",
+        "compatibility_explanation": "🔮 Your souls align with shared values and mutual understanding. This connection holds strong potential for deep love, trust, and growth.",
         "language_set": "✅ Language has been set.",
         "enter_first_birthdate": "Send the first birthdate (DD.MM.YYYY):",
         "enter_full_name": "Please enter your full name:",
@@ -162,6 +163,7 @@ translations = {
         "compatibility": "🔗 Suderinamumo Analizė",
         "done_choose_tool": "✅ Atlikta! Pasirinkite kitą įrankį 👇",
         "compatibility_explanation": "🔮 Jūsų sielos dera pagal bendras vertybes ir tarpusavio supratimą. Šis ryšys turi stiprų potencialą meilei, pasitikėjimui ir augimui.",
+        "compatibility_explanation": "🔮 Jūsų sielos dera pagal bendras vertybes ir tarpusavio supratimą. Šis ryšys turi stiprų potencialą meilei, pasitikėjimui ir augimui.",
         "change_language": "🌐 Pakeisti kalbą",
         "birthdate_prompt": "Įveskite savo gimimo datą (DD.MM.YYYY):",
         "your_life_path": "Jūsų gyvenimo kelio skaičius yra",
@@ -301,6 +303,7 @@ translations = {
         "language_set": "✅ Язык установлен.",
         "done_choose_tool": "✅ Готово! Выберите следующий инструмент 👇",
         "compatibility_explanation": "🔮 Ваши души соединены общими ценностями и взаимопониманием. Эта связь обладает сильным потенциалом для любви, доверия и духовного роста.",
+        "compatibility_explanation": "🔮 Ваши души соединены общими ценностями и взаимопониманием. Эта связь обладает сильным потенциалом для любви, доверия и духовного роста.",
         "enter_first_birthdate": "Введите первую дату рождения (ДД.ММ.ГГГГ):",
         "enter_full_name": "Пожалуйста, введите ваше полное имя:",
         "enter_expression_name": "Введите ваше полное имя для Числа Выражения:",
@@ -432,9 +435,4 @@ translations = {
         "lt": "🔒 Ši funkcija pasiekiama tik su Premium versija.",
         "ru": "🔒 Эта функция доступна только в Premium-версии."
     }
-}
-"compatibility_explanation": {
-    "en": "🔮 Your souls align with shared values and mutual understanding...",
-    "lt": "🔮 Jūsų sielos dera pagal bendras vertybes ir tarpusavio supratimą...",
-    "ru": "🔮 Ваши души соединены общими ценностями и взаимопониманием..."
 }
