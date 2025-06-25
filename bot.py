@@ -441,7 +441,7 @@ async def get_second_date(message: types.Message, state: FSMContext):
         await message.answer(result)
         await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
         await state.finish()
-
+        return
     except:
         await message.answer("❌ Invalid format. Please use DD.MM.YYYY.")
 
