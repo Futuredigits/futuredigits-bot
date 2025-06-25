@@ -310,111 +310,46 @@ async def start_compatibility(message: types.Message, state: FSMContext):
     lang = get_user_language(message.from_user.id)
 
     explanations = {
-        "en": "💞 *Compatibility Analysis*\nDiscover how numerologically compatible two people are by comparing their Life Path Numbers. This insight helps you understand your strengths and challenges in the relationship.\nPlease enter the first person's birthdate (DD.MM.YYYY):",
-        "lt": "💞 *Suderinamumo Analizė*\nSužinokite, kiek dviejų žmonių gyvenimo keliai yra suderinami pagal numerologiją. Tai padeda geriau suprasti santykių stipriąsias ir silpnąsias puses.\nĮveskite pirmojo asmens gimimo datą (DD.MM.YYYY):",
-        "ru": "💞 *Анализ Совместимости*\nУзнайте, насколько вы совместимы с другим человеком на основе Чисел Жизненного Пути. Это поможет понять сильные и слабые стороны ваших отношений.\nВведите дату рождения первого человека (ДД.ММ.ГГГГ):"
+        "en": "💞 *Compatibility Analysis*\nCompare Life Path Numbers of two people. This reveals spiritual harmony and challenges.\nPlease enter the first person's birthdate (DD.MM.YYYY):",
+        "lt": "💞 *Suderinamumo Analizė*\nPalyginkite dviejų žmonių gyvenimo kelius. Tai atskleidžia dvasinę darną ir iššūkius.\nĮveskite pirmojo asmens gimimo datą (DD.MM.YYYY):",
+        "ru": "💞 *Анализ Совместимости*\nСравните Числа Жизненного Пути двух людей. Это покажет гармонию и вызовы.\nВведите дату рождения первого человека (ДД.ММ.ГГГГ):"
     }
 
-    explanation = explanations.get(lang, explanations["en"])
-    await message.answer(explanation, parse_mode="Markdown")
-
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
     await CompatibilityStates.waiting_for_first_date.set()
+
 
 @dp.message_handler(state=CompatibilityStates.waiting_for_first_date)
 async def get_first_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
 
-    # Recognize buttons and redirect properly
-    buttons = {
-        "life_path": get_translation(message.from_user.id, "life_path"),
-        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
-        "expression": get_translation(message.from_user.id, "expression"),
-        "personality": get_translation(message.from_user.id, "personality"),
-        "destiny": get_translation(message.from_user.id, "destiny"),
-        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
-        "compatibility": get_translation(message.from_user.id, "compatibility"),
-        "change_language": get_translation(message.from_user.id, "change_language"),
-        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
-    }
-
-    if text in buttons.values():
+    # Check if user clicked a tool button
+    if text in [get_translation(message.from_user.id, key) for key in translations.get(get_user_language(message.from_user.id), {})]:
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
-        return
+        return  # Prevent falling through
 
-    # Otherwise treat as a date
     try:
         day, month, year = map(int, text.split('.'))
         await state.update_data(first_date=text)
         await CompatibilityStates.next()
         await message.answer("Now enter the second birthdate (DD.MM.YYYY):")
     except:
-        await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
+        await message.answer("❌ Invalid format. Please use DD.MM.YYYY.")
+
 
 @dp.message_handler(state=CompatibilityStates.waiting_for_second_date)
 async def get_second_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
 
-    # Check if user clicked any menu button — redirect properly
-    buttons = {
-        "life_path": get_translation(message.from_user.id, "life_path"),
-        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
-        "expression": get_translation(message.from_user.id, "expression"),
-        "personality": get_translation(message.from_user.id, "personality"),
-        "destiny": get_translation(message.from_user.id, "destiny"),
-        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
-        "compatibility": get_translation(message.from_user.id, "compatibility"),
-        "change_language": get_translation(message.from_user.id, "change_language"),
-        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
-    }
-
-    if text in buttons.values():
+    # Check if user clicked a tool button
+    if text in [get_translation(message.from_user.id, key) for key in translations.get(get_user_language(message.from_user.id), {})]:
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
         return
 
-    # Otherwise, handle second date input
     try:
         data = await state.get_data()
         first_date = data.get("first_date")
         second_date = text
-
-        day1, month1, year1 = map(int, first_date.split('.'))
-        day2, month2, year2 = map(int, second_date.split('.'))
 
         def get_life_path(d, m, y):
             total = sum(int(d) for d in f"{d:02}{m:02}{y}")
@@ -422,26 +357,30 @@ async def get_second_date(message: types.Message, state: FSMContext):
                 total = sum(int(x) for x in str(total))
             return total
 
+        day1, month1, year1 = map(int, first_date.split('.'))
+        day2, month2, year2 = map(int, second_date.split('.'))
+
         lp1 = get_life_path(day1, month1, year1)
         lp2 = get_life_path(day2, month2, year2)
-        compatibility = 100 - abs(lp1 - lp2) * 10
-        compatibility = max(0, min(compatibility, 100))
+        compatibility = max(0, min(100 - abs(lp1 - lp2) * 10, 100))
 
         lang = get_user_language(message.from_user.id)
         desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
         desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
         title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
+        meaning = get_multilang_translation(message.from_user.id, "compatibility_explanation")
 
         result = (
             f"{title} {lp1}\n🔹 {desc1}\n\n"
             f"{title} {lp2}\n🔹 {desc2}\n\n"
-            f"❤️ Compatibility: {compatibility}%"
+            f"❤️ Compatibility: {compatibility}%\n{meaning}"
         )
 
         await message.answer(result)
         await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
         await state.finish()
         return
+
     except:
         await message.answer("❌ Invalid format. Please use DD.MM.YYYY.")
 

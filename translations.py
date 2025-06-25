@@ -430,3 +430,8 @@ translations = {
         "ru": "🔒 Эта функция доступна только в Premium-версии."
     }
 }
+"compatibility_explanation": {
+    "en": "🔮 Your souls align with shared values and mutual understanding...",
+    "lt": "🔮 Jūsų sielos dera pagal bendras vertybes ir tarpusavio supratimą...",
+    "ru": "🔮 Ваши души соединены общими ценностями и взаимопониманием..."
+}
