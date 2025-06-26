@@ -712,7 +712,6 @@ async def get_first_date(message: types.Message, state: FSMContext):
     # Otherwise treat as a date
     try:
         day, month, year = map(int, text.split('.'))
-        await state.update_data(first_date=text)
         await CompatibilityStates.next()
         await message.answer("Now enter the second birthdate (DD.MM.YYYY):")
     except:
