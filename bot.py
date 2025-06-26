@@ -623,8 +623,6 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
 async def ask_birthdates_for_compatibility(message: types.Message):
     await message.answer("Please send two birthdates separated by a comma.\nExample: 14.05.1990, 22.09.1993")
 
-@dp.message_handler(lambda message: "," in message.text)
-async def calculate_compatibility(message: types.Message):
     try:
         b1, b2 = [d.strip() for d in message.text.split(",")]
         day1, month1, year1 = map(int, b1.split('.'))
@@ -791,15 +789,28 @@ async def get_second_date(message: types.Message, state: FSMContext):
         compatibility = 100 - abs(lp1 - lp2) * 10
         compatibility = max(0, min(compatibility, 100))
 
+        # Determine meaning key
+        if compatibility >= 90:
+            meaning_key = "compatibility_interpretation_90"
+        elif compatibility >= 75:
+            meaning_key = "compatibility_interpretation_75"
+        elif compatibility >= 60:
+            meaning_key = "compatibility_interpretation_60"
+        elif compatibility >= 40:
+            meaning_key = "compatibility_interpretation_40"
+        else:
+            meaning_key = "compatibility_interpretation_0"
+
         lang = get_user_language(message.from_user.id)
         desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
         desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
         title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
+        meaning = get_translation(message.from_user.id, meaning_key)
 
         result = (
             f"{title} {lp1}\n🔹 {desc1}\n\n"
             f"{title} {lp2}\n🔹 {desc2}\n\n"
-            f"❤️ Compatibility: {compatibility}%"
+            f"❤️ Compatibility: {compatibility}%\n\n{meaning}"
         )
 
         await message.answer(result, parse_mode="Markdown")
