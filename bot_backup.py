@@ -1,420 +1,860 @@
-translations = {
-    "en": {
-        "welcome": "🔮 Welcome to FutureDigits!\nSend me your birthdate in format DD.MM.YYYY to discover your Life Path Number.",
-        "life_path": "🔢 Life Path Number",
-        "soul_urge": "💖 Soul Urge Number",
-        "soul_urge_result_title": "💫 Soul Urge Number:",
-        "expression": "🧠 Expression Number",
-        "personality": "😎 Personality Number",
-        "enter_personality_name": "Please enter your full name for Personality Number:",
-        "destiny": "🌟 Destiny Number",
-        "birthday_number": "🎂 Birthday Number",
-        "compatibility": "🔗 Compatibility Analysis",
-        "change_language": "🌐 Change Language",
-        "birthdate_prompt": "Please enter your birthdate (DD.MM.YYYY):",
-        "your_life_path": "Your Life Path Number is",
-        "invalid_format": "❌ Invalid date format. Please use DD.MM.YYYY.",
-        "language_set": "✅ Language has been set.",
-        "enter_first_birthdate": "Send the first birthdate (DD.MM.YYYY):",
-        "enter_full_name": "Please enter your full name:",
-        "enter_expression_name": "Please enter your full name for Expression Number:",
-        "your_expression_number": "Your Expression Number is",
-        "back_to_menu": "🔙 Back to main menu",
-        "lucky_years_btn": "📅 Lucky Years",
-        "lucky_years": "📅 Lucky Years Guide\nFind out which years bring you luck, growth, or breakthroughs.",
-        "career_profile_btn": "💼 Career Profile",
-        "name_numerology_btn": "🧿 Name Numerology",
-        "lucky_colors_btn": "🎨 Lucky Colors",
-        "relationship_insights_btn": "💘 Relationship",
-        "purpose_analysis_btn": "🌟 Life Purpose",
-        "detailed_compatibility_btn": "💎 Compatibility Report",
-        "career_profile": "🧭 Career Path Profile\nDiscover your natural talents and ideal career direction.",
-        "name_numerology": "🧿 Name Numerology\nUncover how your name influences your destiny and personality.",
-        "lucky_colors": "🎨 Lucky Colors & Numbers\nUse personalized colors and numbers to attract luck and harmony.",
-        "relationship_insights": "💘 Relationship & Love Insights\nLearn your love style, emotional needs, and attraction energy.",
-        "purpose_analysis": "🌟 Life Purpose Analysis\nUnderstand your soul's mission and align with your true calling.",
-        "detailed_compatibility": "💎 Detailed Compatibility Report\nCompare two full numerology profiles for deep relationship insight.",
-        "premium_tool_locked": "🔒 This feature is available only in the Premium version.",
-        "enter_destiny_name": "Please enter your full name for Destiny Number:",
-        "your_destiny_number": "🌟 Your Destiny Number is",
-        "your_birthday_number": "🎂 Your Birthday Number is",
-        "done_choose_tool": "✅ Done! Choose your next tool 👇",
-        "birthday_description_1": "You are independent, ambitious, and self-motivated. You thrive when you lead and blaze your own trail.",
-        "birthday_description_2": "You are gentle, sensitive, and a natural peacemaker. You shine in cooperation and emotional connection.",
-        "birthday_description_3": "You are joyful, expressive, and creative. Your natural charm and imagination draw others to you.",
-        "birthday_description_4": "You are practical, disciplined, and hardworking. People admire your dependability and inner strength.",
-        "birthday_description_5": "You are adventurous, curious, and full of energy. Freedom and change fuel your spirit.",
-        "birthday_description_6": "You are loving, responsible, and family-oriented. You naturally care for others and create harmony.",
-        "birthday_description_7": "You are introspective, analytical, and spiritual. Your mind seeks knowledge and deeper truths.",
-        "birthday_description_8": "You are ambitious, organized, and goal-driven. Success and leadership are in your nature.",
-        "birthday_description_9": "You are compassionate, wise, and giving. You’re here to make a difference in the lives of others.",
-        "birthday_description_10": "You are confident, original, and inspiring. You carry strong leadership energy and bold ideas.",
-        "birthday_description_11": "You are intuitive, visionary, and deeply spiritual. You uplift others through your insight and presence.",
-        "birthday_description_12": "You are artistic, witty, and social. Your gift lies in communication and brightening any space you enter.",
-        "birthday_description_13": "You are determined, disciplined, and built for progress. Your practical mindset helps turn ideas into reality.",
-        "birthday_description_14": "You are dynamic, adaptable, and constantly evolving. Life with you is always full of movement and excitement.",
-        "birthday_description_15": "You are nurturing, creative, and full of heart. You bring love and balance into your relationships.",
-        "birthday_description_16": "You are wise beyond your years, deeply thoughtful, and spiritually inclined. Reflection fuels your growth.",
-        "birthday_description_17": "You are a visionary leader with strong ambitions. You are destined to leave a legacy through achievement.",
-        "birthday_description_18": "You are compassionate, powerful, and justice-driven. You’re meant to serve and uplift humanity.",
-        "birthday_description_19": "You are bold, self-reliant, and destined for personal success. You lead by example and overcome all odds.",
-        "birthday_description_20": "You are diplomatic, sensitive, and tuned into others’ feelings. Your soul values harmony and love.",
-        "birthday_description_21": "You are expressive, charming, and socially gifted. Your presence inspires joy and connection.",
-        "birthday_description_22": "You are a master builder with a grand vision. You can create lasting change that benefits many.",
-        "birthday_description_23": "You are energetic, curious, and a fast learner. Your versatility is one of your greatest strengths.",
-        "birthday_description_24": "You are devoted, caring, and protective. Family, love, and service are close to your heart.",
-        "birthday_description_25": "You are intuitive, reflective, and insightful. You often sense what others miss.",
-        "birthday_description_26": "You are a natural leader who balances compassion with responsibility. Others trust your guidance.",
-        "birthday_description_27": "You are wise, empathetic, and humanitarian. You’re here to heal and inspire others.",
-        "birthday_description_28": "You are courageous, ambitious, and goal-oriented. You possess a pioneering spirit.",
-        "birthday_description_29": "You are sensitive, spiritual, and idealistic. You are drawn to serve a higher purpose.",
-        "birthday_description_30": "You are joyful, imaginative, and expressive. You uplift others through your words and creativity.",
-        "birthday_description_31": "You are grounded, disciplined, and detail-oriented. You turn ideas into structure and success.", 
-        "birthday_result_title": "🎂 Your Birthday Number is:",
-        "destiny_description_1": "You are destined to lead, create, and initiate. Your path is about bold action, independence, and forging your own way.",
-        "destiny_description_2": "You are here to bring peace and partnership. Your destiny lies in healing, cooperation, and nurturing meaningful relationships.",
-        "destiny_description_3": "You are meant to inspire joy, beauty, and creativity. Through your words, art, or charm, you light up the world.",
-        "destiny_description_4": "Your destiny is to build and stabilize. You are here to create lasting systems and bring order to chaos.",
-        "destiny_description_5": "You are born to explore, adapt, and experience. Your life purpose is rooted in freedom, movement, and fearless self-expression.",
-        "destiny_description_6": "You are destined to serve with love. Family, responsibility, and emotional support are central to your soul’s mission.",
-        "destiny_description_7": "You are meant to uncover truth and dive deep into life’s mysteries. Your destiny is spiritual growth and intellectual mastery.",
-        "destiny_description_8": "You are born to lead with strength and vision. Power, prosperity, and achievement define your divine assignment.",
-        "destiny_description_9": "Your destiny is humanitarian. You are here to uplift, give, and guide others with compassion and wisdom.",
-        "destiny_description_11": "You are a spiritual illuminator. Your destiny is to inspire and awaken others through truth, intuition, and a higher calling.",
-        "destiny_description_22": "You are a master builder of visions. Your destiny is to turn dreams into reality that benefits the world at large.",
-        "destiny_description_33": "You are a master healer. Your life’s path involves unconditional love, emotional service, and raising global consciousness.",
-        "personality_description_1": "You appear strong, independent, and confident. People see you as a leader who knows what they want and isn’t afraid to go after it.",
-        "personality_description_2": "You come across as gentle, kind, and diplomatic. Others are drawn to your peaceful energy and cooperative nature.",
-        "personality_description_3": "You radiate joy, creativity, and charm. Your lively personality and sense of humor leave a lasting impression.",
-        "personality_description_4": "You are seen as serious, dependable, and hardworking. People trust your grounded nature and strong sense of responsibility.",
-        "personality_description_5": "You seem adventurous, magnetic, and dynamic. Your free spirit and love of excitement attract attention everywhere you go.",
-        "personality_description_6": "You appear nurturing, loving, and supportive. People feel safe around you and often seek your advice or care.",
-        "personality_description_7": "You give off a mysterious, thoughtful, and introspective vibe. People see you as wise, deep, and spiritually tuned-in.",
-        "personality_description_8": "You appear powerful, ambitious, and confident. Your commanding presence naturally earns respect and recognition.",
-        "personality_description_9": "You radiate compassion, empathy, and wisdom. People are drawn to your humanitarian spirit and emotional depth.",
-        "personality_description_11": "You seem intuitive, idealistic, and inspiring. Others see you as a visionary with a unique and spiritual glow.",
-        "personality_description_22": "You project authority, intelligence, and purpose. People view you as a builder of big dreams with the power to manifest them.",
-        "personality_description_33": "You embody love, healing, and deep empathy. Your presence uplifts others and brings a sense of peace and care.",
-        "expression_description_1": "You are a natural leader and independent thinker. Your expression reflects strength, courage, and the will to stand out.",
-        "expression_description_2": "You are a supportive partner and peacemaker. You shine through cooperation, harmony, and emotional intelligence.",
-        "expression_description_3": "You express yourself with charm, humor, and creativity. Words, art, and joy are your natural gifts.",
-        "expression_description_4": "You are dependable, grounded, and hardworking. You express your purpose through structure, order, and dedication.",
-        "expression_description_5": "You are dynamic and adaptable. Your energy expresses through freedom, communication, and constant growth.",
-        "expression_description_6": "You are nurturing and responsible. Your expression is warm, protective, and deeply committed to others.",
-        "expression_description_7": "You are thoughtful, curious, and spiritually aware. You express yourself through introspection, wisdom, and intellect.",
-        "expression_description_8": "You are ambitious and authoritative. Your presence commands respect and you express success through leadership.",
-        "expression_description_9": "You are compassionate and generous. Your soul expresses itself through service, empathy, and a higher calling.",
-        "expression_description_11": "You are a visionary communicator. You express yourself with deep insight, intuition, and a mission to inspire others.",
-        "expression_description_22": "You are a master builder. Your expression combines practicality and vision to create lasting impact in the world.",
-        "expression_description_33": "You are the master nurturer. Through loving words and healing energy, you uplift others and bring emotional harmony.",
-        "life_path_description_1": "You are a natural leader with strong individuality and a pioneering spirit.",
-        "life_path_description_1": "You are a pioneering leader, driven to stand out and forge your own path. Independence and determination shape your destiny.",
-        "life_path_description_2": "You are a born diplomat with a deep need for harmony, partnership, and emotional connection. Cooperation is your strength.",
-        "life_path_description_3": "You radiate creativity, joy, and optimism. Your voice, talents, and imagination are your greatest tools for uplifting the world.",
-        "life_path_description_4": "You are a reliable builder who thrives on stability, structure, and discipline. Your life is about building lasting foundations.",
-        "life_path_description_5": "You are a freedom-seeker and adventurer at heart. Change, variety, and exploration drive your personal growth.",
-        "life_path_description_6": "You are a nurturing soul, called to love, support, and heal. Responsibility and care are the heart of your path.",
-        "life_path_description_7": "You are a seeker of truth, insight, and spiritual wisdom. You thrive in solitude, introspection, and inner discovery.",
-        "life_path_description_8": "You are a powerhouse of ambition and success. Leadership, abundance, and achievement define your mission.",
-        "life_path_description_9": "You are a compassionate humanitarian here to make the world better. Empathy, service, and vision fuel your purpose.",
-        "life_path_description_11": "You are an inspired visionary with deep spiritual awareness. You are here to uplift and awaken others through light.",
-        "life_path_description_22": "You are a master builder, capable of creating powerful change. Your path is to turn dreams into systems that serve humanity.",
-        "life_path_description_33": "You are a master teacher of love and compassion. Your calling is to uplift others through healing, empathy, and wisdom.",
-        "soul_urge_description_1": "You are driven by a deep desire to be independent, self-sufficient, and in control of your destiny. Leadership and courage flow from your soul.",
-        "soul_urge_description_2": "You long for harmony, connection, and deep emotional bonds. Your soul is happiest when surrounded by peace and meaningful relationships.",
-        "soul_urge_description_3": "Your heart seeks joy, fun, and creative expression. You thrive when you can uplift others through art, humor, or communication.",
-        "soul_urge_description_4": "You yearn for stability, order, and purpose. Your inner self craves a life built on structure, dedication, and reliability.",
-        "soul_urge_description_5": "Freedom is your soul’s calling. You desire variety, excitement, and the chance to explore life without limits.",
-        "soul_urge_description_6": "You are a true nurturer at heart. Your deepest desire is to love, protect, and bring harmony to your home and relationships.",
-        "soul_urge_description_7": "You are driven by the search for truth, knowledge, and inner wisdom. Your soul longs for depth, reflection, and spiritual understanding.",
-        "soul_urge_description_8": "You crave success, power, and recognition. Your inner drive pushes you to lead, build, and achieve big goals.",
-        "soul_urge_description_9": "You are deeply compassionate. Your soul is fulfilled when you’re helping others and making a meaningful impact on the world.",
-        "soul_urge_description_11": "You are inspired by a higher vision and a deep spiritual calling. Your soul wants to guide, uplift, and enlighten others.",
-        "soul_urge_description_22": "Your inner drive is to build lasting, meaningful change. You desire to create something impactful that benefits humanity.",
-        "soul_urge_description_33": "Love and healing are at the core of your being. You are called to serve selflessly and bring light to those in need.",
-    },
+import os
+from aiogram import Bot, Dispatcher, executor, types
+from dotenv import load_dotenv
+from translations import translations
+from db import set_user_language, get_user_language
+from aiogram.dispatcher import FSMContext
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from states import CompatibilityStates
+from states import SoulUrgeStates
+from states import ExpressionStates
+from states import PersonalityStates
+from states import DestinyStates
+from states import BirthdayStates
 
-    "lt": {
-        "welcome": "🔮 Sveiki atvykę į FutureDigits!\nĮveskite gimimo datą formatu DD.MM.YYYY ir sužinokite savo Gyvenimo Kelią.",
-        "life_path": "🔢 Gyvenimo Kelio Skaičius",
-        "soul_urge": "💖 Sielos Troškimo Skaičius",
-        "soul_urge_result_title": "💫 Sielos Troškimo Skaičius:",
-        "expression": "🧠 Saviraiškos Skaičius",
-        "personality": "😎 Asmenybės Skaičius",
-        "lucky_years_btn": "📅 Sėkmingi Metai",
-        "lucky_years": "📅 Sėkmingų Metų Gidas\nSužinokite, kurie metai atneš sėkmę, augimą ar proveržį.",
-        "career_profile_btn": "💼 Karjeros Profilis",
-        "name_numerology_btn": "🧿 Vardo Numerologija",
-        "lucky_colors_btn": "🎨 Laimingos Spalvos",
-        "relationship_insights_btn": "💘 Meilė",
-        "purpose_analysis_btn": "🌟 Paskirtis",
-        "detailed_compatibility_btn": "💎 Suderinamumas",
-        "career_profile": "🧭 Karjeros Profilis\nAtskleiskite savo natūralius talentus ir idealią karjeros kryptį.",
-        "name_numerology": "🧿 Vardo Numerologija\nSužinokite, kaip jūsų vardas veikia jūsų likimą ir asmenybę.",
-        "lucky_colors": "🎨 Laimingos Spalvos ir Skaičiai\nNaudokite suasmenintas spalvas ir skaičius sėkmei pritraukti.",
-        "relationship_insights": "💘 Meilės ir Santykių Įžvalgos\nSužinokite apie meilės stilių, emocinius poreikius ir trauką.",
-        "purpose_analysis": "🌟 Gyvenimo Paskirties Analizė\nSupraskite savo misiją ir suderinkite ją su tikruoju pašaukimu.",
-        "detailed_compatibility": "💎 Suderinamumo Ataskaita\nPalyginkite du numerologinius profilius santykių įžvalgai.",
-        "premium_tool_locked": "🔒 Ši funkcija pasiekiama tik su Premium versija.",
-        "enter_personality_name": "Įveskite savo pilną vardą Asmenybės Skaičiui:",
-        "destiny": "🌟 Likimo Skaičius",
-        "birthday_number": "🎂 Gimtadienio Skaičius",
-        "compatibility": "🔗 Suderinamumo Analizė",
-        "change_language": "🌐 Pakeisti kalbą",
-        "birthdate_prompt": "Įveskite savo gimimo datą (DD.MM.YYYY):",
-        "your_life_path": "Jūsų gyvenimo kelio skaičius yra",
-        "invalid_format": "❌ Neteisingas datos formatas. Naudokite DD.MM.YYYY.",
-        "language_set": "✅ Kalba nustatyta.",
-        "enter_first_birthdate": "Įveskite pirmą gimimo datą (DD.MM.YYYY):",
-        "enter_full_name": "Įveskite savo pilną vardą:",
-        "enter_expression_name": "Įveskite savo pilną vardą saviraiškos skaičiui:",
-        "your_expression_number": "Jūsų saviraiškos skaičius yra",
-        "back_to_menu": "🔙 Grįžti į pagrindinį meniu",
-        "enter_destiny_name": "Įveskite savo pilną vardą Likimo Skaičiui:",
-        "your_destiny_number": "🌟 Jūsų Likimo Skaičius yra",
-        "your_birthday_number": "🎂 Jūsų gimtadienio skaičius yra",
-        "done_choose_tool": "✅ Atlikta! Pasirinkite kitą įrankį 👇",
-        "birthday_description_1": "Esate nepriklausomas, ambicingas ir motyvuotas. Jums sekasi, kai galite vadovauti ir eiti savu keliu.",
-        "birthday_description_2": "Esate švelnus, jautrus ir gimęs taikdarys. Jums svarbus bendradarbiavimas ir emocinis ryšys.",
-        "birthday_description_3": "Esate džiaugsmingas, kūrybiškas ir iškalbingas. Jūsų žavesys ir vaizduotė pritraukia kitus.",
-        "birthday_description_4": "Esate praktiškas, drausmingas ir darbštus. Žmonės vertina jūsų patikimumą ir stiprybę.",
-        "birthday_description_5": "Esate nuotykių ieškotojas, kupinas energijos. Laisvė ir pokyčiai jus įkvepia.",
-        "birthday_description_6": "Esate mylintis, atsakingas ir šeimai atsidavęs. Rūpintis kitais – jūsų prigimtis.",
-        "birthday_description_7": "Esate analitinis, dvasingas ir gilus mąstytojas. Jums svarbu vidinė išmintis.",
-        "birthday_description_8": "Esate ambicingas, organizuotas ir orientuotas į tikslus. Jūsų pašaukimas – lyderystė.",
-        "birthday_description_9": "Esate atjaučiantis, išmintingas ir dosnus. Esate pašauktas padėti kitiems.",
-        "birthday_description_10": "Esate pasitikintis savimi ir kūrybingas. Jūsų idėjos ir lyderystė įkvepia kitus.",
-        "birthday_description_11": "Esate intuityvus, vizionierius ir dvasiškai pažengęs. Jūsų buvimas šviesina kitus.",
-        "birthday_description_12": "Esate meniškas, išradingas ir bendraujantis. Jūsų stiprybė – įkvėpti aplinkinius.",
-        "birthday_description_13": "Esate atkaklus ir disciplinuotas. Jūsų praktinis protas padeda įgyvendinti vizijas.",
-        "birthday_description_14": "Esate lankstus, energingas ir nuolat tobulėjantis. Judėjimas – jūsų gyvenimo variklis.",
-        "birthday_description_15": "Esate kūrybingas, rūpestingas ir širdingas. Jūsų misija – skleisti meilę ir pusiausvyrą.",
-        "birthday_description_16": "Esate išmintingas, mąslus ir dvasiškai gilus. Augate per apmąstymus ir savistabą.",
-        "birthday_description_17": "Esate vizionierius lyderis. Esate gimęs palikti pėdsaką per savo pasiekimus.",
-        "birthday_description_18": "Esate galingas, atjaučiantis ir teisingumo siekiantis. Jūsų tikslas – tarnauti žmonijai.",
-        "birthday_description_19": "Esate drąsus, savarankiškas ir pasiryžęs siekti sėkmės. Esate pavyzdys kitiems.",
-        "birthday_description_20": "Esate diplomatiškas, jautrus ir empatiškas. Jūsų siela trokšta meilės ir harmonijos.",
-        "birthday_description_21": "Esate žavus, komunikabilus ir kūrybingas. Įkvepiate džiaugsmą savo buvimu.",
-        "birthday_description_22": "Esate meistras kūrėjas su didele vizija. Jūsų darbai gali pakeisti pasaulį.",
-        "birthday_description_23": "Esate smalsus, greitai besimokantis ir lankstus. Jūsų universalumas – jūsų galia.",
-        "birthday_description_24": "Esate atsidavęs, rūpestingas ir apsaugantis. Jūsų širdis priklauso šeimai ir artimiesiems.",
-        "birthday_description_25": "Esate intuityvus, giliai mąstantis ir išmintingas. Matote tai, ko nepastebi kiti.",
-        "birthday_description_26": "Esate lyderis, gebantis derinti rūpestį su atsakomybe. Žmonės jumis pasitiki.",
-        "birthday_description_27": "Esate empatiškas, dvasingas ir mokantis įkvėpti. Jūsų tikslas – gydyti ir šviesti.",
-        "birthday_description_28": "Esate drąsus, veržlus ir orientuotas į tikslus. Jūsų dvasia – tyrinėti ir kurti.",
-        "birthday_description_29": "Esate jautrus, idealistas ir dvasiškai įžvalgus. Jūsų kelias – tarnystė aukštesniam tikslui.",
-        "birthday_description_30": "Esate džiugus, kūrybingas ir iškalbingas. Jūsų žodžiai įkvepia ir gydo.",
-        "birthday_description_31": "Esate organizuotas, kantrus ir dėmesingas detalėms. Jūs kuriate struktūrą ir sėkmę.",
-        "birthday_result_title": "🎂 Jūsų gimtadienio skaičius yra:",      
-        "destiny_description_1": "Jūsų likimas – vadovauti, kurti ir būti nepriklausomam. Jūs gimėte tam, kad eitumėte savo keliu drąsiai ir savarankiškai.",
-        "destiny_description_2": "Jūs esate čia, kad kurtumėte taiką ir ryšius. Jūsų likimas susijęs su bendradarbiavimu, gydymu ir giliu žmogišku ryšiu.",
-        "destiny_description_3": "Jūs esate pašauktas(-a) skleisti džiaugsmą, grožį ir kūrybą. Jūsų menas, žodžiai ar charizma įkvepia kitus.",
-        "destiny_description_4": "Jūsų likimas – statyti ir kurti stabilumą. Jūs gimėte tam, kad įneštumėte tvarką į pasaulį.",
-        "destiny_description_5": "Jūs esate laisvas tyrinėtojas. Jūsų kelias veda per naujas patirtis, pokyčius ir saviraiškos laisvę.",
-        "destiny_description_6": "Jūsų misija – tarnauti su meile. Šeima, atsakomybė ir rūpinimasis kitais yra jūsų kelio pagrindas.",
-        "destiny_description_7": "Jūs esate tiesos ieškotojas(-a). Jūsų likimas – gilus dvasinis augimas ir žinių troškimas.",
-        "destiny_description_8": "Jūs gimėte vadovauti su jėga ir vizija. Sėkmė, valdžia ir įtaka yra jūsų dvasinio pašaukimo dalis.",
-        "destiny_description_9": "Jūsų likimas – humanitarinis. Esate čia tam, kad dalintumėtės meile, išmintimi ir pagalba kitiems.",
-        "destiny_description_11": "Jūs esate dvasinis įkvėpėjas(-a). Jūsų kelias veda per intuiciją, tiesą ir aukštesnį pašaukimą.",
-        "destiny_description_22": "Jūs esate didžių vizijų kūrėjas(-a). Jūsų likimas – paversti svajones realybe visos žmonijos labui.",
-        "destiny_description_33": "Jūs esate meistras gydytojas(-a). Jūsų kelias – besąlygiška meilė, rūpestis ir žmonių sąmoningumo kėlimas.",
-        "personality_description_1": "Atrodote stiprus, nepriklausomas ir pasitikintis savimi. Kiti jus mato kaip lyderį, kuris žino, ko nori, ir siekia savo tikslo.",
-        "personality_description_2": "Jūs spinduliuojate švelnumą, draugiškumą ir diplomatiškumą. Kiti jaučia ramybę jūsų buvime ir vertina jūsų taktiškumą.",
-        "personality_description_3": "Jūs skleidžiate džiaugsmą, kūrybiškumą ir žavesį. Jūsų humoro jausmas ir gyvybingumas palieka malonų įspūdį.",
-        "personality_description_4": "Atrodote rimtas, patikimas ir darbštus. Žmonės pasitiki jūsų stabilumu ir atsakomybės jausmu.",
-        "personality_description_5": "Spinduliuojate nuotykių troškimą, energiją ir žavesį. Jūsų laisva dvasia ir entuziazmas traukia aplinkinius.",
-        "personality_description_6": "Jūs atrodote rūpestingas, mylintis ir palaikantis. Žmonės jaučiasi saugiai jūsų aplinkoje ir dažnai ieško jūsų patarimo.",
-        "personality_description_7": "Skleidžiate paslaptingą, mąslų ir dvasingą aurą. Kiti jus mato kaip gilų ir išmintingą žmogų.",
-        "personality_description_8": "Atrodote galingas, ambicingas ir savimi pasitikintis. Jūsų stipri laikysena natūraliai sukelia pagarbą.",
-        "personality_description_9": "Spinduliuojate užuojautą, atjautą ir išmintį. Kiti jaučia jūsų žmogiškumą ir šilumą.",
-        "personality_description_11": "Atrodote intuityvus, idealistiškas ir įkvepiantis. Kiti jus mato kaip vizionierių su dvasine šviesa.",
-        "personality_description_22": "Spinduliuojate autoritetu, išmintimi ir tvirtu tikslu. Kiti jus mato kaip kūrėją, gebantį įgyvendinti didelius projektus.",
-        "personality_description_33": "Jūs įkūnijate meilę, gydymą ir gilią empatiją. Jūsų buvimas ramina ir įkvepia aplinkinius.",
-        "expression_description_1": "Esate natūralus lyderis ir nepriklausomas mąstytojas. Jūsų išraiška spinduliuoja jėga, drąsa ir išskirtinumu.",
-        "expression_description_2": "Esate partneriškas, diplomatiškas ir taikus. Jūsų stiprybė – bendradarbiavimas ir emocinis intelektas.",
-        "expression_description_3": "Išreiškiate save kūrybiškai, žaismingai ir įkvepiančiai. Jūsų dovana – žodžiai, menas ir optimizmas.",
-        "expression_description_4": "Esate patikimas, atsakingas ir darbštus. Jūsų išraiška remiasi struktūra, disciplina ir tvirtumu.",
-        "expression_description_5": "Esate lankstus, energingas ir komunikabilus. Jūsų išraiška – tai nuolatinis augimas ir laisvės siekis.",
-        "expression_description_6": "Esate rūpestingas ir atsidavęs. Jūsų išraiška – tai meilė, apsauga ir pasiaukojimas artimiesiems.",
-        "expression_description_7": "Esate gilus mąstytojas, ieškantis žinojimo ir tiesos. Išreiškiate save per analizę, intuiciją ir dvasinį augimą.",
-        "expression_description_8": "Esate ambicingas ir tvirtas. Jūsų išraiška rodo lyderystę, autoritetą ir gebėjimą pasiekti tikslus.",
-        "expression_description_9": "Esate dosnus ir jautrus. Jūsų išraiška kyla iš empatijos, tarnystės ir dvasinio pašaukimo.",
-        "expression_description_11": "Esate įkvėptas vizionierius. Išreiškiate save per intuiciją, dvasingumą ir gebėjimą įkvėpti kitus.",
-        "expression_description_22": "Esate didžių darbų kūrėjas. Jūsų išraiška sujungia realizmą ir viziją kuriant reikšmingus projektus.",
-        "expression_description_33": "Esate meistras globėjas. Jūsų išraiška kupina meilės, gydymo ir sielos šviesos kitiems.",
-        "life_path_description_1": "Jūs esate gimęs lyderis – drąsus, nepriklausomas ir pasiryžęs eiti savo keliu. Tvirtumas ir ryžtas – jūsų kelrodės žvaigždės.",
-        "life_path_description_2": "Esate taikdarys, trokštantis harmonijos ir artimų ryšių. Bendradarbiavimas ir jautrumas – jūsų stiprybės.",
-        "life_path_description_3": "Jūs spinduliuojate kūrybingumu, džiaugsmu ir įkvėpimu. Kalba, menas ir optimizmas – jūsų dovanos pasauliui.",
-        "life_path_description_4": "Esate tvirtas statytojas, siekiantis stabilumo ir struktūros. Jūsų gyvenimas pagrįstas atsakomybe ir atkakliu darbu.",
-        "life_path_description_5": "Esate laisvės ieškotojas – mėgstate nuotykius ir naujoves. Pokyčiai ir kelionės skatina jūsų augimą.",
-        "life_path_description_6": "Jūs esate rūpestingas ir atsidavęs. Meilė, šeima ir pagalba kitiems yra jūsų gyvenimo esmė.",
-        "life_path_description_7": "Esate ieškotojas, trokštantis žinių, tiesos ir vidinės ramybės. Dvasinis kelias – jūsų stiprioji pusė.",
-        "life_path_description_8": "Jūs gimęs siekti sėkmės ir vadovauti. Ambicijos, turtas ir įtaka – jūsų gyvenimo dalis.",
-        "life_path_description_9": "Esate altruistas, kuriam svarbu padėti kitiems. Tarnystė ir užuojauta yra jūsų pašaukimas.",
-        "life_path_description_11": "Jūs esate įkvėpimo šaltinis su didele dvasine intuicija. Jūsų užduotis – šviesti ir įkvėpti kitus.",
-        "life_path_description_22": "Esate didžių vizijų kūrėjas – galite paversti idėjas realybe, kuri tarnauja žmonijai.",
-        "life_path_description_33": "Jūs esate meilės ir užuojautos mokytojas. Jūsų kelias – gydyti, įkvėpti ir pakylėti kitus.",
-        "soul_urge": "💖 Sielos Troškimo Skaičius",
-        "soul_urge_result_title": "💖 Jūsų Sielos Troškimo Skaičius:",
-        "soul_urge_description_1": "Jūsų siela trokšta nepriklausomybės ir savarankiškumo. Jumyse gyvena natūralus lyderis, siekiantis valdyti savo likimą.",
-        "soul_urge_description_2": "Siekiate harmonijos, artimų ryšių ir širdingų santykių. Jūsų siela klesti taikoje ir meilėje.",
-        "soul_urge_description_3": "Jūsų širdis trokšta džiaugsmo, kūrybiškumo ir saviraiškos. Jums gera, kai galite įkvėpti kitus savo žodžiais ar menais.",
-        "soul_urge_description_4": "Jūs trokštate stabilumo, tvarkos ir aiškaus tikslo. Jūsų siela siekia struktūros ir ilgalaikės ramybės.",
-        "soul_urge_description_5": "Jūsų siela šaukiasi laisvės. Norite patirti nuotykius, iššūkius ir gyventi be ribų.",
-        "soul_urge_description_6": "Esate tikras globėjas. Jūsų vidinis troškimas – rūpintis kitais ir kurti šiltą, harmoningą aplinką.",
-        "soul_urge_description_7": "Trokštate tiesos, žinojimo ir dvasinio gilumo. Jūsų siela ieško prasmės per vidinę tylą ir įžvalgą.",
-        "soul_urge_description_8": "Siekite sėkmės, pripažinimo ir įtakos. Jūsų vidinė motyvacija veda į lyderystę ir pasiekimus.",
-        "soul_urge_description_9": "Esate labai atjaučiantis. Jūsų siela randa pilnatvę padedant kitiems ir kuriant teigiamą pokytį.",
-        "soul_urge_description_11": "Jūsų viduje rusena stiprus dvasinis pašaukimas. Esate įkvėpėjas, vedantis kitus į šviesą ir aukštesnę sąmonę.",
-        "soul_urge_description_22": "Jūsų siela trokšta sukurti kažką reikšmingo ir ilgalaikio. Norite palikti pėdsaką, kuris tarnautų žmonijai.",
-        "soul_urge_description_33": "Jūsų esmė – meilė, užuojauta ir gydymas. Jūsų siela kviečia tarnauti kitiems su atsidavimu ir meile.",
-    },
+import logging
 
-    "ru": {
-        "welcome": "🔮 Добро пожаловать в FutureDigits!\nОтправьте дату рождения в формате ДД.ММ.ГГГГ, чтобы узнать ваше Число Жизненного Пути.",
-        "life_path": "🔢 Число Жизненного Пути",
-        "soul_urge": "💖 Число Душевного Стремления",
-        "soul_urge_result_title": "💫 Число Душевного Стремления:",
-        "expression": "🧠 Число Выражения",
-        "lucky_years_btn": "📅 Удачные Годы",
-        "lucky_years": "📅 Гид по Удачным Годам\nУзнайте, какие годы принесут вам удачу, рост и успех.",
-        "career_profile_btn": "💼 Карьера",
-        "name_numerology_btn": "🧿 Имя",
-        "lucky_colors_btn": "🎨 Цвета",
-        "relationship_insights_btn": "💘 Отношения",
-        "purpose_analysis_btn": "🌟 Предназначение",
-        "detailed_compatibility_btn": "💎 Совместимость",
-        "career_profile": "🧭 Профиль Карьеры\nОткройте свои таланты и наилучшее направление в карьере.",
-        "name_numerology": "🧿 Нумерология Имени\nУзнайте, как имя влияет на вашу судьбу и личность.",
-        "lucky_colors": "🎨 Счастливые Цвета и Числа\nИспользуйте персональные цвета и числа для привлечения удачи.",
-        "relationship_insights": "💘 Любовь и Отношения\nУзнайте о вашем стиле любви, эмоциональных потребностях и притяжении.",
-        "purpose_analysis": "🌟 Анализ Предназначения\nПоймите своё жизненное предназначение и следуйте своему призванию.",
-        "detailed_compatibility": "💎 Подробная Совместимость\nСравните полные нумерологические профили для глубокого понимания отношений.",
-        "premium_tool_locked": "🔒 Эта функция доступна только в Premium-версии.",
-        "personality": "😎 Число Личности",
-        "enter_personality_name": "Пожалуйста, введите ваше полное имя для Числа Личности:",
-        "destiny": "🌟 Число Судьбы",
-        "birthday_number": "🎂 Число Дня Рождения",
-        "compatibility": "🔗 Анализ Совместимости",
-        "change_language": "🌐 Сменить язык",
-        "birthdate_prompt": "Введите вашу дату рождения (ДД.ММ.ГГГГ):",
-        "your_life_path": "Ваше число жизненного пути:",
-        "invalid_format": "❌ Неверный формат даты. Используйте ДД.ММ.ГГГГ.",
-        "language_set": "✅ Язык установлен.",
-        "enter_first_birthdate": "Введите первую дату рождения (ДД.ММ.ГГГГ):",
-        "enter_full_name": "Пожалуйста, введите ваше полное имя:",
-        "enter_expression_name": "Введите ваше полное имя для Числа Выражения:",
-        "your_expression_number": "Ваше Число Выражения:",
-        "back_to_menu": "🔙 Вернуться в главное меню",
-        "enter_destiny_name": "Пожалуйста, введите ваше полное имя для Числа Судьбы:",
-        "your_destiny_number": "🌟 Ваше Число Судьбы:",
-        "your_birthday_number": "🎂 Ваше число дня рождения:",
-        "done_choose_tool": "✅ Готово! Выберите следующий инструмент 👇",
-        "birthday_result_title": "🎂 Ваше Число Дня Рождения:",
-        "birthday_description_1": "Вы независимы, целеустремлённы и инициативны. Вам по душе быть лидером и идти своим путём.",
-        "birthday_description_2": "Вы мягкий, чувствительный и прирождённый миротворец. Сильны в отношениях и сопереживании.",
-        "birthday_description_3": "Вы весёлый, выразительный и креативный. Ваша харизма и фантазия притягивают людей.",
-        "birthday_description_4": "Вы практичны, дисциплинированы и трудолюбивы. Вас уважают за надёжность и внутреннюю силу.",
-        "birthday_description_5": "Вы авантюрист, полны энергии и любите свободу. Перемены и движение — ваша стихия.",
-        "birthday_description_6": "Вы заботливы, ответственны и семейно ориентированы. Вам важно приносить тепло и гармонию.",
-        "birthday_description_7": "Вы аналитичны, духовны и стремитесь к знаниям. Вам важно понимать суть вещей.",
-        "birthday_description_8": "Вы амбициозны, организованы и ориентированы на успех. Вы рождены быть лидером.",
-        "birthday_description_9": "Вы добры, щедры и мудры. Ваша миссия — помогать другим.",
-        "birthday_description_10": "Вы уверены, оригинальны и вдохновляете. У вас яркие идеи и сильная энергия лидера.",
-        "birthday_description_11": "Вы интуитивны, духовны и обладаете видением. Ваше присутствие исцеляет и вдохновляет.",
-        "birthday_description_12": "Вы артистичны, остроумны и общительны. Вы приносите свет туда, где бы вы ни были.",
-        "birthday_description_13": "Вы упорны, дисциплинированы и надёжны. Превращаете мечты в реальность.",
-        "birthda_description_14": "Вы гибки, энергичны и постоянно развиваетесь. С вами жизнь полна движения.",
-        "birthday_description_15": "Вы творческий, заботливый и искренний. Несёте любовь и равновесие в отношениях.",
-        "birthday_description_16": "Вы мудры, вдумчивы и склонны к духовным поискам. Размышления — ключ к вашему росту.",
-        "birthday_description_17": "Вы лидер с большими амбициями. Вас ждёт признание и достижение великих целей.",
-        "birthday_description_18": "Вы сострадательны, сильны и боретесь за справедливость. Предназначены помогать миру.",
-        "birthday_description_19": "Вы смелы, самостоятельны и целеустремлённы. Всегда идёте к успеху, несмотря ни на что.",
-        "birthday_description_20": "Вы дипломатичны, чувствительны и умеете слышать. Ваша душа жаждет гармонии.",
-        "birthday_description_21": "Вы обаятельны, артистичны и вдохновляете своей энергией. Радость — ваша сила.",
-        "birthday_description_22": "Вы мастер-строитель с глобальным видением. Призваны оставить наследие.",
-        "birthday_description_23": "Вы любознательны, быстро учитесь и легко адаптируетесь. Ваша универсальность — дар.",
-        "birthday_description_24": "Вы преданны, заботливы и защитны. Семья и любовь — ваш приоритет.",
-        "birthday_description_25": "Вы интуитивны, вдумчивы и проницательны. Видите то, что ускользает от других.",
-        "birthday_description_26": "Вы прирождённый лидер, сочетающий силу и заботу. Люди доверяют вам.",
-        "birthday_description_27": "Вы мудры, чувствительны и наполнены состраданием. Призваны исцелять и вдохновлять.",
-        "birthday_description_28": "Вы смелы, целеустремлённы и инициативны. Вы первооткрыватель с сильным духом.",
-        "birthda_description_29": "Вы идеалист, духовный проводник. Стремитесь служить высшему призванию.",
-        "birthda_description_30": "Вы радостны, выразительны и творчески одарены. Несёте свет через слова и искусство.",
-        "birthday_description_31": "Вы основательны, терпеливы и внимательны к деталям. Превращаете идеи в результат.",
-        "birthday_result_title": "🎂 Ваше число дня рождения:",
-        "destiny_description_1": "Вы рождены, чтобы быть лидером, новатором и идти своим путем. Независимость и решительность — ваша судьба.",
-        "destiny_description_2": "Ваша миссия — приносить мир, любовь и гармонию. Вы призваны к партнёрству, исцелению и заботе о близких.",
-        "destiny_description_3": "Вы здесь, чтобы вдохновлять радостью и творчеством. Через искусство, слово или харизму вы дарите свет другим.",
-        "destiny_description_4": "Ваша судьба — создавать стабильность. Вы пришли в этот мир, чтобы строить, упорядочивать и обеспечивать прочность.",
-        "destiny_description_5": "Вы — искатель приключений и свободы. Ваша миссия — меняться, исследовать и выражать себя без границ.",
-        "destiny_description_6": "Вы призваны служить с любовью. Ответственность, семья и забота — основа вашего жизненного пути.",
-        "destiny_description_7": "Вы рождены, чтобы искать истину и постигать тайны жизни. Духовный рост и мудрость — ваша судьба.",
-        "destiny_description_8": "Вы предназначены для лидерства и успеха. Ваша сила — в умении достигать, управлять и вдохновлять.",
-        "destiny_description_9": "Ваша судьба — помогать миру. Сострадание, гуманизм и щедрость — это то, чем вы делитесь с людьми.",
-        "destiny_description_11": "Вы — духовный наставник. Ваша миссия — вести, пробуждать и напоминать о высшем смысле жизни.",
-        "destiny_description_22": "Вы — строитель великого. Ваша судьба — воплощать масштабные мечты ради блага человечества.",
-        "destiny_description_33": "Вы — учитель любви и исцеления. Ваша жизнь посвящена служению, заботе и духовному просветлению.",
-        "personality_description_1": "Вы производите впечатление сильной, независимой и уверенной в себе личности. Вас видят лидером, который знает, чего хочет.",
-        "personality_description_2": "Вы кажетесь добрым, тактичным и миролюбивым. Людей привлекает ваша мягкая энергия и стремление к гармонии.",
-        "personality_description_3": "Вы излучаете радость, креативность и харизму. Ваш юмор и позитив оставляют запоминающееся впечатление.",
-        "personality_description_4": "Вы выглядите серьезным, надёжным и трудолюбивым. Люди доверяют вам и уважают за стабильность.",
-        "personality_description_5": "Вы выглядите как свободный, энергичный и харизматичный человек. Вас замечают за живость и страсть к приключениям.",
-        "personality_description_6": "Вы производите впечатление заботливого, доброго и поддерживающего человека. Рядом с вами люди чувствуют тепло и безопасность.",
-        "personality_description_7": "Вы излучаете таинственность, глубину и размышления. Вас видят как мудрого и духовного человека.",
-        "personality_description_8": "Вы выглядите уверенным, влиятельным и амбициозным. Ваша энергия внушает уважение и лидерство.",
-        "personality_description_9": "Вы кажетесь сострадательным, добрым и мудрым. Людей тянет к вашей гуманности и сердечности.",
-        "personality_description_11": "Вы выглядите интуитивным, вдохновляющим и идеалистичным. Вас воспринимают как духовного лидера и визионера.",
-        "personality_description_22": "Вы излучаете силу, целеустремлённость и интеллект. Вас видят как строителя больших замыслов.",
-        "personality_description_33": "Вы воплощаете любовь, сострадание и заботу. Ваша энергия исцеляет и вдохновляет окружающих.",
-        "expression_description_1": "Вы прирождённый лидер – независимый, амбициозный и целеустремлённый. Вам важно быть первым и вести за собой других.",
-        "expression_description_1": "Вы — прирожденный лидер с независимым мышлением. Ваша самовыраженность излучает силу, смелость и индивидуальность.",
-        "expression_description_2": "Вы миротворец и надёжный партнёр. Ваша сила — в сотрудничестве, гармонии и эмоциональном интеллекте.",
-        "expression_description_3": "Вы самовыражаетесь через творчество, юмор и обаяние. Слова и искусство — ваши сильные стороны.",
-        "expression_description_4": "Вы надёжный, трудолюбивый и практичный. Выражаете себя через порядок, структуру и стабильность.",
-        "expression_description_5": "Вы свободолюбивы и гибки. Ваше самовыражение проявляется в общении, переменах и стремлении к новому.",
-        "expression_description_6": "Вы заботливы и преданны. Ваше выражение — это любовь, защита и служение другим.",
-        "expression_description_7": "Вы глубокомысленны и духовны. Выражаете себя через размышления, интуицию и стремление к истине.",
-        "expression_description_8": "Вы амбициозны и уверены в себе. Ваша энергия — в лидерстве, контроле и стремлении к успеху.",
-        "expression_description_9": "Вы великодушны и сострадательны. Ваша душа выражает себя через служение и стремление сделать мир лучше.",
-        "expression_description_11": "Вы интуитивны и вдохновенны. Выражаете себя через духовную мудрость и желание вести людей к свету.",
-        "expression_description_22": "Вы — мастер созидания. Вы выражаете себя через сочетание практичности и великой цели.",
-        "expression_description_33": "Вы — учитель любви и исцеления. Ваша миссия — вдохновлять, поддерживать и нести добро.",
-        "life_path_description_1": "Вы прирождённый лидер с яркой индивидуальностью и стремлением идти собственным путём. Независимость – ваша сила.",
-        "life_path_description_2": "Вы – миротворец, стремящийся к гармонии, любви и сотрудничеству. Ваш дар – чуткость и дипломатия.",
-        "life_path_description_3": "Вы – источник радости, творчества и вдохновения. Слово, искусство и энергия – ваши ключи к самовыражению.",
-        "life_path_description_4": "Вы – надёжный строитель, ценящий порядок, стабильность и труд. Вы создаёте прочные основы жизни.",
-        "life_path_description_5": "Вы – свободолюбивый искатель приключений. Вас вдохновляют перемены, движение и открытия.",
-        "life_path_description_6": "Вы – заботливая душа, стремящаяся к любви и служению. Семья и поддержка – в центре вашей миссии.",
-        "life_path_description_7": "Вы – исследователь истины и духовной глубины. Самоанализ и мудрость – ваш путь.",
-        "life_path_description_8": "Вы – амбициозный лидер, стремящийся к успеху и влиянию. Власть и достижение – часть вашей судьбы.",
-        "life_path_description_9": "Вы – гуманист, движимый состраданием и желанием помогать. Ваша цель – сделать мир лучше.",
-        "life_path_description_11": "Вы – вдохновлённый провидец с высоким духовным потенциалом. Ваша миссия – пробуждать других.",
-        "life_path_description_22": "Вы – мастер-строитель, способный воплощать великие идеи. Вы здесь, чтобы создавать масштабные перемены.",
-        "life_path_description_33": "Вы – учитель любви и сострадания. Ваша душа стремится исцелять и просвещать.",
-        "soul_urge": "💖 Число Душевного Стремления",
-        "soul_urge_result_title": "💖 Ваше Число Душевного Стремления:",
-        "soul_urge_description_1": "Вы стремитесь к независимости и контролю над своей жизнью. Ваша душа полна лидерства и силы воли.",
-        "soul_urge_description_2": "Вы жаждете гармонии, близости и искренних отношений. Душа находит счастье в любви и единстве.",
-        "soul_urge_description_3": "Ваше сердце стремится к радости, творчеству и самовыражению. Вы вдохновляете окружающих своей энергией.",
-        "soul_urge_description_4": "Вы мечтаете о стабильности и порядке. Ваша душа хочет строить надёжный, устойчивый фундамент жизни.",
-        "soul_urge_description_5": "Свобода — ваш главный внутренний зов. Вас влечёт к приключениям, переменам и новым возможностям.",
-        "soul_urge_description_6": "Вы прирождённый заботливый человек. Ваша душа хочет служить, защищать и создавать гармонию в доме и отношениях.",
-        "soul_urge_description_7": "Вы стремитесь к знаниям, истине и духовной глубине. Ваша душа жаждет внутреннего роста и самопознания.",
-        "soul_urge_description_8": "Вы хотите успеха, власти и признания. Ваша сила в стремлении достигать и управлять.",
-        "soul_urge_description_9": "Вы глубоко сострадательны. Ваша душа наполняется смыслом, когда вы помогаете другим и делаете мир лучше.",
-        "soul_urge_description_11": "Вы вдохновлены высоким духовным призванием. Ваша душа стремится вести людей к свету и пробуждению.",
-        "soul_urge_description_22": "Ваша душа хочет создавать великие вещи, которые оставят след в истории. Вы рождены для масштабных дел.",
-        "soul_urge_description_33": "Суть вашей души — любовь, исцеление и служение. Вы призваны помогать, вдохновлять и исцелять людей.",
-    },
-"expression_result_title": {
-        "en": "🧠 Expression Number:",
-        "lt": "🧠 Išraiškos skaičius:",
-        "ru": "🧠 Число самовыражения:"
-    },
-    "destiny_result_title": {
-        "en": "🌟 Destiny Number:",
-        "lt": "🌟 Likimo skaičius:",
-        "ru": "🌟 Число судьбы:"
-    },
+# Setup basic logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+load_dotenv()
+bot = Bot(token=os.getenv("BOT_TOKEN"))
+dp = Dispatcher(bot, storage=MemoryStorage())
+
+def compatibility_score(date1, date2):
+    # Simple placeholder: compare Life Path Numbers
+    def life_path(date_str):
+        digits = [int(d) for d in date_str if d.isdigit()]
+        total = sum(digits)
+        while total > 9 and total not in [11, 22, 33]:
+            total = sum(int(d) for d in str(total))
+        return total
+
+    n1 = life_path(date1)
+    n2 = life_path(date2)
+    diff = abs(n1 - n2)
+    score = max(100 - diff * 10, 40)  # Just an example formula
+    return score
+
+def get_translation(user_id, key):
+    lang = get_user_language(user_id)
+    return translations.get(lang, translations['en']).get(key, key)
+
+def get_multilang_translation(user_id, key):
+    lang = get_user_language(user_id)
+    value = translations.get(key)
+    if isinstance(value, dict):
+        return value.get(lang, value.get("en", ""))
+    return value
+
+soul_urge_descriptions = {
+    1: "🔹 Independent Leader\nYou are driven by a desire to lead and make your mark. You thrive when you can act independently and inspire others through courage and determination.",
+    2: "🔹 Peacemaker\nYour soul craves harmony, cooperation, and meaningful partnerships. You’re highly intuitive and sensitive to the needs of others.",
+    3: "🔹 Creative Communicator\nYour inner self longs for expression through creativity, art, and joyful connection. You uplift those around you with your words and spirit.",
+    4: "🔹 Steady Builder\nYou value stability, structure, and reliability. Deep inside, you yearn for a life built on discipline, hard work, and long-term security.",
+    5: "🔹 Free Spirit\nYou crave freedom, adventure, and constant change. Your soul seeks variety, new experiences, and the thrill of exploration.",
+    6: "🔹 Nurturer\nYour deepest desire is to care for others and create harmony at home and in relationships. Love, responsibility, and service are central to your path.",
+    7: "🔹 Spiritual Seeker\nYou are drawn to introspection, wisdom, and deeper truths. Solitude and intellectual or spiritual exploration feed your soul.",
+    8: "🔹 Ambitious Achiever\nYou’re internally motivated by success, power, and influence. Your soul’s path involves mastering the material world and leadership.",
+    9: "🔹 Compassionate Humanitarian\nYou feel fulfilled by helping others and making the world a better place. Selflessness, empathy, and global awareness define your heart.",
+    11: "🔹 Inspired Visionary (Master Number)\nYou have a powerful inner calling to inspire, uplift, and lead through spiritual or artistic channels. Your soul urges you to bring light to others.",
+    22: "🔹 Master Builder (Master Number)\nYour destiny is tied to building great things for the collective. You crave creating systems or movements that leave a lasting impact.",
+    33: "🔹 Master Teacher (Master Number)\nYou’re here to serve selflessly through love, healing, and compassion. Your soul calls you to uplift others through deep emotional wisdom."
 }
+
+# Keyboard with numerology options
+def main_menu_keyboard(user_id):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+
+    # Free tools
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "life_path")),
+        types.KeyboardButton(get_translation(user_id, "soul_urge"))
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "expression")),
+        types.KeyboardButton(get_translation(user_id, "personality"))
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "destiny")),
+        types.KeyboardButton(get_translation(user_id, "birthday_number"))
+    )
+    keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
+
+    # Premium tools submenu
+    keyboard.add(types.KeyboardButton("💎 Premium Tools"))
+
+    # Settings
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "change_language")),
+        types.KeyboardButton(get_translation(user_id, "back_to_menu"))
+    )
+
+    return keyboard
+
+@dp.message_handler(commands=['start'])
+async def send_welcome(message: types.Message):
+    set_user_language(message.from_user.id, 'en')
+    text = get_translation(message.from_user.id, "welcome")
+    await message.answer(text, reply_markup=main_menu_keyboard(message.from_user.id))
+
+@dp.message_handler(commands=['help'])
+async def send_help(message: types.Message):
+    help_text = (
+        "📌 *FutureDigits Help Menu*\n\n"
+        "Welcome! Here's what you can do:\n\n"
+        "🔢 /start – Start the bot and choose your language\n"
+        "🌟 Life Path, Soul Urge, Expression, Personality, Destiny, Birthday – Discover insights about yourself\n"
+        "❤️ Compatibility – Compare two people by birthdates\n"
+        "💎 Premium Tools – Explore advanced numerology tools (locked for now)\n"
+        "🌍 /language – Change language (English, Lithuanian, Russian)\n\n"
+        "If you need help at any time, just type /help ✨"
+    )
+    await message.answer(help_text, parse_mode="Markdown")
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "back_to_menu"), state="*")
+async def back_to_main_menu(message: types.Message, state: FSMContext):
+    await state.finish()
+    await message.answer("🔙 You are back in the main menu. Choose a tool below 👇", reply_markup=main_menu_keyboard(message.from_user.id))
+
+@dp.message_handler(commands=['language'])
+async def choose_language(message: types.Message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"]
+    keyboard.add(*buttons)
+    await message.answer("Choose your language / Pasirinkite kalbą / Выберите язык:", reply_markup=keyboard)
+
+@dp.message_handler(lambda message: message.text in ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"], state="*")
+async def set_language(message: types.Message, state: FSMContext):
+    await state.finish()  # Cancel any ongoing input state
+    lang_map = {
+        "English 🇬🇧": "en",
+        "Lietuvių 🇱🇹": "lt",
+        "Русский 🇷🇺": "ru"
+    }
+    selected_lang = lang_map[message.text]
+    set_user_language(message.from_user.id, selected_lang)
+    await message.answer(get_translation(message.from_user.id, "language_set"), reply_markup=main_menu_keyboard(message.from_user.id))
+
+@dp.message_handler(lambda message: message.text == "💎 Premium Tools")
+async def show_premium_menu(message: types.Message):
+    user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+
+    # Premium tools grouped in rows
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "lucky_years_btn")),
+        types.KeyboardButton(get_translation(user_id, "career_profile_btn"))
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "name_numerology_btn")),
+        types.KeyboardButton(get_translation(user_id, "lucky_colors_btn"))
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "relationship_insights_btn")),
+        types.KeyboardButton(get_translation(user_id, "purpose_analysis_btn"))
+    )
+    keyboard.add(types.KeyboardButton(get_translation(user_id, "detailed_compatibility_btn")))
+    keyboard.add(types.KeyboardButton(get_translation(user_id, "back_to_menu")))
+
+    descriptions = {
+        "en": "💎 *Premium Tools*\nEnhance your life with advanced numerology insights. Choose a tool below 👇",
+        "lt": "💎 *Premium Įrankiai*\nIšplėskite savo supratimą apie save naudodami pažangią numerologiją. Pasirinkite įrankį 👇",
+        "ru": "💎 *Премиум Инструменты*\nУглубите понимание себя с помощью расширенной нумерологии. Выберите инструмент ниже 👇"
+    }
+
+    await message.answer(
+        descriptions.get(lang, descriptions["en"]),
+        parse_mode="Markdown",
+        reply_markup=keyboard
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
+async def handle_lucky_years(message: types.Message):
+    description = get_translation(message.from_user.id, "lucky_years")
+    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+
+    await message.answer(
+        f"{description}\n\n🔒 {locked_msg}",
+        parse_mode="Markdown"
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"))
+async def handle_career_profile(message: types.Message):
+    description = get_translation(message.from_user.id, "career_profile")
+    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+
+    await message.answer(
+        f"{description}\n\n🔒 {locked_msg}",
+        parse_mode="Markdown"
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "name_numerology_btn"))
+async def handle_name_numerology(message: types.Message):
+    description = get_translation(message.from_user.id, "name_numerology")
+    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+
+    await message.answer(
+        f"{description}\n\n🔒 {locked_msg}",
+        parse_mode="Markdown"
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"))
+async def handle_lucky_colors(message: types.Message):
+    description = get_translation(message.from_user.id, "lucky_colors")
+    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+
+    await message.answer(
+        f"{description}\n\n🔒 {locked_msg}",
+        parse_mode="Markdown"
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "relationship_insights_btn"))
+async def handle_relationship_insights(message: types.Message):
+    description = get_translation(message.from_user.id, "relationship_insights")
+    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+
+    await message.answer(
+        f"{description}\n\n🔒 {locked_msg}",
+        parse_mode="Markdown"
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "purpose_analysis_btn"))
+async def handle_purpose_analysis(message: types.Message):
+    description = get_translation(message.from_user.id, "purpose_analysis")
+    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+
+    await message.answer(
+        f"{description}\n\n🔒 {locked_msg}",
+        parse_mode="Markdown"
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "detailed_compatibility_btn"))
+async def handle_detailed_compatibility(message: types.Message):
+    description = get_translation(message.from_user.id, "detailed_compatibility")
+    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+
+    await message.answer(
+        f"{description}\n\n🔒 {locked_msg}",
+        parse_mode="Markdown"
+    )
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "life_path"), state=None)
+async def handle_life_path(message: types.Message, state: FSMContext):
+    lang = get_user_language(message.from_user.id)
+    
+    explanations = {
+        "en": "✨ *Life Path Number*\nThis number reveals your core purpose, personality, and life direction. It’s calculated using your birthdate.\nLet’s find out what your life path is!",
+        "lt": "✨ *Gyvenimo Kelio Skaičius*\nŠis skaičius atskleidžia jūsų gyvenimo tikslą, asmenybę ir kryptį. Jis skaičiuojamas pagal jūsų gimimo datą.\nSužinokime jūsų gyvenimo kelią!",
+        "ru": "✨ *Число Жизненного Пути*\nЭто число раскрывает вашу основную цель, личность и направление в жизни. Оно рассчитывается по дате рождения.\nДавайте узнаем ваш путь!"
+    }
+
+    explanation = explanations.get(lang, explanations["en"])
+    await message.answer(explanation, parse_mode="Markdown")
+    await message.answer(get_translation(message.from_user.id, "birthdate_prompt"))
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, 'change_language'))
+async def prompt_language_change(message: types.Message, state: FSMContext):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"]
+    keyboard.add(*buttons)
+    await message.answer("Choose your language / Pasirinkite kalbą / Выберите язык:", reply_markup=keyboard)
+
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "soul_urge"))
+async def start_soul_urge(message: types.Message, state: FSMContext):
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "💖 *Soul Urge Number*\nThis number reveals your inner desires, motivations, and what your heart truly longs for. It’s calculated using the vowels in your full name.\nNow, enter your full name 👇",
+        "lt": "💖 *Sielos Troškimo Skaičius*\nŠis skaičius atskleidžia jūsų vidinius troškimus, motyvaciją ir tai, ko iš tikrųjų trokšta jūsų širdis. Jis skaičiuojamas pagal balses jūsų pilname varde.\nĮveskite savo pilną vardą 👇",
+        "ru": "💖 *Число Душевного Стремления*\nЭто число раскрывает ваши внутренние желания, мотивацию и то, к чему стремится ваше сердце. Оно рассчитывается по гласным в полном имени.\nВведите ваше полное имя 👇"
+    }
+
+    explanation = explanations.get(lang, explanations["en"])
+    await message.answer(explanation, parse_mode="Markdown")
+    
+    await SoulUrgeStates.waiting_for_name.set()
+
+@dp.message_handler(state=SoulUrgeStates.waiting_for_name)
+async def process_soul_urge(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+
+    # List of all buttons (translated)
+    buttons = {
+        "life_path": get_translation(message.from_user.id, "life_path"),
+        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
+        "expression": get_translation(message.from_user.id, "expression"),
+        "personality": get_translation(message.from_user.id, "personality"),
+        "destiny": get_translation(message.from_user.id, "destiny"),
+        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
+        "compatibility": get_translation(message.from_user.id, "compatibility"),
+        "change_language": get_translation(message.from_user.id, "change_language"),
+        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
+    }
+
+    # If user pressed any other tool button — simulate that tool
+    if text in buttons.values():
+        await state.finish()
+
+        # Forward user to the tool they selected
+        if text == buttons["life_path"]:
+            await handle_life_path(message, state)
+        elif text == buttons["soul_urge"]:
+            await start_soul_urge(message, state)
+        elif text == buttons["expression"]:
+            await start_expression(message, state)
+        elif text == buttons["personality"]:
+            await start_personality(message, state)
+        elif text == buttons["destiny"]:
+            await start_destiny(message, state)
+        elif text == buttons["birthday_number"]:
+            await start_birthday_number(message, state)
+        elif text == buttons["compatibility"]:
+            await start_compatibility(message, state)
+        elif text == buttons["change_language"]:
+            await prompt_language_change(message, state)
+        elif text == buttons["back_to_menu"]:
+            await back_to_main_menu(message, state)
+        return
+
+    # Otherwise — treat as a name and process Soul Urge logic
+    vowels = 'aeiouAEIOU'
+    total = sum(ord(c.lower()) - 96 for c in text if c.lower() in vowels and c.isalpha())
+    while total > 9 and total not in [11, 22, 33]:
+        total = sum(int(d) for d in str(total))
+
+    description_key = f"soul_urge_description_{total}"
+    description = get_translation(message.from_user.id, description_key)
+    title = get_translation(message.from_user.id, "soul_urge_result_title")
+
+    await message.answer(f"{title} {total}\n\n{description}")
+    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await state.finish()
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "expression"), state="*")
+async def start_expression(message: types.Message, state: FSMContext):
+    await state.finish()
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "🔠 *Expression Number*\nThis number reveals your natural talents, abilities, and how you express yourself in the world. It’s calculated using all the letters in your full name.\nNow, enter your full name 👇",
+        "lt": "🔠 *Išraiškos Skaičius*\nŠis skaičius atskleidžia jūsų natūralius talentus, gebėjimus ir tai, kaip save išreiškiate pasaulyje. Jis skaičiuojamas pagal visas raides jūsų pilname varde.\nĮveskite savo pilną vardą 👇",
+        "ru": "🔠 *Число Самовыражения*\nЭто число показывает ваши природные таланты, способности и то, как вы проявляете себя в мире. Оно рассчитывается по всем буквам вашего полного имени.\nВведите ваше полное имя 👇"
+    }
+
+    explanation = explanations.get(lang, explanations["en"])
+    await message.answer(explanation, parse_mode="Markdown")
+
+    await ExpressionStates.waiting_for_name.set()
+
+@dp.message_handler(state=ExpressionStates.waiting_for_name)
+async def process_expression(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+    buttons = {
+        "life_path": get_translation(message.from_user.id, "life_path"),
+        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
+        "expression": get_translation(message.from_user.id, "expression"),
+        "personality": get_translation(message.from_user.id, "personality"),
+        "destiny": get_translation(message.from_user.id, "destiny"),
+        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
+        "compatibility": get_translation(message.from_user.id, "compatibility"),
+        "change_language": get_translation(message.from_user.id, "change_language"),
+        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
+    }
+
+    if text in buttons.values():
+        await state.finish()
+        if text == buttons["life_path"]:
+            await handle_life_path(message, state)
+        elif text == buttons["soul_urge"]:
+            await start_soul_urge(message, state)
+        elif text == buttons["expression"]:
+            await start_expression(message, state)
+        elif text == buttons["personality"]:
+            await start_personality(message, state)
+        elif text == buttons["destiny"]:
+            await start_destiny(message, state)
+        elif text == buttons["birthday_number"]:
+            await start_birthday_number(message, state)
+        elif text == buttons["compatibility"]:
+            await start_compatibility(message, state)
+        elif text == buttons["change_language"]:
+            await prompt_language_change(message, state)
+        elif text == buttons["back_to_menu"]:
+            await back_to_main_menu(message, state)
+        return
+
+    # Calculate expression number
+    name = text.lower()
+    letter_map = {
+        'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8, 'i':9,
+        'j':1, 'k':2, 'l':3, 'm':4, 'n':5, 'o':6, 'p':7, 'q':8, 'r':9,
+        's':1, 't':2, 'u':3, 'v':4, 'w':5, 'x':6, 'y':7, 'z':8
+    }
+    total = sum(letter_map.get(c, 0) for c in name if c.isalpha())
+    while total > 9 and total not in [11, 22, 33]:
+        total = sum(int(d) for d in str(total))
+
+    # Get translated description
+    key = f"expression_description_{total}"
+    description = get_translation(message.from_user.id, key)
+
+    title = get_multilang_translation(message.from_user.id, "expression_result_title")
+    await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
+    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await state.finish()
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "personality"), state="*")
+async def start_personality(message: types.Message, state: FSMContext):
+    await state.finish()
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "😎 *Personality Number*\nThis number reveals how others perceive you — your outer personality and the impression you make. It’s calculated using the consonants in your full name.\nPlease enter your full name 👇",
+        "lt": "😎 *Asmenybės Skaičius*\nŠis skaičius parodo, kaip jus mato kiti – jūsų išorinę asmenybę ir įspūdį, kurį paliekate. Jis skaičiuojamas pagal priebalses jūsų pilname varde.\nĮveskite savo pilną vardą 👇",
+        "ru": "😎 *Число Личности*\nЭто число показывает, как вас воспринимают другие — вашу внешнюю личность и первое впечатление. Оно рассчитывается по согласным буквам вашего полного имени.\nВведите ваше полное имя 👇"
+    }
+
+    explanation = explanations.get(lang, explanations["en"])
+    await message.answer(explanation, parse_mode="Markdown")
+    await PersonalityStates.waiting_for_name.set()
+
+@dp.message_handler(state=PersonalityStates.waiting_for_name)
+async def process_personality(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+    buttons = {
+        "life_path": get_translation(message.from_user.id, "life_path"),
+        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
+        "expression": get_translation(message.from_user.id, "expression"),
+        "personality": get_translation(message.from_user.id, "personality"),
+        "destiny": get_translation(message.from_user.id, "destiny"),
+        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
+        "compatibility": get_translation(message.from_user.id, "compatibility"),
+        "change_language": get_translation(message.from_user.id, "change_language"),
+        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
+    }
+
+    if text in buttons.values():
+        await state.finish()
+        if text == buttons["life_path"]:
+            await handle_life_path(message, state)
+        elif text == buttons["soul_urge"]:
+            await start_soul_urge(message, state)
+        elif text == buttons["expression"]:
+            await start_expression(message, state)
+        elif text == buttons["personality"]:
+            await start_personality(message, state)
+        elif text == buttons["destiny"]:
+            await start_destiny(message, state)
+        elif text == buttons["birthday_number"]:
+            await start_birthday_number(message, state)
+        elif text == buttons["compatibility"]:
+            await start_compatibility(message, state)
+        elif text == buttons["change_language"]:
+            await prompt_language_change(message, state)
+        elif text == buttons["back_to_menu"]:
+            await back_to_main_menu(message, state)
+        return
+
+    vowels = 'aeiou'
+    consonants = [c for c in text.lower() if c.isalpha() and c not in vowels]
+    total = sum(ord(c) - 96 for c in consonants)
+    while total > 9 and total not in [11, 22, 33]:
+        total = sum(int(d) for d in str(total))
+
+    description_key = f"personality_description_{total}"
+    description = get_translation(message.from_user.id, description_key)
+    title = get_translation(message.from_user.id, "personality_result_title")
+
+    await message.answer(f"{title} {total}\n\n{description}")
+    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await state.finish()
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "destiny"), state="*")
+async def start_destiny(message: types.Message, state: FSMContext):
+    await state.finish()
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "🌟 *Destiny Number*\nThis number reveals your life’s greater purpose, talents, and the path you're meant to fulfill. It’s calculated using all the letters in your full name.\nPlease enter your full name 👇",
+        "lt": "🌟 *Likimo Skaičius*\nŠis skaičius atskleidžia jūsų gyvenimo paskirtį, talentus ir kelią, kuriuo turėtumėte eiti. Jis skaičiuojamas pagal visas raides jūsų pilname varde.\nĮveskite savo pilną vardą 👇",
+        "ru": "🌟 *Число Судьбы*\nЭто число раскрывает ваше жизненное предназначение, таланты и путь, который вы должны пройти. Оно рассчитывается по всем буквам вашего полного имени.\nВведите ваше полное имя 👇"
+    }
+
+    explanation = explanations.get(lang, explanations["en"])
+    await message.answer(explanation, parse_mode="Markdown")
+
+    await DestinyStates.waiting_for_name.set()
+
+@dp.message_handler(state=DestinyStates.waiting_for_name)
+async def process_destiny(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+
+    buttons = {
+        "life_path": get_translation(message.from_user.id, "life_path"),
+        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
+        "expression": get_translation(message.from_user.id, "expression"),
+        "personality": get_translation(message.from_user.id, "personality"),
+        "destiny": get_translation(message.from_user.id, "destiny"),
+        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
+        "compatibility": get_translation(message.from_user.id, "compatibility"),
+        "change_language": get_translation(message.from_user.id, "change_language"),
+        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
+    }
+
+    if text in buttons.values():
+        await state.finish()
+        if text == buttons["life_path"]:
+            await handle_life_path(message, state)
+        elif text == buttons["soul_urge"]:
+            await start_soul_urge(message, state)
+        elif text == buttons["expression"]:
+            await start_expression(message, state)
+        elif text == buttons["personality"]:
+            await start_personality(message, state)
+        elif text == buttons["destiny"]:
+            await start_destiny(message, state)
+        elif text == buttons["birthday_number"]:
+            await start_birthday_number(message, state)
+        elif text == buttons["compatibility"]:
+            await start_compatibility(message, state)
+        elif text == buttons["change_language"]:
+            await prompt_language_change(message, state)
+        elif text == buttons["back_to_menu"]:
+            await back_to_main_menu(message, state)
+        return
+
+    name = text.lower()
+    letter_map = {
+        'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8, 'i':9,
+        'j':1, 'k':2, 'l':3, 'm':4, 'n':5, 'o':6, 'p':7, 'q':8, 'r':9,
+        's':1, 't':2, 'u':3, 'v':4, 'w':5, 'x':6, 'y':7, 'z':8
+    }
+    total = sum(letter_map.get(c, 0) for c in name if c.isalpha())
+    while total > 9 and total not in [11, 22, 33]:
+        total = sum(int(d) for d in str(total))
+
+    title = get_multilang_translation(message.from_user.id, "destiny_result_title")
+    description = get_translation(message.from_user.id, f"destiny_description_{total}")
+
+    await message.answer(f"{title} {total}\n\n{description}")
+    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await state.finish()
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "birthday_number"), state="*")
+async def start_birthday_number(message: types.Message, state: FSMContext):
+    await state.finish()
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "🎂 *Birthday Number*\nThis number reveals a special talent or gift you were born with. It’s based solely on the day of the month you were born.\nPlease enter your birthdate in the format DD.MM.YYYY 👇",
+        "lt": "🎂 *Gimtadienio Skaičius*\nŠis skaičius atskleidžia ypatingą talentą ar dovaną, su kuria gimėte. Jis grindžiamas tik jūsų gimimo mėnesio diena.\nĮveskite savo gimimo datą formatu DD.MM.YYYY 👇",
+        "ru": "🎂 *Число Дня Рождения*\nЭто число раскрывает особый дар или талант, с которым вы родились. Оно основано только на дне вашего рождения.\nВведите свою дату рождения в формате DD.MM.YYYY 👇"
+    }
+
+    explanation = explanations.get(lang, explanations["en"])
+    await message.answer(explanation, parse_mode="Markdown")
+
+    await BirthdayStates.waiting_for_birthdate.set()
+
+@dp.message_handler(state=BirthdayStates.waiting_for_birthdate)
+async def process_birthday_number(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+
+    # Redirect if a tool button is pressed
+    buttons = {
+        "life_path": get_translation(message.from_user.id, "life_path"),
+        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
+        "expression": get_translation(message.from_user.id, "expression"),
+        "personality": get_translation(message.from_user.id, "personality"),
+        "destiny": get_translation(message.from_user.id, "destiny"),
+        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
+        "compatibility": get_translation(message.from_user.id, "compatibility"),
+        "change_language": get_translation(message.from_user.id, "change_language"),
+        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
+    }
+
+    if text in buttons.values():
+        await state.finish()
+        if text == buttons["life_path"]:
+            await handle_life_path(message, state)
+        elif text == buttons["soul_urge"]:
+            await start_soul_urge(message, state)
+        elif text == buttons["expression"]:
+            await start_expression(message, state)
+        elif text == buttons["personality"]:
+            await start_personality(message, state)
+        elif text == buttons["destiny"]:
+            await start_destiny(message, state)
+        elif text == buttons["birthday_number"]:
+            await start_birthday_number(message, state)
+        elif text == buttons["compatibility"]:
+            await start_compatibility(message, state)
+        elif text == buttons["change_language"]:
+            await prompt_language_change(message, state)
+        elif text == buttons["back_to_menu"]:
+            await back_to_main_menu(message, state)
+        return
+
+    # Process birthday number
+    try:
+        day, month, year = map(int, text.split('.'))
+        birthday_number = day
+        while birthday_number > 9 and birthday_number not in [11, 22, 33]:
+            birthday_number = sum(int(d) for d in str(birthday_number))
+
+        title = get_translation(message.from_user.id, "birthday_result_title")
+        description_key = f"birthday_description_{birthday_number}"
+        description = get_translation(message.from_user.id, description_key)
+
+        await message.answer(f"{title} {birthday_number}\n\n{description}")
+        await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+        await state.finish()
+    except:
+        await message.answer(get_translation(message.from_user.id, "invalid_format"))
+
+@dp.message_handler(lambda message: message.text == "❤️ Calculate Compatibility")
+async def ask_birthdates_for_compatibility(message: types.Message):
+    await message.answer("Please send two birthdates separated by a comma.\nExample: 14.05.1990, 22.09.1993")
+
+    try:
+        b1, b2 = [d.strip() for d in message.text.split(",")]
+        day1, month1, year1 = map(int, b1.split('.'))
+        day2, month2, year2 = map(int, b2.split('.'))
+
+        def get_life_path(d, m, y):
+            total = sum(int(d) for d in f"{d:02}{m:02}{y}")
+            while total > 9 and total not in [11, 22, 33]:
+                total = sum(int(x) for x in str(total))
+            return total
+
+        lp1 = get_life_path(day1, month1, year1)
+        lp2 = get_life_path(day2, month2, year2)
+        compatibility = 100 - abs(lp1 - lp2) * 10
+        compatibility = max(0, min(compatibility, 100))
+
+        # Determine meaning key based on score
+        if compatibility >= 90:
+            meaning_key = "compatibility_interpretation_90"
+        elif compatibility >= 75:
+            meaning_key = "compatibility_interpretation_75"
+        elif compatibility >= 60:
+            meaning_key = "compatibility_interpretation_60"
+        elif compatibility >= 40:
+            meaning_key = "compatibility_interpretation_40"
+        else:
+            meaning_key = "compatibility_interpretation_0"
+
+        lang = get_user_language(message.from_user.id)
+        desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
+        desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
+        title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
+        meaning = get_translation(message.from_user.id, meaning_key)
+
+        result = (
+            f"{title} {lp1}\n🔹 {desc1}\n\n"
+            f"{title} {lp2}\n🔹 {desc2}\n\n"
+            f"❤️ Compatibility: {compatibility}%\n\n{meaning}"
+        )
+
+        await message.answer(result)
+
+    except Exception as e:
+        await message.answer("Invalid format. Please send two dates like this:\n`DD.MM.YYYY, DD.MM.YYYY`")
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
+async def start_compatibility(message: types.Message, state: FSMContext):
+    await state.finish()
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "💞 *Compatibility Analysis*\nCompare Life Path Numbers of two people. This reveals spiritual harmony and challenges.\nPlease enter the first person's birthdate (DD.MM.YYYY):",
+        "lt": "💞 *Suderinamumo Analizė*\nPalyginkite dviejų žmonių gyvenimo kelius. Tai atskleidžia dvasinę darną ir iššūkius.\nĮveskite pirmojo asmens gimimo datą (DD.MM.YYYY):",
+        "ru": "💞 *Анализ Совместимости*\nСравните Числа Жизненного Пути двух людей. Это покажет гармонию и вызовы.\nВведите дату рождения первого человека (ДД.ММ.ГГГГ):"
+    }
+
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+    await CompatibilityStates.waiting_for_first_date.set()
+
+@dp.message_handler(state=CompatibilityStates.waiting_for_first_date)
+async def get_first_date(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+
+    buttons = {
+        "life_path": get_translation(message.from_user.id, "life_path"),
+        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
+        "expression": get_translation(message.from_user.id, "expression"),
+        "personality": get_translation(message.from_user.id, "personality"),
+        "destiny": get_translation(message.from_user.id, "destiny"),
+        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
+        "compatibility": get_translation(message.from_user.id, "compatibility"),
+        "change_language": get_translation(message.from_user.id, "change_language"),
+        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
+    }
+
+    if text in buttons.values():
+        await state.finish()
+        if text == buttons["life_path"]:
+            await handle_life_path(message, state)
+        elif text == buttons["soul_urge"]:
+            await start_soul_urge(message, state)
+        elif text == buttons["expression"]:
+            await start_expression(message, state)
+        elif text == buttons["personality"]:
+            await start_personality(message, state)
+        elif text == buttons["destiny"]:
+            await start_destiny(message, state)
+        elif text == buttons["birthday_number"]:
+            await start_birthday_number(message, state)
+        elif text == buttons["compatibility"]:
+            await start_compatibility(message, state)
+        elif text == buttons["change_language"]:
+            await prompt_language_change(message, state)
+        elif text == buttons["back_to_menu"]:
+            await back_to_main_menu(message, state)
+        return
+
+    try:
+        day, month, year = map(int, text.split('.'))
+        await state.update_data(first_date=text)  # ✅ Essential line
+        await CompatibilityStates.next()
+        await message.answer("Now enter the second birthdate (DD.MM.YYYY):")
+    except:
+        await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
+
+@dp.message_handler(state=CompatibilityStates.waiting_for_second_date)
+async def get_second_date(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+
+    buttons = {
+        "life_path": get_translation(message.from_user.id, "life_path"),
+        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
+        "expression": get_translation(message.from_user.id, "expression"),
+        "personality": get_translation(message.from_user.id, "personality"),
+        "destiny": get_translation(message.from_user.id, "destiny"),
+        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
+        "compatibility": get_translation(message.from_user.id, "compatibility"),
+        "change_language": get_translation(message.from_user.id, "change_language"),
+        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
+    }
+
+    if text in buttons.values():
+        await state.finish()
+        if text == buttons["life_path"]:
+            await handle_life_path(message, state)
+        elif text == buttons["soul_urge"]:
+            await start_soul_urge(message, state)
+        elif text == buttons["expression"]:
+            await start_expression(message, state)
+        elif text == buttons["personality"]:
+            await start_personality(message, state)
+        elif text == buttons["destiny"]:
+            await start_destiny(message, state)
+        elif text == buttons["birthday_number"]:
+            await start_birthday_number(message, state)
+        elif text == buttons["compatibility"]:
+            await start_compatibility(message, state)
+        elif text == buttons["change_language"]:
+            await prompt_language_change(message, state)
+        elif text == buttons["back_to_menu"]:
+            await back_to_main_menu(message, state)
+        return
+
+    try:
+        day2, month2, year2 = map(int, text.split('.'))
+        data = await state.get_data()
+        first_date = data.get("first_date")
+
+        if not first_date:
+            await message.answer("⚠️ First birthdate is missing. Please start again.")
+            await start_compatibility(message, state)
+            return
+
+        day1, month1, year1 = map(int, first_date.split('.'))
+
+        def get_life_path(d, m, y):
+            total = sum(int(d) for d in f"{d:02}{m:02}{y}")
+            while total > 9 and total not in [11, 22, 33]:
+                total = sum(int(x) for x in str(total))
+            return total
+
+        lp1 = get_life_path(day1, month1, year1)
+        lp2 = get_life_path(day2, month2, year2)
+        compatibility = 100 - abs(lp1 - lp2) * 10
+        compatibility = max(0, min(compatibility, 100))
+
+        # Determine meaning key
+        if compatibility >= 90:
+            meaning_key = "compatibility_interpretation_90"
+        elif compatibility >= 75:
+            meaning_key = "compatibility_interpretation_75"
+        elif compatibility >= 60:
+            meaning_key = "compatibility_interpretation_60"
+        elif compatibility >= 40:
+            meaning_key = "compatibility_interpretation_40"
+        else:
+            meaning_key = "compatibility_interpretation_0"
+
+        lang = get_user_language(message.from_user.id)
+        desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
+        desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
+        title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
+        meaning = get_translation(message.from_user.id, meaning_key)
+
+        result = (
+            f"{title} {lp1}\n🔹 {desc1}\n\n"
+            f"{title} {lp2}\n🔹 {desc2}\n\n"
+            f"❤️ Compatibility: {compatibility}%\n\n{meaning}"
+        )
+
+        await message.answer(result, parse_mode="Markdown")
+        await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+        await state.finish()
+
+    except:
+        await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
+
+@dp.message_handler()
+async def handle_all_inputs(message: types.Message):
+    try:
+        day, month, year = map(int, message.text.strip().split('.'))
+        life_path = sum(int(digit) for digit in f"{day:02}{month:02}{year}")
+        while life_path > 9 and life_path not in [11, 22, 33]:
+            life_path = sum(int(d) for d in str(life_path))
+
+        user_id = message.from_user.id
+        title = get_translation(user_id, "life_path_result_title")
+        description = get_translation(user_id, f"life_path_description_{life_path}")
+
+        await message.answer(
+            f"{title} {life_path}\n\n{description}",
+            parse_mode="Markdown"
+        )
+        await message.answer(
+            get_translation(user_id, "done_choose_tool"),
+            reply_markup=main_menu_keyboard(user_id)
+        )
+
+    except:
+        await message.answer(get_translation(message.from_user.id, "invalid_format"))
+
+if __name__ == '__main__':
+    import logging
+    from aiogram import executor
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+
+    try:
+        logging.info("🚀 Starting bot polling...")
+        executor.start_polling(dp, skip_updates=True)
+    except Exception as e:
+        logging.exception("❌ BOT CRASHED WITH EXCEPTION:")

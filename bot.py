@@ -844,17 +844,23 @@ async def handle_all_inputs(message: types.Message):
     except:
         await message.answer(get_translation(message.from_user.id, "invalid_format"))
 
-if __name__ == '__main__':
-    import logging
-    from aiogram import executor
+from fastapi import FastAPI, Request
+import uvicorn
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s'
-    )
+app = FastAPI()
 
-    try:
-        logging.info("🚀 Starting bot polling...")
-        executor.start_polling(dp, skip_updates=True)
-    except Exception as e:
-        logging.exception("❌ BOT CRASHED WITH EXCEPTION:")
+@app.on_event("startup")
+async def on_startup():
+    webhook_url = f"{os.getenv('WEBHOOK_BASE')}/webhook/{os.getenv('BOT_TOKEN')}"
+    await bot.set_webhook(webhook_url)
+    logging.info(f"✅ Webhook set to: {webhook_url}")
+
+@app.post("/webhook/{token}")
+async def telegram_webhook(token: str, request: Request):
+    if token != os.getenv("BOT_TOKEN"):
+        return {"error": "Invalid token"}
+    update = await request.json()
+    telegram_update = types.Update(**update)
+    await dp.process_update(telegram_update)
+    return {"status": "ok"}
+
