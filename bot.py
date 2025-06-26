@@ -22,7 +22,9 @@ logging.basicConfig(
 
 load_dotenv()
 bot = Bot(token=os.getenv("BOT_TOKEN"))
+Bot.set_current(bot)  # 👈 this is required for webhook context
 dp = Dispatcher(bot, storage=MemoryStorage())
+Dispatcher.set_current(dp)  # 👈 this helps FSM handlers work properly
 
 def compatibility_score(date1, date2):
     # Simple placeholder: compare Life Path Numbers
