@@ -658,7 +658,7 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
-    await state.finish()  # Force cancel any active state
+    await state.finish()
     lang = get_user_language(message.from_user.id)
 
     explanations = {
@@ -674,7 +674,6 @@ async def start_compatibility(message: types.Message, state: FSMContext):
 async def get_first_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
 
-    # Recognize buttons and redirect properly
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
         "soul_urge": get_translation(message.from_user.id, "soul_urge"),
@@ -709,10 +708,9 @@ async def get_first_date(message: types.Message, state: FSMContext):
             await back_to_main_menu(message, state)
         return
 
-    # Otherwise treat as a date
     try:
         day, month, year = map(int, text.split('.'))
-        await state.update_data(first_date=text)
+        await state.update_data(first_date=text)  # ✅ Essential line
         await CompatibilityStates.next()
         await message.answer("Now enter the second birthdate (DD.MM.YYYY):")
     except:
@@ -722,7 +720,6 @@ async def get_first_date(message: types.Message, state: FSMContext):
 async def get_second_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
 
-    # Redirect if a tool button is pressed
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
         "soul_urge": get_translation(message.from_user.id, "soul_urge"),
@@ -757,7 +754,6 @@ async def get_second_date(message: types.Message, state: FSMContext):
             await back_to_main_menu(message, state)
         return
 
-    # Now treat as second date input
     try:
         day2, month2, year2 = map(int, text.split('.'))
         data = await state.get_data()
@@ -796,7 +792,7 @@ async def get_second_date(message: types.Message, state: FSMContext):
         await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
         await state.finish()
 
-    except Exception as e:
+    except:
         await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
 
 @dp.message_handler()
