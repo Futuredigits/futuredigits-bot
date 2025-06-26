@@ -1,17 +1,14 @@
-# Use official Python 3.10 image
 FROM python:3.10-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy project files
 COPY . .
 
-# Install dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-# Default environment variable (will be overwritten in Render)
-ENV BOT_TOKEN=REPLACE_ME
+# This is the fix: expose the port Render provides
+ENV PORT 10000
+EXPOSE $PORT
 
-# Start the bot
-CMD ["python", "bot.py"]
+CMD ["uvicorn", "bot:app", "--host", "0.0.0.0", "--port", "10000"]
