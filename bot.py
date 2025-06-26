@@ -306,18 +306,16 @@ async def calculate_compatibility(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.finish()  # Force cancel any active state
     lang = get_user_language(message.from_user.id)
 
     explanations = {
-        "en": "💞 *Compatibility Analysis*\nDiscover how numerologically compatible two people are by comparing their Life Path Numbers. This insight helps you understand your strengths and challenges in the relationship.\nPlease enter the first person's birthdate (DD.MM.YYYY):",
-        "lt": "💞 *Suderinamumo Analizė*\nSužinokite, kiek dviejų žmonių gyvenimo keliai yra suderinami pagal numerologiją. Tai padeda geriau suprasti santykių stipriąsias ir silpnąsias puses.\nĮveskite pirmojo asmens gimimo datą (DD.MM.YYYY):",
-        "ru": "💞 *Анализ Совместимости*\nУзнайте, насколько вы совместимы с другим человеком на основе Чисел Жизненного Пути. Это поможет понять сильные и слабые стороны ваших отношений.\nВведите дату рождения первого человека (ДД.ММ.ГГГГ):"
+        "en": "💞 *Compatibility Analysis*\nCompare Life Path Numbers of two people. This reveals spiritual harmony and challenges.\nPlease enter the first person's birthdate (DD.MM.YYYY):",
+        "lt": "💞 *Suderinamumo Analizė*\nPalyginkite dviejų žmonių gyvenimo kelius. Tai atskleidžia dvasinę darną ir iššūkius.\nĮveskite pirmojo asmens gimimo datą (DD.MM.YYYY):",
+        "ru": "💞 *Анализ Совместимости*\nСравните Числа Жизненного Пути двух людей. Это покажет гармонию и вызовы.\nВведите дату рождения первого человека (ДД.ММ.ГГГГ):"
     }
 
-    explanation = explanations.get(lang, explanations["en"])
-    await message.answer(explanation, parse_mode="Markdown")
-
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
     await CompatibilityStates.waiting_for_first_date.set()
 
 @dp.message_handler(state=CompatibilityStates.waiting_for_first_date)
@@ -778,15 +776,20 @@ async def handle_all_inputs(message: types.Message):
             life_path = sum(int(d) for d in str(life_path))
 
         user_id = message.from_user.id
+        title = get_translation(user_id, "life_path_result_title")
+        description = get_translation(user_id, f"life_path_description_{life_path}")
 
         await message.answer(
-            f"{get_translation(user_id, 'your_life_path')} {life_path}.\n\n{get_translation(user_id, f'life_path_description_{life_path}')}"
+            f"{title} {life_path}\n\n{description}",
+            parse_mode="Markdown"
         )
-        await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
+        await message.answer(
+            get_translation(user_id, "done_choose_tool"),
+            reply_markup=main_menu_keyboard(user_id)
+        )
 
     except:
         await message.answer(get_translation(message.from_user.id, "invalid_format"))
-
 
 if __name__ == '__main__':
     import logging
