@@ -287,21 +287,34 @@ async def calculate_compatibility(message: types.Message):
         compatibility = 100 - abs(lp1 - lp2) * 10
         compatibility = max(0, min(compatibility, 100))
 
+        # Determine meaning key based on score
+        if compatibility >= 90:
+            meaning_key = "compatibility_interpretation_90"
+        elif compatibility >= 75:
+            meaning_key = "compatibility_interpretation_75"
+        elif compatibility >= 60:
+            meaning_key = "compatibility_interpretation_60"
+        elif compatibility >= 40:
+            meaning_key = "compatibility_interpretation_40"
+        else:
+            meaning_key = "compatibility_interpretation_0"
+
         lang = get_user_language(message.from_user.id)
         desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
         desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
         title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
+        meaning = get_translation(message.from_user.id, meaning_key)
 
         result = (
             f"{title} {lp1}\n🔹 {desc1}\n\n"
             f"{title} {lp2}\n🔹 {desc2}\n\n"
-            f"❤️ Compatibility: {compatibility}%"
+            f"❤️ Compatibility: {compatibility}%\n\n{meaning}"
         )
 
         await message.answer(result)
+
     except Exception as e:
         await message.answer("Invalid format. Please send two dates like this:\n`DD.MM.YYYY, DD.MM.YYYY`")
-
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "soul_urge"))
 async def start_soul_urge(message: types.Message, state: FSMContext):

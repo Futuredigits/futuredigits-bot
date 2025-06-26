@@ -132,7 +132,12 @@ translations = {
         "soul_urge_description_9": "You are deeply compassionate. Your soul is fulfilled when you’re helping others and making a meaningful impact on the world.",
         "soul_urge_description_11": "You are inspired by a higher vision and a deep spiritual calling. Your soul wants to guide, uplift, and enlighten others.",
         "soul_urge_description_22": "Your inner drive is to build lasting, meaningful change. You desire to create something impactful that benefits humanity.",
-        "soul_urge_description_33": "Love and healing are at the core of your being. You are called to serve selflessly and bring light to those in need."
+        "soul_urge_description_33": "Love and healing are at the core of your being. You are called to serve selflessly and bring light to those in need.",
+        "compatibility_interpretation_90": "🌟 Your life paths are in perfect harmony. This is a soulmate-level connection full of mutual understanding.",
+        "compatibility_interpretation_75": "💖 You have strong compatibility and shared values. A deeply rewarding bond is likely.",
+        "compatibility_interpretation_60": "🤝 You are a balanced match. With communication and effort, this can become a beautiful partnership.",
+        "compatibility_interpretation_40": "⚖️ Your paths may clash at times, but with growth and compromise, love is possible.",
+        "compatibility_interpretation_0": "🔥 This is a karmic or intense relationship. Challenges are likely, but growth can come from it.",
     },
     "lt": {
         "welcome": "🔮 Sveiki atvykę į FutureDigits!\nĮveskite gimimo datą formatu DD.MM.YYYY ir sužinokite savo Gyvenimo Kelią.",
@@ -266,7 +271,12 @@ translations = {
         "soul_urge_description_9": "Esate labai atjaučiantis. Jūsų siela randa pilnatvę padedant kitiems ir kuriant teigiamą pokytį.",
         "soul_urge_description_11": "Jūsų viduje rusena stiprus dvasinis pašaukimas. Esate įkvėpėjas, vedantis kitus į šviesą ir aukštesnę sąmonę.",
         "soul_urge_description_22": "Jūsų siela trokšta sukurti kažką reikšmingo ir ilgalaikio. Norite palikti pėdsaką, kuris tarnautų žmonijai.",
-        "soul_urge_description_33": "Jūsų esmė – meilė, užuojauta ir gydymas. Jūsų siela kviečia tarnauti kitiems su atsidavimu ir meile."
+        "soul_urge_description_33": "Jūsų esmė – meilė, užuojauta ir gydymas. Jūsų siela kviečia tarnauti kitiems su atsidavimu ir meile.",
+        "compatibility_interpretation_90": "🌟 Jūsų gyvenimo keliai puikiai dera. Tai sielų ryšys, kupinas abipusio supratimo.",
+        "compatibility_interpretation_75": "💖 Tarp jūsų stipri suderinamybė ir bendros vertybės. Ryšys gali būti labai prasmingas.",
+        "compatibility_interpretation_60": "🤝 Jūs esate subalansuota pora. Su pastangomis ir supratimu galite sukurti gražius santykius.",
+        "compatibility_interpretation_40": "⚖️ Tarp jūsų gali kilti iššūkių, tačiau augimas ir meilė įmanomi per kompromisus.",
+        "compatibility_interpretation_0": "🔥 Tai gali būti intensyvūs ar karmingi santykiai. Iššūkiai neišvengiami, bet per juos galima augti.",
     },
     "ru": {
         "welcome": "🔮 Добро пожаловать в FutureDigits!\nОтправьте дату рождения в формате ДД.ММ.ГГГГ, чтобы узнать ваше Число Жизненного Пути.",
@@ -400,7 +410,12 @@ translations = {
         "soul_urge_description_9": "Вы глубоко сострадательны. Ваша душа наполняется смыслом, когда вы помогаете другим и делаете мир лучше.",
         "soul_urge_description_11": "Вы вдохновлены высоким духовным призванием. Ваша душа стремится вести людей к свету и пробуждению.",
         "soul_urge_description_22": "Ваша душа хочет создавать великие вещи, которые оставят след в истории. Вы рождены для масштабных дел.",
-        "soul_urge_description_33": "Суть вашей души — любовь, исцеление и служение. Вы призваны помогать, вдохновлять и исцелять людей."
+        "soul_urge_description_33": "Суть вашей души — любовь, исцеление и служение. Вы призваны помогать, вдохновлять и исцелять людей.",
+        "compatibility_interpretation_90": "🌟 Ваши жизненные пути в полной гармонии. Это связь душ, основанная на глубоком понимании.",
+        "compatibility_interpretation_75": "💖 У вас высокая совместимость и схожие ценности. Этот союз может быть очень гармоничным.",
+        "compatibility_interpretation_60": "🤝 Вы сбалансированная пара. При усилиях и взаимопонимании вы можете построить прекрасные отношения.",
+        "compatibility_interpretation_40": "⚖️ Возможны трудности, но через компромиссы и рост возможна любовь.",
+        "compatibility_interpretation_0": "🔥 Это кармические или очень интенсивные отношения. Испытания возможны, но они могут привести к росту.",
     },
     "expression_result_title": {
     "en": "🧠 Expression Number:",
