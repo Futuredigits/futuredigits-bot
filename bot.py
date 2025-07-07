@@ -348,15 +348,17 @@ async def process_soul_urge(message: types.Message, state: FSMContext):
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
 
     await message.answer(
+        get_translation(message.from_user.id, "premium_cta"),
+        parse_mode="Markdown"
+    )
+
+    await message.answer(
         get_translation(message.from_user.id, "done_choose_tool"),
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard(message.from_user.id)
     )
 
-    await message.answer(get_translation(message.from_user.id, "premium_cta"), parse_mode="Markdown")
-
     await state.finish()
-
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "expression"), state="*")
 async def start_expression(message: types.Message, state: FSMContext):
@@ -431,18 +433,17 @@ async def process_expression(message: types.Message, state: FSMContext):
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
 
     await message.answer(
+        get_translation(message.from_user.id, "premium_cta"),
+        parse_mode="Markdown"
+    )
+
+    await message.answer(
         get_translation(message.from_user.id, "done_choose_tool"),
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard(message.from_user.id)
     )
 
-    await message.answer(
-        get_translation(message.from_user.id, "premium_cta"),
-        parse_mode="Markdown"
-    )
-
     await state.finish()
-
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "personality"), state="*")
 async def start_personality(message: types.Message, state: FSMContext):
@@ -509,12 +510,15 @@ async def process_personality(message: types.Message, state: FSMContext):
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
 
     await message.answer(
+        get_translation(message.from_user.id, "premium_cta"),
+        parse_mode="Markdown"
+    )
+
+    await message.answer(
         get_translation(message.from_user.id, "done_choose_tool"),
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard(message.from_user.id)
     )
-
-    await message.answer(get_translation(message.from_user.id, "premium_cta"), parse_mode="Markdown")
 
     await state.finish()
 
@@ -588,15 +592,17 @@ async def process_destiny(message: types.Message, state: FSMContext):
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
 
     await message.answer(
+        get_translation(message.from_user.id, "premium_cta"),
+        parse_mode="Markdown"
+    )
+
+    await message.answer(
         get_translation(message.from_user.id, "done_choose_tool"),
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard(message.from_user.id)
     )
 
-    await message.answer(get_translation(message.from_user.id, "premium_cta"), parse_mode="Markdown")
-
     await state.finish()
-
 
 @dp.message_handler(state=BirthdayStates.waiting_for_birthdate)
 async def process_birthday_number(message: types.Message, state: FSMContext):
@@ -648,20 +654,20 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
         description_key = f"birthday_description_{birthday_number}"
         description = get_translation(message.from_user.id, description_key)
 
-        await message.answer(f"{title} {birthday_number}\n\n{description}", parse_mode="Markdown")
+    await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
 
-        await message.answer(
-            get_translation(message.from_user.id, "done_choose_tool"),
-            parse_mode="Markdown",
-            reply_markup=main_menu_keyboard(message.from_user.id)
-        )
+    await message.answer(
+        get_translation(message.from_user.id, "premium_cta"),
+        parse_mode="Markdown"
+    )
 
-        await message.answer(
-            get_translation(message.from_user.id, "premium_cta"),
-            parse_mode="Markdown"
-        )
+    await message.answer(
+        get_translation(message.from_user.id, "done_choose_tool"),
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(message.from_user.id)
+    )
 
-        await state.finish()
+    await state.finish()
 
     except:
         await message.answer(
