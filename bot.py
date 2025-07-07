@@ -608,7 +608,6 @@ async def process_destiny(message: types.Message, state: FSMContext):
 async def process_birthday_number(message: types.Message, state: FSMContext):
     text = message.text.strip()
 
-    # Redirect if a tool button is pressed
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
         "soul_urge": get_translation(message.from_user.id, "soul_urge"),
@@ -643,7 +642,6 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
             await back_to_main_menu(message, state)
         return
 
-    # Process birthday number
     try:
         day, month, year = map(int, text.split('.'))
         birthday_number = day
@@ -654,25 +652,13 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
         description_key = f"birthday_description_{birthday_number}"
         description = get_translation(message.from_user.id, description_key)
 
-    await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
-    await message.answer(
-        get_translation(message.from_user.id, "premium_cta"),
-        parse_mode="Markdown"
-    )
+        await message.answer(f"{title} {birthday_number}\n\n{description}", parse_mode="Markdown")
+        await message.answer(get_translation(message.from_user.id, "premium_cta"), parse_mode="Markdown")
+        await message.answer(get_translation(message.from_user.id, "done_choose_tool"), parse_mode="Markdown", reply_markup=main_menu_keyboard(message.from_user.id))
+        await state.finish()
 
-    await message.answer(
-        get_translation(message.from_user.id, "done_choose_tool"),
-        parse_mode="Markdown",
-        reply_markup=main_menu_keyboard(message.from_user.id)
-    )
-
-    await state.finish()
-
-except:
-    await message.answer(
-        get_translation(message.from_user.id, "invalid_format"),
-        parse_mode="Markdown"
-    )
+    except:
+        await message.answer(get_translation(message.from_user.id, "invalid_format"), parse_mode="Markdown")
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
