@@ -146,6 +146,11 @@ async def set_language(message: types.Message, state: FSMContext):
     set_user_language(message.from_user.id, selected_lang)
     await message.answer(get_translation(message.from_user.id, "language_set"), reply_markup=main_menu_keyboard(message.from_user.id))
 
+@dp.message_handler(commands=["premium"])
+async def send_premium_info(message: types.Message):
+    text = get_translation(message.from_user.id, "premium_intro")
+    await message.answer(text, parse_mode="Markdown")
+
 @dp.message_handler(lambda message: message.text == "💎 Premium Tools")
 async def show_premium_menu(message: types.Message):
     user_id = message.from_user.id
