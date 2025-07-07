@@ -345,9 +345,18 @@ async def process_soul_urge(message: types.Message, state: FSMContext):
     description = get_translation(message.from_user.id, description_key)
     title = get_translation(message.from_user.id, "soul_urge_result_title")
 
-    await message.answer(f"{title} {total}\n\n{description}")
-    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
+
+    await message.answer(
+        get_translation(message.from_user.id, "done_choose_tool"),
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(message.from_user.id)
+    )
+
+    await message.answer(get_translation(message.from_user.id, "premium_cta"), parse_mode="Markdown")
+
     await state.finish()
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "expression"), state="*")
 async def start_expression(message: types.Message, state: FSMContext):
@@ -418,9 +427,22 @@ async def process_expression(message: types.Message, state: FSMContext):
     description = get_translation(message.from_user.id, key)
 
     title = get_multilang_translation(message.from_user.id, "expression_result_title")
+
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
-    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+
+    await message.answer(
+        get_translation(message.from_user.id, "done_choose_tool"),
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(message.from_user.id)
+    )
+
+    await message.answer(
+        get_translation(message.from_user.id, "premium_cta"),
+        parse_mode="Markdown"
+    )
+
     await state.finish()
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "personality"), state="*")
 async def start_personality(message: types.Message, state: FSMContext):
@@ -484,8 +506,16 @@ async def process_personality(message: types.Message, state: FSMContext):
     description = get_translation(message.from_user.id, description_key)
     title = get_translation(message.from_user.id, "personality_result_title")
 
-    await message.answer(f"{title} {total}\n\n{description}")
-    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
+
+    await message.answer(
+        get_translation(message.from_user.id, "done_choose_tool"),
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(message.from_user.id)
+    )
+
+    await message.answer(get_translation(message.from_user.id, "premium_cta"), parse_mode="Markdown")
+
     await state.finish()
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "destiny"), state="*")
@@ -555,25 +585,18 @@ async def process_destiny(message: types.Message, state: FSMContext):
     title = get_multilang_translation(message.from_user.id, "destiny_result_title")
     description = get_translation(message.from_user.id, f"destiny_description_{total}")
 
-    await message.answer(f"{title} {total}\n\n{description}")
-    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
+
+    await message.answer(
+        get_translation(message.from_user.id, "done_choose_tool"),
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(message.from_user.id)
+    )
+
+    await message.answer(get_translation(message.from_user.id, "premium_cta"), parse_mode="Markdown")
+
     await state.finish()
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "birthday_number"), state="*")
-async def start_birthday_number(message: types.Message, state: FSMContext):
-    await state.finish()
-    lang = get_user_language(message.from_user.id)
-
-    explanations = {
-        "en": "🎂 *Birthday Number*\nThis number reveals a special talent or gift you were born with. It’s based solely on the day of the month you were born.\nPlease enter your birthdate in the format DD.MM.YYYY 👇",
-        "lt": "🎂 *Gimtadienio Skaičius*\nŠis skaičius atskleidžia ypatingą talentą ar dovaną, su kuria gimėte. Jis grindžiamas tik jūsų gimimo mėnesio diena.\nĮveskite savo gimimo datą formatu DD.MM.YYYY 👇",
-        "ru": "🎂 *Число Дня Рождения*\nЭто число раскрывает особый дар или талант, с которым вы родились. Оно основано только на дне вашего рождения.\nВведите свою дату рождения в формате DD.MM.YYYY 👇"
-    }
-
-    explanation = explanations.get(lang, explanations["en"])
-    await message.answer(explanation, parse_mode="Markdown")
-
-    await BirthdayStates.waiting_for_birthdate.set()
 
 @dp.message_handler(state=BirthdayStates.waiting_for_birthdate)
 async def process_birthday_number(message: types.Message, state: FSMContext):
@@ -625,11 +648,26 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
         description_key = f"birthday_description_{birthday_number}"
         description = get_translation(message.from_user.id, description_key)
 
-        await message.answer(f"{title} {birthday_number}\n\n{description}")
-        await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+        await message.answer(f"{title} {birthday_number}\n\n{description}", parse_mode="Markdown")
+
+        await message.answer(
+            get_translation(message.from_user.id, "done_choose_tool"),
+            parse_mode="Markdown",
+            reply_markup=main_menu_keyboard(message.from_user.id)
+        )
+
+        await message.answer(
+            get_translation(message.from_user.id, "premium_cta"),
+            parse_mode="Markdown"
+        )
+
         await state.finish()
+
     except:
-        await message.answer(get_translation(message.from_user.id, "invalid_format"))
+        await message.answer(
+            get_translation(message.from_user.id, "invalid_format"),
+            parse_mode="Markdown"
+        )
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
@@ -795,19 +833,24 @@ async def handle_all_inputs(message: types.Message):
         title = get_translation(user_id, "life_path_result_title")
         description = get_translation(user_id, f"life_path_description_{life_path}")
 
-        await message.answer(
-            f"{title} {life_path}\n\n{description}",
-            parse_mode="Markdown"
-        )
-        
+        await message.answer(f"{title} {life_path}\n\n{description}", parse_mode="Markdown")
+
         await message.answer(
             get_translation(user_id, "done_choose_tool"),
             parse_mode="Markdown",
             reply_markup=main_menu_keyboard(user_id)
         )
 
+        await message.answer(
+            get_translation(user_id, "premium_cta"),
+            parse_mode="Markdown"
+        )
+
     except:
-        await message.answer(get_translation(message.from_user.id, "invalid_format"))
+        await message.answer(
+            get_translation(message.from_user.id, "invalid_format"),
+            parse_mode="Markdown"
+        )
 
 from fastapi import FastAPI, Request
 import uvicorn
