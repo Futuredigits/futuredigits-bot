@@ -1,6 +1,7 @@
 translations = {
     "en": {
         "welcome": "🔮 Welcome to FutureDigits!\nSend me your birthdate in format DD.MM.YYYY to discover your Life Path Number.",
+        "about": "👤 *About FutureDigits*\n\nFutureDigits is a personalized numerology experience designed to help you understand your deeper self, life purpose, and relationship dynamics.\n\n🌟 Every insight is thoughtfully crafted based on timeless numerology principles and modern guidance tools.\n\nFollow us for updates, share your results, and start your journey of self-discovery.\n\nInstagram: @yourpage\nTelegram: t.me/yourchannel",
         "life_path": "🔢 Life Path Number",
         "life_path_result_title": "✨ Life Path Number:",
         "soul_urge": "💖 Soul Urge Number",
@@ -141,6 +142,7 @@ translations = {
     },
     "lt": {
         "welcome": "🔮 Sveiki atvykę į FutureDigits!\nĮveskite gimimo datą formatu DD.MM.YYYY ir sužinokite savo Gyvenimo Kelią.",
+        "about": "👤 *Apie FutureDigits*\n\nFutureDigits – tai asmeninė numerologijos patirtis, padedanti geriau suprasti save, gyvenimo paskirtį ir santykių dinamiką.\n\n🌟 Kiekviena įžvalga paremta laiko patikrintais numerologijos principais ir šiuolaikinėmis įžvalgomis.\n\nSekite mus, dalinkitės rezultatais ir pradėkite savęs pažinimo kelionę.\n\nInstagram: @jusu_puslapis\nTelegram: t.me/jusu_kanalas",
         "life_path": "🔢 Gyvenimo Kelio Skaičius",
         "life_path_result_title": "✨ Gyvenimo kelio skaičius:",
         "soul_urge": "💖 Sielos Troškimo Skaičius",
@@ -280,6 +282,7 @@ translations = {
     },
     "ru": {
         "welcome": "🔮 Добро пожаловать в FutureDigits!\nОтправьте дату рождения в формате ДД.ММ.ГГГГ, чтобы узнать ваше Число Жизненного Пути.",
+        "about": "👤 *О FutureDigits*\n\nFutureDigits — это персонализированный опыт нумерологии, помогающий лучше понять себя, своё предназначение и динамику отношений.\n\n🌟 Все описания основаны на проверенных принципах нумерологии и современных методах саморазвития.\n\nПодписывайтесь, делитесь результатами и начните путь самопознания.\n\nInstagram: @вашпрофиль\nTelegram: t.me/вашканал",
         "life_path": "🔢 Число Жизненного Пути",
         "life_path_result_title": "✨ Число Жизненного Пути:",
         "soul_urge": "💖 Число Душевного Стремления",

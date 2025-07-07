@@ -117,6 +117,11 @@ async def send_help(message: types.Message):
     )
     await message.answer(help_text, parse_mode="Markdown")
 
+@dp.message_handler(commands=["about"])
+async def send_about(message: types.Message):
+    text = get_translation(message.from_user.id, "about")
+    await message.answer(text, parse_mode="Markdown")
+
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "back_to_menu"), state="*")
 async def back_to_main_menu(message: types.Message, state: FSMContext):
     await state.finish()
@@ -621,55 +626,6 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
     except:
         await message.answer(get_translation(message.from_user.id, "invalid_format"))
 
-@dp.message_handler(lambda message: message.text == "❤️ Calculate Compatibility")
-async def ask_birthdates_for_compatibility(message: types.Message):
-    await message.answer("Please send two birthdates separated by a comma.\nExample: 14.05.1990, 22.09.1993")
-
-    try:
-        b1, b2 = [d.strip() for d in message.text.split(",")]
-        day1, month1, year1 = map(int, b1.split('.'))
-        day2, month2, year2 = map(int, b2.split('.'))
-
-        def get_life_path(d, m, y):
-            total = sum(int(d) for d in f"{d:02}{m:02}{y}")
-            while total > 9 and total not in [11, 22, 33]:
-                total = sum(int(x) for x in str(total))
-            return total
-
-        lp1 = get_life_path(day1, month1, year1)
-        lp2 = get_life_path(day2, month2, year2)
-        compatibility = 100 - abs(lp1 - lp2) * 10
-        compatibility = max(0, min(compatibility, 100))
-
-        # Determine meaning key based on score
-        if compatibility >= 90:
-            meaning_key = "compatibility_interpretation_90"
-        elif compatibility >= 75:
-            meaning_key = "compatibility_interpretation_75"
-        elif compatibility >= 60:
-            meaning_key = "compatibility_interpretation_60"
-        elif compatibility >= 40:
-            meaning_key = "compatibility_interpretation_40"
-        else:
-            meaning_key = "compatibility_interpretation_0"
-
-        lang = get_user_language(message.from_user.id)
-        desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
-        desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
-        title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
-        meaning = get_translation(message.from_user.id, meaning_key)
-
-        result = (
-            f"{title} {lp1}\n🔹 {desc1}\n\n"
-            f"{title} {lp2}\n🔹 {desc2}\n\n"
-            f"❤️ Compatibility: {compatibility}%\n\n{meaning}"
-        )
-
-        await message.answer(result)
-
-    except Exception as e:
-        await message.answer("Invalid format. Please send two dates like this:\n`DD.MM.YYYY, DD.MM.YYYY`")
-
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
     await state.finish()
@@ -838,8 +794,10 @@ async def handle_all_inputs(message: types.Message):
             f"{title} {life_path}\n\n{description}",
             parse_mode="Markdown"
         )
+        
         await message.answer(
             get_translation(user_id, "done_choose_tool"),
+            parse_mode="Markdown",
             reply_markup=main_menu_keyboard(user_id)
         )
 
