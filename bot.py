@@ -655,7 +655,6 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
         description = get_translation(message.from_user.id, description_key)
 
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
-
     await message.answer(
         get_translation(message.from_user.id, "premium_cta"),
         parse_mode="Markdown"
@@ -669,11 +668,11 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
 
     await state.finish()
 
-    except:
-        await message.answer(
-            get_translation(message.from_user.id, "invalid_format"),
-            parse_mode="Markdown"
-        )
+except:
+    await message.answer(
+        get_translation(message.from_user.id, "invalid_format"),
+        parse_mode="Markdown"
+    )
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
