@@ -868,4 +868,8 @@ async def on_shutdown():
     await bot.session.close()
     logging.info("✅ Bot session closed")
 
+@app.get("/")
+async def health_check():
+    return {"status": "ok"}
+
 
