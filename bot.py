@@ -923,8 +923,9 @@ async def telegram_webhook(token: str, request: Request):
 
 @app.on_event("shutdown")
 async def on_shutdown():
-    await bot.session.close()
-    logging.info("✅ Bot session closed")
+    session = await bot.get_session()  # ✅ safe and async
+    await session.close()
+    logging.info("✅ Bot session closed safely")
 
 @app.get("/")
 async def health_check():
