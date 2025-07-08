@@ -863,3 +863,9 @@ async def telegram_webhook(token: str, request: Request):
     await dp.process_update(telegram_update)
     return {"status": "ok"}
 
+@app.on_event("shutdown")
+async def on_shutdown():
+    await bot.session.close()
+    logging.info("✅ Bot session closed")
+
+
