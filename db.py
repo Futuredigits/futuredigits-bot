@@ -14,6 +14,13 @@ CREATE TABLE IF NOT EXISTS users (
 ''')
 conn.commit()
 
+# Safe auto-migration: add 'premium' column if missing
+cursor.execute("PRAGMA table_info(users)")
+columns = [col[1] for col in cursor.fetchall()]
+if "premium" not in columns:
+    cursor.execute("ALTER TABLE users ADD COLUMN premium INTEGER DEFAULT 0")
+    conn.commit()
+
 def set_user_language(user_id, language):
     cursor.execute('''
         INSERT INTO users (user_id, language, premium)
