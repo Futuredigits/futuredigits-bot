@@ -19,4 +19,7 @@ class DestinyStates(StatesGroup):
 class BirthdayStates(StatesGroup):
     waiting_for_birthdate = State()
 
+class LuckyYearsStates(StatesGroup):
+    waiting_for_birthdate = State()
+
 

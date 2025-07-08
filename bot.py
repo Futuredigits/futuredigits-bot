@@ -812,6 +812,64 @@ async def get_second_date(message: types.Message, state: FSMContext):
     except:
         await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
 
+from states import LuckyYearsStates
+from db import is_user_premium
+import datetime
+
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
+async def handle_lucky_years(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
+
+    explanations = {
+        "en": "📅 *Lucky Years Forecast*\nEnter your birthdate (DD.MM.YYYY) to reveal the most aligned years in your future.",
+        "lt": "📅 *Sėkmingų Metų Prognozė*\nĮveskite gimimo datą (DD.MM.YYYY), kad sužinotumėte jums palankiausius metus.",
+        "ru": "📅 *Прогноз Удачных Лет*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать свои самые сильные годы."
+    }
+
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+    await LuckyYearsStates.waiting_for_birthdate.set()
+
+
+@dp.message_handler(state=LuckyYearsStates.waiting_for_birthdate)
+async def process_lucky_years(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    lang = get_user_language(user_id)
+    text = message.text.strip()
+
+    try:
+        day, month, year = map(int, text.split('.'))
+        birthdate_str = f"{day:02d}{month:02d}{year}"
+        total = sum(int(d) for d in birthdate_str)
+        while total > 9 and total not in [11, 22, 33]:
+            total = sum(int(d) for d in str(total))
+        life_path = total
+
+        # Generate 20 years starting from current year aligned with Life Path cycle
+        this_year = datetime.datetime.now().year
+        lucky_years = [y for y in range(this_year, this_year + 30) if (y % 9 or 9) == life_path % 9][:6]
+
+        msg = {
+            "en": f"✨ *Your Lucky Years*\nBased on your Life Path Number **{life_path}**, your high-energy years are:\n\n" +
+                  f"**{' • '.join(map(str, lucky_years))}**\n\nThese years align with growth, success, and spiritual activation.",
+            "lt": f"✨ *Jūsų Sėkmingi Metai*\nRemiantis jūsų Gyvenimo Kelio skaičiumi **{life_path}**, jums palankiausi metai:\n\n" +
+                  f"**{' • '.join(map(str, lucky_years))}**\n\nŠie metai palankūs sėkmei, proveržiui ir vidiniam augimui.",
+            "ru": f"✨ *Ваши Удачные Годы*\nСогласно вашему Числу Жизненного Пути **{life_path}**, ваши сильные годы:\n\n" +
+                  f"**{' • '.join(map(str, lucky_years))}**\n\nЭто годы роста, успеха и духовной энергии."
+        }
+
+        await message.answer(msg.get(lang, msg["en"]), parse_mode="Markdown")
+        await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
+        await state.finish()
+
+    except:
+        await message.answer(get_translation(user_id, "invalid_format"))
+
 @dp.message_handler()
 async def handle_all_inputs(message: types.Message):
     try:
