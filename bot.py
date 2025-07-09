@@ -19,8 +19,7 @@ import datetime
 import logging
 
 def get_buttons(user_id):
-    def is_menu_command(text: str, user_id: int) -> bool:
-    return text in get_buttons(user_id).values()
+    return {
         "life_path": get_translation(user_id, "life_path"),
         "soul_urge": get_translation(user_id, "soul_urge"),
         "expression": get_translation(user_id, "expression"),
@@ -31,6 +30,9 @@ def get_buttons(user_id):
         "change_language": get_translation(user_id, "change_language"),
         "back_to_menu": get_translation(user_id, "back_to_menu")
     }
+
+def is_menu_command(text: str, user_id: int) -> bool:
+    return text in get_buttons(user_id).values()
     
 async def route_menu_command(message, state):
     text = message.text
