@@ -190,8 +190,26 @@ async def set_language(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands=["premium"])
 async def send_premium_info(message: types.Message):
-    text = get_translation(message.from_user.id, "premium_intro")
-    await message.answer(text, parse_mode="Markdown")
+    user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
+    # Text block from translations.py
+    text = get_translation(user_id, "premium_intro")
+
+    # CTA button
+    button_text = {
+        "en": "🔓 Unlock Premium",
+        "lt": "🔓 Atrakinti Premium",
+        "ru": "🔓 Получить Premium"
+    }
+
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton(
+        button_text.get(lang, button_text["en"]),
+        callback_data="simulate_premium_payment"  # or "start_buy_premium"
+    ))
+
+    await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
 
 @dp.message_handler(commands=["set_premium"])
 async def make_user_premium(message: types.Message):
