@@ -38,9 +38,9 @@ def get_user_language(user_id):
 def set_user_premium(user_id, is_premium=True):
     cursor.execute('''
         INSERT INTO users (user_id, language, premium)
-        VALUES (?, 'en', ?)
+        VALUES (?, COALESCE((SELECT language FROM users WHERE user_id = ?), 'en'), ?)
         ON CONFLICT(user_id) DO UPDATE SET premium=excluded.premium
-    ''', (user_id, int(is_premium)))
+    ''', (user_id, user_id, int(is_premium)))
     conn.commit()
 
 # ✅ NEW: Check if user is premium
