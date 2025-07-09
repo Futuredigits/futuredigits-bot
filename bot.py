@@ -308,74 +308,93 @@ async def show_premium_menu(message: types.Message, state: FSMContext):  # <-- a
     )
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
-async def handle_lucky_years(message: types.Message):
-    description = get_translation(message.from_user.id, "lucky_years")
-    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+async def handle_lucky_years(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
 
-    await message.answer(
-        f"{description}\n\n🔒 {locked_msg}",
-        parse_mode="Markdown"
-    )
+    lang = get_user_language(user_id)
+    explanations = {
+        "en": "📅 *Lucky Years Forecast*\nEnter your birthdate (DD.MM.YYYY) to reveal the most aligned years in your future.",
+        "lt": "📅 *Sėkmingų Metų Prognozė*\nĮveskite gimimo datą (DD.MM.YYYY), kad sužinotumėte jums palankiausius metus.",
+        "ru": "📅 *Прогноз Удачных Лет*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать свои самые сильные годы."
+    }
+
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+    await LuckyYearsStates.waiting_for_birthdate.set()
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"))
 async def handle_career_profile(message: types.Message):
-    description = get_translation(message.from_user.id, "career_profile")
-    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+    user_id = message.from_user.id
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
 
-    await message.answer(
-        f"{description}\n\n🔒 {locked_msg}",
-        parse_mode="Markdown"
-    )
+    description = get_translation(user_id, "career_profile")
+    await message.answer(description, parse_mode="Markdown")
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "name_numerology_btn"))
 async def handle_name_numerology(message: types.Message):
-    description = get_translation(message.from_user.id, "name_numerology")
-    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+    user_id = message.from_user.id
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
 
-    await message.answer(
-        f"{description}\n\n🔒 {locked_msg}",
-        parse_mode="Markdown"
-    )
+    description = get_translation(user_id, "name_numerology")
+    await message.answer(description, parse_mode="Markdown")
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"))
 async def handle_lucky_colors(message: types.Message):
-    description = get_translation(message.from_user.id, "lucky_colors")
-    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+    user_id = message.from_user.id
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
 
-    await message.answer(
-        f"{description}\n\n🔒 {locked_msg}",
-        parse_mode="Markdown"
-    )
+    description = get_translation(user_id, "lucky_colors")
+    await message.answer(description, parse_mode="Markdown")
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "relationship_insights_btn"))
 async def handle_relationship_insights(message: types.Message):
-    description = get_translation(message.from_user.id, "relationship_insights")
-    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+    user_id = message.from_user.id
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
 
-    await message.answer(
-        f"{description}\n\n🔒 {locked_msg}",
-        parse_mode="Markdown"
-    )
+    description = get_translation(user_id, "relationship_insights")
+    await message.answer(description, parse_mode="Markdown")
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "purpose_analysis_btn"))
 async def handle_purpose_analysis(message: types.Message):
-    description = get_translation(message.from_user.id, "purpose_analysis")
-    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+    user_id = message.from_user.id
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
 
-    await message.answer(
-        f"{description}\n\n🔒 {locked_msg}",
-        parse_mode="Markdown"
-    )
+    description = get_translation(user_id, "purpose_analysis")
+    await message.answer(description, parse_mode="Markdown")
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "detailed_compatibility_btn"))
 async def handle_detailed_compatibility(message: types.Message):
-    description = get_translation(message.from_user.id, "detailed_compatibility")
-    locked_msg = get_translation(message.from_user.id, "premium_tool_locked")
+    user_id = message.from_user.id
+    if not is_user_premium(user_id):
+        locked_msg = get_translation(user_id, "premium_tool_locked")
+        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        return
 
-    await message.answer(
-        f"{description}\n\n🔒 {locked_msg}",
-        parse_mode="Markdown"
-    )
+    description = get_translation(user_id, "detailed_compatibility")
+    await message.answer(description, parse_mode="Markdown")
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "life_path"), state=None)
 async def handle_life_path(message: types.Message, state: FSMContext):
@@ -953,5 +972,3 @@ async def on_shutdown():
 @app.get("/")
 async def health_check():
     return {"status": "ok"}
-
-
