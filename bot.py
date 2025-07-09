@@ -11,6 +11,7 @@ from states import ExpressionStates
 from states import PersonalityStates
 from states import DestinyStates
 from states import BirthdayStates
+from db import set_user_premium
 
 import logging
 
@@ -150,6 +151,11 @@ async def set_language(message: types.Message, state: FSMContext):
 async def send_premium_info(message: types.Message):
     text = get_translation(message.from_user.id, "premium_intro")
     await message.answer(text, parse_mode="Markdown")
+
+@dp.message_handler(commands=["set_premium"])
+async def make_user_premium(message: types.Message):
+    set_user_premium(message.from_user.id, True)
+    await message.answer("✅ You are now a premium user.")
 
 @dp.message_handler(lambda message: message.text == "💎 Premium Tools")
 async def show_premium_menu(message: types.Message):
