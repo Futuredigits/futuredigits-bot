@@ -578,6 +578,20 @@ async def process_destiny(message: types.Message, state: FSMContext):
 
     await state.finish()
 
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "birthday_number"), state="*")
+async def start_birthday_number(message: types.Message, state: FSMContext):
+    await state.finish()
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "🎁 *Birthday Number*\nThis number reveals your unique gift and natural strength. It's calculated from the day you were born.\n\nEnter your birthdate (DD.MM.YYYY):",
+        "lt": "🎁 *Gimimo Dienos Skaičius*\nŠis skaičius atskleidžia jūsų unikalią dovaną ir stiprybę. Jis skaičiuojamas pagal jūsų gimimo dieną.\n\nĮveskite gimimo datą (DD.MM.YYYY):",
+        "ru": "🎁 *Число Дня Рождения*\nЭто число показывает ваш врожденный дар и силу. Оно берется из дня вашего рождения.\n\nВведите дату рождения (ДД.ММ.ГГГГ):"
+    }
+
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+    await BirthdayStates.waiting_for_birthdate.set()
+
 @dp.message_handler(state=BirthdayStates.waiting_for_birthdate)
 async def process_birthday_number(message: types.Message, state: FSMContext):
     text = message.text.strip()
