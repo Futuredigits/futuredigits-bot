@@ -19,7 +19,8 @@ import datetime
 import logging
 
 def get_buttons(user_id):
-    return {
+    def is_menu_command(text: str, user_id: int) -> bool:
+    return text in get_buttons(user_id).values()
         "life_path": get_translation(user_id, "life_path"),
         "soul_urge": get_translation(user_id, "soul_urge"),
         "expression": get_translation(user_id, "expression"),
