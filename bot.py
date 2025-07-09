@@ -310,90 +310,189 @@ async def show_premium_menu(message: types.Message, state: FSMContext):  # <-- a
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
 async def handle_lucky_years(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
     if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        description = {
+            "en": "📅 *Lucky Years Forecast*\nDiscover your most aligned years for success, transformation, and growth.",
+            "lt": "📅 *Sėkmingų Metų Prognozė*\nSužinokite, kurie metai jums bus palankiausi sėkmei, pokyčiams ir augimui.",
+            "ru": "📅 *Прогноз Удачных Лет*\nУзнайте, какие годы принесут вам успех, трансформацию и рост."
+        }
+        cta = {
+            "en": "🔓 Unlock Premium",
+            "lt": "🔓 Atrakinti Premium",
+            "ru": "🔓 Получить Premium"
+        }
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
+        await message.answer(description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+                             parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    lang = get_user_language(user_id)
-    explanations = {
-        "en": "📅 *Lucky Years Forecast*\nEnter your birthdate (DD.MM.YYYY) to reveal the most aligned years in your future.",
-        "lt": "📅 *Sėkmingų Metų Prognozė*\nĮveskite gimimo datą (DD.MM.YYYY), kad sužinotumėte jums palankiausius metus.",
-        "ru": "📅 *Прогноз Удачных Лет*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать свои самые сильные годы."
-    }
-
-    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+    await message.answer(get_translation(user_id, "birthdate_prompt"), parse_mode="Markdown")
     await LuckyYearsStates.waiting_for_birthdate.set()
+
 
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"))
 async def handle_career_profile(message: types.Message):
     user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
     if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        description = {
+            "en": "💼 *Career Profile & Life Purpose*\nReveal your natural talents and how they align with your professional mission.",
+            "lt": "💼 *Karjeros Profilis ir Paskirtis*\nSužinokite savo prigimtinius talentus ir jų ryšį su profesine misija.",
+            "ru": "💼 *Карьерный Профиль и Предназначение*\nОткройте свои природные таланты и их связь с жизненным призванием."
+        }
+        cta = {
+            "en": "🔓 Unlock Premium",
+            "lt": "🔓 Atrakinti Premium",
+            "ru": "🔓 Получить Premium"
+        }
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
+        await message.answer(description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+                             parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    description = get_translation(user_id, "career_profile")
-    await message.answer(description, parse_mode="Markdown")
+    await message.answer(get_translation(user_id, "career_profile"), parse_mode="Markdown")
+
 
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "name_numerology_btn"))
 async def handle_name_numerology(message: types.Message):
     user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
     if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        description = {
+            "en": "🧿 *Name Numerology*\nExplore the vibration of your name and how it influences your destiny.",
+            "lt": "🧿 *Vardo Numerologija*\nSužinokite, kokią vibraciją skleidžia jūsų vardas ir kaip jis veikia jūsų kelią.",
+            "ru": "🧿 *Нумерология Имени*\nУзнайте, как вибрация вашего имени влияет на вашу судьбу."
+        }
+        cta = {
+            "en": "🔓 Unlock Premium",
+            "lt": "🔓 Atrakinti Premium",
+            "ru": "🔓 Получить Premium"
+        }
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
+        await message.answer(description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+                             parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    description = get_translation(user_id, "name_numerology")
-    await message.answer(description, parse_mode="Markdown")
+    await message.answer(get_translation(user_id, "name_numerology"), parse_mode="Markdown")
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"))
 async def handle_lucky_colors(message: types.Message):
     user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
     if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        description = {
+            "en": "🎨 *Lucky Colors & Numbers*\nDiscover the energies that enhance your personal magnetism and spiritual alignment.",
+            "lt": "🎨 *Sėkmingos Spalvos ir Skaičiai*\nSužinokite, kokios energijos padeda jums pritraukti sėkmę ir vidinę harmoniją.",
+            "ru": "🎨 *Счастливые Цвета и Числа*\nУзнайте, какие энергии усиливают вашу привлекательность и духовную гармонию."
+        }
+        cta = {
+            "en": "🔓 Unlock Premium",
+            "lt": "🔓 Atrakinti Premium",
+            "ru": "🔓 Получить Premium"
+        }
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
+        await message.answer(description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+                             parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    description = get_translation(user_id, "lucky_colors")
-    await message.answer(description, parse_mode="Markdown")
+    await message.answer(get_translation(user_id, "lucky_colors"), parse_mode="Markdown")
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "relationship_insights_btn"))
 async def handle_relationship_insights(message: types.Message):
     user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
     if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        description = {
+            "en": "💘 *Relationship Energy*\nUnderstand your emotional patterns and ideal romantic dynamics.",
+            "lt": "💘 *Santykių Energija*\nSužinokite apie savo emocinius modelius ir idealų santykių ritmą.",
+            "ru": "💘 *Энергия Отношений*\nПоймите свои эмоциональные паттерны и идеальные отношения."
+        }
+        cta = {
+            "en": "🔓 Unlock Premium",
+            "lt": "🔓 Atrakinti Premium",
+            "ru": "🔓 Получить Premium"
+        }
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
+        await message.answer(description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+                             parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    description = get_translation(user_id, "relationship_insights")
-    await message.answer(description, parse_mode="Markdown")
+    await message.answer(get_translation(user_id, "relationship_insights"), parse_mode="Markdown")
+
 
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "purpose_analysis_btn"))
 async def handle_purpose_analysis(message: types.Message):
     user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
     if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        description = {
+            "en": "🌟 *Life Purpose & Soul Mission*\nConnect with your higher calling and the lessons your soul came to learn.",
+            "lt": "🌟 *Gyvenimo Paskirtis ir Sielos Misija*\nAtskleiskite savo aukštesnį tikslą ir pamokas, kurias siela atėjo patirti.",
+            "ru": "🌟 *Предназначение и Миссия Души*\nПоймите своё призвание и уроки, с которыми пришла ваша душа."
+        }
+        cta = {
+            "en": "🔓 Unlock Premium",
+            "lt": "🔓 Atrakinti Premium",
+            "ru": "🔓 Получить Premium"
+        }
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
+        await message.answer(description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+                             parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    description = get_translation(user_id, "purpose_analysis")
-    await message.answer(description, parse_mode="Markdown")
+    await message.answer(get_translation(user_id, "purpose_analysis"), parse_mode="Markdown")
+
 
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "detailed_compatibility_btn"))
 async def handle_detailed_compatibility(message: types.Message):
     user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
     if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
+        description = {
+            "en": "💑 *Detailed Compatibility*\nGo beyond life path numbers and explore deep soul-level connections.",
+            "lt": "💑 *Išsamus Suderinamumas*\nSužinokite daugiau nei tik gyvenimo kelią – pažinkite gilesnius ryšius.",
+            "ru": "💑 *Детальная Совместимость*\nИзучите глубинные связи на уровне душ, не только цифры путей жизни."
+        }
+        cta = {
+            "en": "🔓 Unlock Premium",
+            "lt": "🔓 Atrakinti Premium",
+            "ru": "🔓 Получить Premium"
+        }
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
+
+        await message.answer(
+            description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+            parse_mode="Markdown",
+            reply_markup=keyboard
+        )
         return
 
-    description = get_translation(user_id, "detailed_compatibility")
-    await message.answer(description, parse_mode="Markdown")
+    # TEMPORARY: Show description until logic is implemented
+    await message.answer(
+        "🛠️ Detailed Compatibility will compare multiple numerology numbers between you and your partner. Coming soon...",
+        parse_mode="Markdown"
+    )
 
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "life_path"), state=None)
