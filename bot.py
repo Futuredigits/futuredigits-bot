@@ -825,6 +825,7 @@ import datetime
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
 async def handle_lucky_years(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    print(f"[DEBUG] User {user_id} is_premium:", is_user_premium(user_id))
     lang = get_user_language(user_id)
 
     if not is_user_premium(user_id):
