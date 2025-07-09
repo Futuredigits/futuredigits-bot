@@ -47,4 +47,6 @@ def set_user_premium(user_id, is_premium=True):
 def is_user_premium(user_id):
     cursor.execute('SELECT premium FROM users WHERE user_id = ?', (user_id,))
     result = cursor.fetchone()
+    print(f"[DEBUG] Premium check for user {user_id}: {result}")  # 👈 ADD THIS
     return result[0] == 1 if result else False
+
