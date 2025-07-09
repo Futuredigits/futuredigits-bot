@@ -198,6 +198,62 @@ async def make_user_premium(message: types.Message):
     set_user_premium(message.from_user.id, True)
     await message.answer("✅ You are now a premium user.")
 
+@dp.message_handler(commands=["buy_premium"])
+async def buy_premium(message: types.Message):
+    user_id = message.from_user.id
+    lang = get_user_language(user_id)
+
+    # Translated message
+    text = {
+        "en": (
+            "💎 *FutureDigits Premium*\n\n"
+            "Unlock all advanced numerology tools:\n"
+            "• Lucky Years\n"
+            "• Career Profile\n"
+            "• Name Numerology\n"
+            "• Love & Relationship Insights\n"
+            "• Purpose & Mission Analysis\n\n"
+            "💰 Price: *€9 one-time access*\n\n"
+            "👉 This is a demo flow. Click below to simulate payment:"
+        ),
+        "lt": (
+            "💎 *FutureDigits Premium*\n\n"
+            "Atrakinkite visus pažangius numerologijos įrankius:\n"
+            "• Sėkmingi Metai\n"
+            "• Karjeros Profilis\n"
+            "• Vardo Numerologija\n"
+            "• Meilės ir Santykių Įžvalgos\n"
+            "• Gyvenimo Paskirties Analizė\n\n"
+            "💰 Kaina: *9 € vienkartinis mokestis*\n\n"
+            "👉 Tai demonstracinė versija. Spauskite žemiau, kad imituotumėte mokėjimą:"
+        ),
+        "ru": (
+            "💎 *FutureDigits Premium*\n\n"
+            "Откройте все продвинутые нумерологические инструменты:\n"
+            "• Удачные Годы\n"
+            "• Карьерный Профиль\n"
+            "• Нумерология Имени\n"
+            "• Любовь и Отношения\n"
+            "• Анализ Предназначения\n\n"
+            "💰 Цена: *9 € однократный доступ*\n\n"
+            "👉 Это демонстрация. Нажмите ниже, чтобы смоделировать оплату:"
+        )
+    }
+
+    # Simulated "payment success" button
+    button_text = {
+        "en": "✅ Simulate Payment Success",
+        "lt": "✅ Imituoti Sėkmingą Mokėjimą",
+        "ru": "✅ Симулировать Успешную Оплату"
+    }
+
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(
+        types.InlineKeyboardButton(button_text.get(lang, button_text["en"]), callback_data="simulate_premium_payment")
+    )
+
+    await message.answer(text.get(lang, text["en"]), reply_markup=keyboard, parse_mode="Markdown")
+
 @dp.message_handler(lambda message: message.text == "💎 Premium Tools")
 async def show_premium_menu(message: types.Message, state: FSMContext):  # <-- add state here
     await state.finish()  # ✅ cancel any previous input state
@@ -803,6 +859,21 @@ async def process_lucky_years(message: types.Message, state: FSMContext):
 
     except:
         await message.answer(get_translation(user_id, "invalid_format"))
+
+@dp.callback_query_handler(lambda call: call.data == "simulate_premium_payment")
+async def handle_simulated_payment(call: types.CallbackQuery):
+    user_id = call.from_user.id
+    set_user_premium(user_id, True)
+
+    confirmation = {
+        "en": "🎉 *Payment successful!*\nYou now have full access to Premium tools.",
+        "lt": "🎉 *Mokėjimas sėkmingas!*\nDabar turite prieigą prie visų Premium įrankių.",
+        "ru": "🎉 *Оплата прошла успешно!*\nТеперь у вас есть доступ ко всем Premium инструментам."
+    }
+
+    await call.message.edit_reply_markup()  # remove button
+    await call.message.answer(confirmation.get(get_user_language(user_id), confirmation["en"]), parse_mode="Markdown")
+
 
 @dp.message_handler()
 async def handle_all_inputs(message: types.Message):
