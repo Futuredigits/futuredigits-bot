@@ -1,5 +1,12 @@
 import sqlite3
 
+import os
+
+db_path = os.path.abspath("users.db")
+print(f"[DEBUG] Using database at: {db_path}")  # 👈 Add this line
+
+conn = sqlite3.connect(db_path)
+
 # Connect to database (will be created if it doesn't exist)
 conn = sqlite3.connect('users.db')
 cursor = conn.cursor()
