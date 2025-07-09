@@ -199,13 +199,13 @@ async def make_user_premium(message: types.Message):
     await message.answer("✅ You are now a premium user.")
 
 @dp.message_handler(lambda message: message.text == "💎 Premium Tools")
-async def show_premium_menu(message: types.Message):
+async def show_premium_menu(message: types.Message, state: FSMContext):  # <-- add state here
+    await state.finish()  # ✅ cancel any previous input state
+
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-
-    # Premium tools grouped in rows
     keyboard.row(
         types.KeyboardButton(get_translation(user_id, "lucky_years_btn")),
         types.KeyboardButton(get_translation(user_id, "career_profile_btn"))
