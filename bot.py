@@ -12,8 +12,46 @@ from states import PersonalityStates
 from states import DestinyStates
 from states import BirthdayStates
 from db import set_user_premium
+from states import LuckyYearsStates
+from db import is_user_premium
+import datetime
 
 import logging
+
+def get_buttons(user_id):
+    return {
+        "life_path": get_translation(user_id, "life_path"),
+        "soul_urge": get_translation(user_id, "soul_urge"),
+        "expression": get_translation(user_id, "expression"),
+        "personality": get_translation(user_id, "personality"),
+        "destiny": get_translation(user_id, "destiny"),
+        "birthday_number": get_translation(user_id, "birthday_number"),
+        "compatibility": get_translation(user_id, "compatibility"),
+        "change_language": get_translation(user_id, "change_language"),
+        "back_to_menu": get_translation(user_id, "back_to_menu")
+    }
+    
+async def route_menu_command(message, state):
+    text = message.text
+    user_id = message.from_user.id
+    if text == get_translation(user_id, "life_path"):
+        return await handle_life_path(message, state)
+    elif text == get_translation(user_id, "soul_urge"):
+        return await start_soul_urge(message, state)
+    elif text == get_translation(user_id, "expression"):
+        return await start_expression(message, state)
+    elif text == get_translation(user_id, "personality"):
+        return await start_personality(message, state)
+    elif text == get_translation(user_id, "destiny"):
+        return await start_destiny(message, state)
+    elif text == get_translation(user_id, "birthday_number"):
+        return await start_birthday_number(message, state)
+    elif text == get_translation(user_id, "compatibility"):
+        return await start_compatibility(message, state)
+    elif text == get_translation(user_id, "change_language"):
+        return await prompt_language_change(message, state)
+    elif text == get_translation(user_id, "back_to_menu"):
+        return await back_to_main_menu(message, state)
 
 # Setup basic logging
 logging.basicConfig(
@@ -316,32 +354,11 @@ async def process_soul_urge(message: types.Message, state: FSMContext):
         "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
     }
 
-    # If user pressed any other tool button — simulate that tool
-    if text in buttons.values():
+    if is_menu_command(text, message.from_user.id):
         await state.finish()
-
-        # Forward user to the tool they selected
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
+        await route_menu_command(message, state)
         return
-
-    # Otherwise — treat as a name and process Soul Urge logic
+              
     vowels = 'aeiouAEIOU'
     total = sum(ord(c.lower()) - 96 for c in text if c.lower() in vowels and c.isalpha())
     while total > 9 and total not in [11, 22, 33]:
@@ -397,29 +414,12 @@ async def process_expression(message: types.Message, state: FSMContext):
         "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
     }
 
-    if text in buttons.values():
+    if is_menu_command(text, message.from_user.id):
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
+        await route_menu_command(message, state)
         return
-
-    # Calculate expression number
+        
+    
     name = text.lower()
     letter_map = {
         'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8, 'i':9,
@@ -430,7 +430,6 @@ async def process_expression(message: types.Message, state: FSMContext):
     while total > 9 and total not in [11, 22, 33]:
         total = sum(int(d) for d in str(total))
 
-    # Get translated description
     key = f"expression_description_{total}"
     description = get_translation(message.from_user.id, key)
 
@@ -481,28 +480,11 @@ async def process_personality(message: types.Message, state: FSMContext):
         "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
     }
 
-    if text in buttons.values():
+    if is_menu_command(text, message.from_user.id):
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
+        await route_menu_command(message, state)
         return
-
+        
     vowels = 'aeiou'
     consonants = [c for c in text.lower() if c.isalpha() and c not in vowels]
     total = sum(ord(c) - 96 for c in consonants)
@@ -560,28 +542,11 @@ async def process_destiny(message: types.Message, state: FSMContext):
         "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
     }
 
-    if text in buttons.values():
+    if is_menu_command(text, message.from_user.id):
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
+        await route_menu_command(message, state)
         return
-
+        
     name = text.lower()
     letter_map = {
         'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8, 'i':9,
@@ -626,28 +591,11 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
         "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
     }
 
-    if text in buttons.values():
+    if is_menu_command(text, message.from_user.id):
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
+        await route_menu_command(message, state)
         return
-
+        
     try:
         day, month, year = map(int, text.split('.'))
         birthday_number = day
@@ -696,28 +644,11 @@ async def get_first_date(message: types.Message, state: FSMContext):
         "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
     }
 
-    if text in buttons.values():
+    if is_menu_command(text, message.from_user.id):
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
+        await route_menu_command(message, state)
         return
-
+       
     try:
         day, month, year = map(int, text.split('.'))
         await state.update_data(first_date=text)  # ✅ Essential line
@@ -742,28 +673,11 @@ async def get_second_date(message: types.Message, state: FSMContext):
         "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
     }
 
-    if text in buttons.values():
+    if is_menu_command(text, message.from_user.id):
         await state.finish()
-        if text == buttons["life_path"]:
-            await handle_life_path(message, state)
-        elif text == buttons["soul_urge"]:
-            await start_soul_urge(message, state)
-        elif text == buttons["expression"]:
-            await start_expression(message, state)
-        elif text == buttons["personality"]:
-            await start_personality(message, state)
-        elif text == buttons["destiny"]:
-            await start_destiny(message, state)
-        elif text == buttons["birthday_number"]:
-            await start_birthday_number(message, state)
-        elif text == buttons["compatibility"]:
-            await start_compatibility(message, state)
-        elif text == buttons["change_language"]:
-            await prompt_language_change(message, state)
-        elif text == buttons["back_to_menu"]:
-            await back_to_main_menu(message, state)
+        await route_menu_command(message, state)
         return
-
+        
     try:
         day2, month2, year2 = map(int, text.split('.'))
         data = await state.get_data()
@@ -817,10 +731,6 @@ async def get_second_date(message: types.Message, state: FSMContext):
 
     except:
         await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
-
-from states import LuckyYearsStates
-from db import is_user_premium
-import datetime
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
 async def handle_lucky_years(message: types.Message, state: FSMContext):
