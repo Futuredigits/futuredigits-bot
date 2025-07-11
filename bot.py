@@ -148,7 +148,7 @@ async def send_welcome(message: types.Message):
     keyboard.add(types.InlineKeyboardButton("ℹ️ About", callback_data="about_info"))
 
     await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)    
-    await message.answer(get_translation(message.from_user.id, "life_path"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await message.answer("👇 Choose a numerology tool to begin:", reply_markup=main_menu_keyboard(message.from_user.id))
 
 
 @dp.callback_query_handler(lambda call: call.data == "about_info")
