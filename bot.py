@@ -382,9 +382,9 @@ async def handle_career_profile(message: types.Message, state: FSMContext):
 
     if not is_user_premium(user_id):
         description = {
-            "en": "💼 *Career Profile & Life Purpose*\nReveal your natural talents and how they align with your professional mission.",
-            "lt": "💼 *Karjeros Profilis ir Paskirtis*\nSužinokite savo prigimtinius talentus ir jų ryšį su profesine misija.",
-            "ru": "💼 *Карьерный Профиль и Предназначение*\nОткройте свои природные таланты и их связь с жизненным призванием."
+            "en": "💼 *Career Profile*\nReveal your natural talents and how they align with your professional mission.",
+            "lt": "💼 *Karjeros Profilis*\nSužinokite savo prigimtinius talentus ir jų ryšį su profesine misija.",
+            "ru": "💼 *Карьерный Профиль*\nОткройте свои природные таланты и их связь с жизненным призванием."
         }
         cta = {
             "en": "🔓 Unlock Premium",
@@ -398,9 +398,9 @@ async def handle_career_profile(message: types.Message, state: FSMContext):
         return
 
     explanations = {
-        "en": "💼 *Career Profile & Life Purpose*\nEnter your birthdate (DD.MM.YYYY) to reveal your strongest career path based on your personal numerology.",
-        "lt": "💼 *Karjeros Profilis ir Paskirtis*\nĮveskite savo gimimo datą (DD.MM.YYYY), kad sužinotumėte jums tinkamiausią profesinį kelią pagal numerologiją.",
-        "ru": "💼 *Карьерный Профиль и Предназначение*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать ваш наилучший карьерный путь по нумерологии."
+        "en": "💼 *Career Profile*\nEnter your birthdate (DD.MM.YYYY) to reveal your strongest career path based on your personal numerology.",
+        "lt": "💼 *Karjeros Profilis*\nĮveskite savo gimimo datą (DD.MM.YYYY), kad sužinotumėte jums tinkamiausią profesinį kelią pagal numerologiją.",
+        "ru": "💼 *Карьерный Профиль*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать ваш наилучший карьерный путь по нумерологии."
     }
 
     await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
