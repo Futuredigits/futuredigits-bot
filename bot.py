@@ -1109,7 +1109,7 @@ async def handle_simulated_payment(call: types.CallbackQuery):
     await call.message.answer(confirmation.get(get_user_language(user_id), confirmation["en"]), parse_mode="Markdown")
 
 
-@dp.message_handler()
+@dp.message_handler(state=None)
 async def handle_all_inputs(message: types.Message):
     try:
         day, month, year = map(int, message.text.strip().split('.'))
