@@ -626,6 +626,7 @@ async def handle_detailed_compatibility(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "life_path"), state=None)
 async def handle_life_path(message: types.Message, state: FSMContext):
+    await state.finish()
     lang = get_user_language(message.from_user.id)
     
     explanations = {
@@ -648,6 +649,7 @@ async def prompt_language_change(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "soul_urge"))
 async def start_soul_urge(message: types.Message, state: FSMContext):
+    await state.finish()
     lang = get_user_language(message.from_user.id)
 
     explanations = {
