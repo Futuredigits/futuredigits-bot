@@ -323,11 +323,12 @@ async def handle_lucky_years(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
+    # 🔒 IF NOT PREMIUM – show preview + CTA
     if not is_user_premium(user_id):
         description = {
-            "en": "📅 *Lucky Years Forecast*\nDiscover your most aligned years for success, transformation, and growth.",
-            "lt": "📅 *Sėkmingų Metų Prognozė*\nSužinokite, kurie metai jums bus palankiausi sėkmei, pokyčiams ir augimui.",
-            "ru": "📅 *Прогноз Удачных Лет*\nУзнайте, какие годы принесут вам успех, трансформацию и рост."
+            "en": "📅 *Lucky Years Forecast*\nEvery soul moves in cycles. Some years are simply destined to align with your energy — years of clarity, breakthrough, love, expansion.\nLet’s discover the 3 most powerful years ahead that are perfectly in sync with your soul’s path.",
+            "lt": "📅 *Sėkmingų Metų Prognozė*\nKiekviena siela juda ciklais. Kai kurie metai – tai šventi langai: proveržio, meilės, dvasinio pakilimo.\nAtraskite 3 galingiausius artėjančius metus, kurie visiškai atitinka jūsų sielos ritmą.",
+            "ru": "📅 *Прогноз Удачных Лет*\nДуша живёт в ритмах. Некоторые годы — это не случайность, а божественное совпадение с вашей судьбой.\nДавайте узнаем 3 самых мощных года впереди, когда ваша энергия будет в полном резонансе."
         }
         cta = {
             "en": "🔓 Unlock Premium",
@@ -340,11 +341,11 @@ async def handle_lucky_years(message: types.Message, state: FSMContext):
                              parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    # 🛠️ ADD THIS BLOCK – THE MISSING EXPLANATION!
+    # ✅ Premium intro
     explanations = {
-        "en": "📅 *Lucky Years Forecast*\nDiscover your most aligned years for success, transformation, and growth.\n\nPlease enter your birthdate (DD.MM.YYYY):",
-        "lt": "📅 *Sėkmingų Metų Prognozė*\nSužinokite, kurie metai jums bus palankiausi sėkmei, pokyčiams ir augimui.\n\nĮveskite gimimo datą (DD.MM.YYYY):",
-        "ru": "📅 *Прогноз Удачных Лет*\nУзнайте, какие годы принесут вам успех, трансформацию и рост.\n\nВведите дату рождения (ДД.ММ.ГГГГ):"
+        "en": "📅 *Lucky Years Forecast*\nEvery soul moves in cycles. Some years are simply destined to align with your energy — years of clarity, breakthrough, love, expansion.\nLet’s discover the 3 most powerful years ahead that are perfectly in sync with your soul’s path.\n\nPlease enter your birthdate (DD.MM.YYYY):",
+        "lt": "📅 *Sėkmingų Metų Prognozė*\nKiekviena siela juda ciklais. Kai kurie metai – tai šventi langai: proveržio, meilės, dvasinio pakilimo.\nAtraskime 3 artimiausius metus, kurie visiškai dera su jūsų sielos ritmu.\n\nĮveskite gimimo datą (DD.MM.YYYY):",
+        "ru": "📅 *Прогноз Удачных Лет*\nДуша живёт в ритмах. Некоторые годы — это не случайность, а божественное совпадение с вашей судьбой.\nУзнаем 3 самых сильных года впереди, когда энергия будет в полном резонансе.\n\nВведите дату рождения (ДД.ММ.ГГГГ):"
     }
 
     await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
@@ -362,20 +363,23 @@ async def process_lucky_years(message: types.Message, state: FSMContext):
         return
 
     try:
+        # Validate and parse birthdate
         day, month, year = map(int, text.split('.'))
         now_year = datetime.datetime.now().year
         lucky_years = [now_year, now_year + 7, now_year + 14]
-      
-        msg = {
-            "en": f"📅 *Your Lucky Years Are Calling*\nThese are your most powerful years for breakthrough, transformation, and growth.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
-            "lt": f"📅 *Jūsų Sėkmingi Metai*\nŠie metai atneš proveržį, augimą ir dvasinę stiprybę. Būkite pasiruošę didžiausiems šuoliams!\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
-            "ru": f"📅 *Ваши Удачные Годы*\nЭти годы принесут вам прорыв, рост и реализацию. Пришло время сиять!\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}"
-        }
 
         lang = get_user_language(user_id)
+
+        # 🎯 Beautiful result message
+        msg = {
+            "en": f"📅 *Your Lucky Years Are Calling*\nThese are your most powerful years for breakthrough, transformation, and growth.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "lt": f"📅 *Jūsų Sielos Derantys Metai*\nTai kosminiai langai pokyčiams, meilei ir dvasiniam šuoliui.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "ru": f"📅 *Годы Космической Синхронизации*\nЭто ваши ключевые годы для роста, любви и внутренней силы.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}"
+        }
+
         await message.answer(msg.get(lang, msg["en"]), parse_mode="Markdown")
 
-        
+        # ✅ Go back to tool menu (no premium CTA)
         await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
         await state.finish()
 
