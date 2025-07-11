@@ -110,7 +110,6 @@ soul_urge_descriptions = {
     33: "🔹 Master Teacher (Master Number)\nYou’re here to serve selflessly through love, healing, and compassion. Your soul calls you to uplift others through deep emotional wisdom."
 }
 
-# Keyboard with numerology options
 def main_menu_keyboard(user_id):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)     
     keyboard.row(
@@ -124,7 +123,7 @@ def main_menu_keyboard(user_id):
     keyboard.row(
         types.KeyboardButton(get_translation(user_id, "destiny")),
         types.KeyboardButton(get_translation(user_id, "birthday_number"))
-
+    )
     keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
 
     keyboard.add(types.KeyboardButton("💎 Premium Tools"))
