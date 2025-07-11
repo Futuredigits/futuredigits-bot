@@ -342,10 +342,40 @@ async def handle_lucky_years(message: types.Message, state: FSMContext):
     await message.answer(get_translation(user_id, "birthdate_prompt"), parse_mode="Markdown")
     await LuckyYearsStates.waiting_for_birthdate.set()
 
+@dp.message_handler(state=LuckyYearsStates.waiting_for_birthdate)
+async def process_lucky_years(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+    user_id = message.from_user.id
+
+    if is_menu_command(text, user_id):
+        await state.finish()
+        await route_menu_command(message, state)
+        return
+
+    try:
+        day, month, year = map(int, text.split('.'))
+        birth_year = int(year)
+        lucky_years = [birth_year + 28, birth_year + 35, birth_year + 42]
+
+        msg = {
+            "en": f"📅 *Your Lucky Years*\nYour next aligned years for growth and transformation:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "lt": f"📅 *Jūsų Sėkmingi Metai*\nArtimiausi palankūs metai augimui ir proveržiui:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "ru": f"📅 *Ваши Удачные Годы*\nБлижайшие годы роста и трансформации:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}"
+        }
+
+        lang = get_user_language(user_id)
+        await message.answer(msg.get(lang, msg["en"]), parse_mode="Markdown")
+        await message.answer(get_translation(user_id, "premium_cta"), parse_mode="Markdown")
+        await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
+        await state.finish()
+
+    except:
+        await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
 
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"))
-async def handle_career_profile(message: types.Message):
+async def handle_career_profile(message: types.Message, state: FSMContext):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -366,7 +396,61 @@ async def handle_career_profile(message: types.Message):
                              parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    await message.answer(get_translation(user_id, "career_profile"), parse_mode="Markdown")
+    explanations = {
+        "en": "💼 *Career Profile & Life Purpose*\nEnter your birthdate (DD.MM.YYYY) to reveal your strongest career path based on your personal numerology.",
+        "lt": "💼 *Karjeros Profilis ir Paskirtis*\nĮveskite savo gimimo datą (DD.MM.YYYY), kad sužinotumėte jums tinkamiausią profesinį kelią pagal numerologiją.",
+        "ru": "💼 *Карьерный Профиль и Предназначение*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать ваш наилучший карьерный путь по нумерологии."
+    }
+
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+    await CareerProfileStates.waiting_for_birthdate.set()
+
+@dp.message_handler(state=CareerProfileStates.waiting_for_birthdate)
+async def process_career_profile(message: types.Message, state: FSMContext):
+    text = message.text.strip()
+    user_id = message.from_user.id
+
+    if is_menu_command(text, user_id):
+        await state.finish()
+        await route_menu_command(message, state)
+        return
+
+    try:
+        day, month, year = map(int, text.split('.'))
+        total = sum(int(d) for d in f"{day:02}{month:02}{year}")
+        while total > 9 and total not in [11, 22, 33]:
+            total = sum(int(d) for d in str(total))
+
+        career_map = {
+            1: "Leadership, entrepreneurship, or pioneering roles suit you. You excel when creating your own path.",
+            2: "You thrive in teamwork, diplomacy, and support roles. Careers in HR, counseling, or healing fit well.",
+            3: "You shine in creative fields—media, writing, marketing, art. Communication is your strength.",
+            4: "You’re reliable and structured. Engineering, planning, or technical work aligns with your nature.",
+            5: "You need freedom and movement. Travel, sales, media, or innovation-driven roles suit you.",
+            6: "You’re a nurturer and community builder. Careers in care, design, education, or family services align.",
+            7: "You are analytical and introspective. Science, tech, psychology, or research is your zone.",
+            8: "You’re built for leadership, business, finance, or management. Power and success motivate you.",
+            9: "You’re idealistic and humanitarian. Nonprofit, art, healing, or mission-based work fulfills you.",
+            11: "You’re a spiritual leader or visionary. Teaching, art, or guiding others is your path.",
+            22: "You’re a master builder. Architecture, systems leadership, or social reform suit your vision.",
+            33: "You’re a healer-teacher. Counseling, spiritual work, or emotional leadership is your highest path."
+        }
+
+        lang = get_user_language(user_id)
+        summary = career_map.get(total, "Career insight not available.")
+        title = {
+            "en": f"💼 *Career Path: Number {total}*",
+            "lt": f"💼 *Karjeros Kryptis: Skaičius {total}*",
+            "ru": f"💼 *Карьера по Числу {total}*"
+        }
+
+        await message.answer(f"{title.get(lang, title['en'])}\n\n{summary}", parse_mode="Markdown")
+        await message.answer(get_translation(user_id, "premium_cta"), parse_mode="Markdown")
+        await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
+        await state.finish()
+
+    except:
+        await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
 
 
 

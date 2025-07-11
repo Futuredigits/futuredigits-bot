@@ -22,4 +22,8 @@ class BirthdayStates(StatesGroup):
 class LuckyYearsStates(StatesGroup):
     waiting_for_birthdate = State()
 
+class CareerProfileStates(StatesGroup):
+    waiting_for_birthdate = State()
+
+
 
