@@ -13,6 +13,7 @@ from states import DestinyStates
 from states import BirthdayStates
 from db import set_user_premium
 from states import LuckyYearsStates
+from states import CareerProfileStates
 from db import is_user_premium
 import datetime
 
