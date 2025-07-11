@@ -1,6 +1,10 @@
 translations = {
     "en": {
-        "welcome": "🔮 Welcome to FutureDigits!\nSend me your birthdate in format DD.MM.YYYY to discover your Life Path Number.",
+        "welcome": (
+            "🔮 Welcome to *FutureDigits* – your personalized numerology guide.\n\n"
+            "Discover your life path, soul urges, personality, and compatibility using your birthdate and full name.\n\n"
+            "✨ To begin, send your birthdate in format *DD.MM.YYYY*."
+        ),
         "about": "👤 *About FutureDigits*\n\nFutureDigits is a personalized numerology experience designed to help you understand your deeper self, life purpose, and relationship dynamics.\n\n🌟 Every insight is thoughtfully crafted based on timeless numerology principles and modern guidance tools.\n\nFollow us for updates, share your results, and start your journey of self-discovery.\n\nInstagram: @yourpage\nTelegram: t.me/yourchannel",
         "premium_intro": "💎 *Unlock FutureDigits Premium*\n\nGet access to advanced numerology tools designed to reveal your life’s deeper patterns, relationship energy, career alignment, and spiritual path.\n\n✨ Premium includes:\n• Lucky Years Forecast\n• Career Profile & Life Purpose\n• Name Numerology\n• Detailed Compatibility Report\n• Lucky Colors & Numbers\n• Relationship Insights\n\n🔓 Get Premium to unlock all tools and explore your full potential.",
         "premium_cta": "🔓 *Curious to go deeper?*\nUnlock advanced tools like Career Profile, Relationship Insights, and Compatibility.\n\n👉 Type /premium to explore.",
@@ -143,7 +147,11 @@ translations = {
         "compatibility_interpretation_0": "🔥 This is a karmic or intense relationship. Challenges are likely, but growth can come from it.",
     },
     "lt": {
-        "welcome": "🔮 Sveiki atvykę į FutureDigits!\nĮveskite gimimo datą formatu DD.MM.YYYY ir sužinokite savo Gyvenimo Kelią.",
+        "welcome": (
+            "🔮 Sveiki atvykę į *FutureDigits* – jūsų asmeninį numerologijos gidą.\n\n"
+            "Sužinokite apie savo gyvenimo kelią, sielos troškimus, asmenybę ir suderinamumą pagal gimimo datą ir vardą.\n\n"
+            "✨ Pradėkite – įveskite gimimo datą formatu *DD.MM.YYYY*."
+        ),
         "about": "👤 *Apie FutureDigits*\n\nFutureDigits – tai asmeninė numerologijos patirtis, padedanti geriau suprasti save, gyvenimo paskirtį ir santykių dinamiką.\n\n🌟 Kiekviena įžvalga paremta laiko patikrintais numerologijos principais ir šiuolaikinėmis įžvalgomis.\n\nSekite mus, dalinkitės rezultatais ir pradėkite savęs pažinimo kelionę.\n\nInstagram: @jusu_puslapis\nTelegram: t.me/jusu_kanalas",
         "premium_intro": "💎 *Atrakinkite FutureDigits Premium*\n\nGaukite prieigą prie išplėstinių numerologijos įrankių, kurie padeda suprasti gyvenimo kryptį, santykių energiją, karjeros potencialą ir sielos paskirtį.\n\n✨ Premium apima:\n• Sėkmingų Metų prognozė\n• Karjeros Profilis ir Gyvenimo Paskirtis\n• Vardo Numerologija\n• Išsami Suderinamumo Ataskaita\n• Laimingos Spalvos ir Skaičiai\n• Meilės Įžvalgos\n\n🔓 Tapkite Premium nariu ir atrakinkite visus įrankius.",
         "premium_cta": "🔓 *Norite giliau pažinti save?*\nAtrakinkite Premium įrankius: Karjeros Profilis, Meilės Įžvalgos ir Suderinamumo analizė.\n\n👉 Parašykite /premium",
@@ -285,7 +293,11 @@ translations = {
         "compatibility_interpretation_0": "🔥 Tai gali būti intensyvūs ar karmingi santykiai. Iššūkiai neišvengiami, bet per juos galima augti.",
     },
     "ru": {
-        "welcome": "🔮 Добро пожаловать в FutureDigits!\nОтправьте дату рождения в формате ДД.ММ.ГГГГ, чтобы узнать ваше Число Жизненного Пути.",
+        "welcome": (
+            "🔮 Добро пожаловать в *FutureDigits* – ваш персональный нумерологический помощник.\n\n"
+            "Узнайте своё предназначение, стремления души, личность и совместимость по дате рождения и имени.\n\n"
+            "✨ Начните – отправьте дату рождения в формате *ДД.ММ.ГГГГ*."
+        ),
         "about": "👤 *О FutureDigits*\n\nFutureDigits — это персонализированный опыт нумерологии, помогающий лучше понять себя, своё предназначение и динамику отношений.\n\n🌟 Все описания основаны на проверенных принципах нумерологии и современных методах саморазвития.\n\nПодписывайтесь, делитесь результатами и начните путь самопознания.\n\nInstagram: @вашпрофиль\nTelegram: t.me/вашканал",
         "premium_intro": "💎 *Откройте FutureDigits Premium*\n\nПолучите доступ к продвинутым инструментам нумерологии для понимания своего предназначения, отношений, карьеры и духовного пути.\n\n✨ Premium включает:\n• Прогноз Удачных Лет\n• Карьерный Профиль и Предназначение\n• Нумерология Имени\n• Подробный Отчёт о Совместимости\n• Счастливые Цвета и Числа\n• Любовные и Отношенческие Инсайты\n\n🔓 Получите Premium и откройте все инструменты для глубинного понимания себя.",
         "premium_cta": "🔓 *Хотите узнать больше?*\nОткройте Premium: Карьера, Отношения, Совместимость и многое другое.\n\n👉 Введите /premium",

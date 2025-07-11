@@ -142,7 +142,18 @@ def main_menu_keyboard(user_id):
 async def send_welcome(message: types.Message):
     set_user_language(message.from_user.id, 'en')
     text = get_translation(message.from_user.id, "welcome")
-    await message.answer(text, reply_markup=main_menu_keyboard(message.from_user.id))
+
+    # Inline "About" button
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton("ℹ️ About", callback_data="about_info"))
+
+    await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
+    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+
+@dp.callback_query_handler(lambda call: call.data == "about_info")
+async def show_about_from_button(call: types.CallbackQuery):
+    await call.message.answer(get_translation(call.from_user.id, "about"), parse_mode="Markdown")
+    await call.answer()
 
 @dp.message_handler(commands=['help'])
 async def send_help(message: types.Message):
