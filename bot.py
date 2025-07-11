@@ -972,10 +972,8 @@ async def start_birthday_number(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=BirthdayStates.waiting_for_birthdate)
 async def process_birthday_number(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
     text = message.text.strip()
-    if not any(c.isalpha() for c in text):
-        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
-        return
 
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
