@@ -329,6 +329,8 @@ async def handle_lucky_years(message: types.Message, state: FSMContext):
             "lt": "📅 *Sėkmingų Metų Prognozė*\nSužinokite, kurie metai jums bus palankiausi sėkmei, pokyčiams ir augimui.",
             "ru": "📅 *Прогноз Удачных Лет*\nУзнайте, какие годы принесут вам успех, трансформацию и рост."
         }
+        await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+        await LuckyYearsStates.waiting_for_birthdate.set()
         cta = {
             "en": "🔓 Unlock Premium",
             "lt": "🔓 Atrakinti Premium",
