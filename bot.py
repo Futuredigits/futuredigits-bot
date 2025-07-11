@@ -112,12 +112,10 @@ soul_urge_descriptions = {
 
 # Keyboard with numerology options
 def main_menu_keyboard(user_id):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-
-       
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)     
     keyboard.row(
         types.KeyboardButton(get_translation(user_id, "life_path")),
-        types.KeyboardButton(get_translation(user_id, "soul_urge")),        
+        types.KeyboardButton(get_translation(user_id, "soul_urge"))        
     )
     keyboard.row(
         types.KeyboardButton(get_translation(user_id, "expression")),
@@ -129,10 +127,8 @@ def main_menu_keyboard(user_id):
 
     keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
 
-    # Premium tools submenu
     keyboard.add(types.KeyboardButton("💎 Premium Tools"))
 
-    # Settings
     keyboard.row(
         types.KeyboardButton(get_translation(user_id, "change_language")),
         types.KeyboardButton(get_translation(user_id, "back_to_menu"))
