@@ -372,9 +372,9 @@ async def process_lucky_years(message: types.Message, state: FSMContext):
 
         # 🎯 Beautiful result message
         msg = {
-            "en": f"📅 *Your Lucky Years Are Calling*\nThese are your most powerful years for breakthrough, transformation, and growth.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
-            "lt": f"📅 *Jūsų Sielos Derantys Metai*\nTai kosminiai langai pokyčiams, meilei ir dvasiniam šuoliui.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
-            "ru": f"📅 *Годы Космической Синхронизации*\nЭто ваши ключевые годы для роста, любви и внутренней силы.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}"
+            "en": f"📅 *Your Lucky Years Are Calling*\nThese years are cosmic gateways for you — moments when the universe is quietly but powerfully on your side. Watch for signs, open your heart, and say yes to bold moves. These are your destined years:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "lt": f"📅 *Jūsų Sielos Derantys Metai*\nTai ne šiaip metai – tai kosminiai vartai jums. Šiuo metu visata tyliai padeda, atveria kelius, siunčia ženklus. Būkite atviri pokyčiams, drąsai ir meilei. Šie metai jums lemtingi:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "ru": f"📅 *Годы Космической Синхронизации*\nЭти годы — порталы судьбы для вашей души. Всё внутри и снаружи подталкивает вас к росту, любви и исполнению. В эти годы нужно быть смелым. Они — для вас:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}"
         }
 
         await message.answer(msg.get(lang, msg["en"]), parse_mode="Markdown")
