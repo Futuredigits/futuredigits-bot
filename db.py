@@ -7,12 +7,13 @@ conn = sqlite3.connect(db_path)
 
 cursor = conn.cursor()
 
-# Create users table with premium field if not exists
+# Create users table with premium + created_at fields if not exists
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY,
     language TEXT DEFAULT 'en',
-    premium INTEGER DEFAULT 0
+    premium INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT (datetime('now'))
 )
 ''')
 conn.commit()
@@ -24,12 +25,23 @@ if "premium" not in columns:
     cursor.execute("ALTER TABLE users ADD COLUMN premium INTEGER DEFAULT 0")
     conn.commit()
 
+# Safe auto-migration: add 'created_at' column if missing
+cursor.execute("PRAGMA table_info(users)")
+columns = [col[1] for col in cursor.fetchall()]
+if "created_at" not in columns:
+    cursor.execute("ALTER TABLE users ADD COLUMN created_at TEXT DEFAULT (datetime('now'))")
+    conn.commit()
+
 def set_user_language(user_id, language):
     cursor.execute('''
-        INSERT INTO users (user_id, language, premium)
-        VALUES (?, ?, COALESCE((SELECT premium FROM users WHERE user_id = ?), 0))
+        INSERT INTO users (user_id, language, premium, created_at)
+        VALUES (
+            ?, ?, 
+            COALESCE((SELECT premium FROM users WHERE user_id = ?), 0),
+            COALESCE((SELECT created_at FROM users WHERE user_id = ?), datetime('now'))
+        )
         ON CONFLICT(user_id) DO UPDATE SET language=excluded.language
-    ''', (user_id, language, user_id))
+    ''', (user_id, language, user_id, user_id))
     conn.commit()
 
 def get_user_language(user_id):
@@ -37,19 +49,29 @@ def get_user_language(user_id):
     result = cursor.fetchone()
     return result[0] if result else 'en'
 
-# ✅ NEW: Set user as premium (1 = True, 0 = False)
+# ✅ Set user as premium and preserve created_at
 def set_user_premium(user_id, is_premium=True):
     cursor.execute('''
-        INSERT INTO users (user_id, language, premium)
-        VALUES (?, COALESCE((SELECT language FROM users WHERE user_id = ?), 'en'), ?)
+        INSERT INTO users (user_id, language, premium, created_at)
+        VALUES (
+            ?, 
+            COALESCE((SELECT language FROM users WHERE user_id = ?), 'en'), 
+            ?, 
+            COALESCE((SELECT created_at FROM users WHERE user_id = ?), datetime('now'))
+        )
         ON CONFLICT(user_id) DO UPDATE SET premium=excluded.premium
-    ''', (user_id, user_id, int(is_premium)))
+    ''', (user_id, user_id, int(is_premium), user_id))
     conn.commit()
 
-# ✅ NEW: Check if user is premium
+# ✅ Check if user is premium
 def is_user_premium(user_id):
     cursor.execute('SELECT premium FROM users WHERE user_id = ?', (user_id,))
     result = cursor.fetchone()
-    print(f"[DEBUG] Premium check for user {user_id}: {result}")  # 👈 ADD THIS
+    print(f"[DEBUG] Premium check for user {user_id}: {result}")
     return result[0] == 1 if result else False
 
+# ✅ Optional: Get user creation date
+def get_user_created_at(user_id):
+    cursor.execute("SELECT created_at FROM users WHERE user_id = ?", (user_id,))
+    result = cursor.fetchone()
+    return result[0] if result else None
