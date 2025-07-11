@@ -113,19 +113,18 @@ soul_urge_descriptions = {
 def main_menu_keyboard(user_id):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
-    # Free tools
+       
     keyboard.row(
         types.KeyboardButton(get_translation(user_id, "life_path")),
-        types.KeyboardButton(get_translation(user_id, "soul_urge"))
+        types.KeyboardButton(get_translation(user_id, "soul_urge")),
+        types.KeyboardButton(get_translation(user_id, "expression"))
     )
     keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "expression")),
-        types.KeyboardButton(get_translation(user_id, "personality"))
-    )
-    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "personality")),
         types.KeyboardButton(get_translation(user_id, "destiny")),
         types.KeyboardButton(get_translation(user_id, "birthday_number"))
     )
+
     keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
 
     # Premium tools submenu
