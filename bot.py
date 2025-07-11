@@ -58,6 +58,9 @@ async def route_menu_command(message, state):
         return await prompt_language_change(message, state)
     elif text == get_translation(user_id, "back_to_menu"):
         return await back_to_main_menu(message, state)
+    elif text == "💎 Premium Tools":  
+        return await show_premium_menu(message, state)
+
 
 # Setup basic logging
 logging.basicConfig(
