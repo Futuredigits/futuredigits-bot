@@ -144,12 +144,12 @@ async def send_welcome(message: types.Message):
     set_user_language(message.from_user.id, 'en')
     text = get_translation(message.from_user.id, "welcome")
 
-    # Inline "About" button
     keyboard = types.InlineKeyboardMarkup()
     keyboard.add(types.InlineKeyboardButton("ℹ️ About", callback_data="about_info"))
 
-    await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
-    await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
+    await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)    
+    await message.answer(get_translation(message.from_user.id, "life_path"), reply_markup=main_menu_keyboard(message.from_user.id))
+
 
 @dp.callback_query_handler(lambda call: call.data == "about_info")
 async def show_about_from_button(call: types.CallbackQuery):
