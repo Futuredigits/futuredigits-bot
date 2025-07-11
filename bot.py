@@ -664,6 +664,9 @@ async def start_soul_urge(message: types.Message, state: FSMContext):
 @dp.message_handler(state=SoulUrgeStates.waiting_for_name)
 async def process_soul_urge(message: types.Message, state: FSMContext):
     text = message.text.strip()
+    if not any(c.isalpha() for c in text):
+        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
+        return
 
     # List of all buttons (translated)
     buttons = {
@@ -726,6 +729,9 @@ async def start_expression(message: types.Message, state: FSMContext):
 @dp.message_handler(state=ExpressionStates.waiting_for_name)
 async def process_expression(message: types.Message, state: FSMContext):
     text = message.text.strip()
+    if not any(c.isalpha() for c in text):
+        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
+        return
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
         "soul_urge": get_translation(message.from_user.id, "soul_urge"),
@@ -792,6 +798,9 @@ async def start_personality(message: types.Message, state: FSMContext):
 @dp.message_handler(state=PersonalityStates.waiting_for_name)
 async def process_personality(message: types.Message, state: FSMContext):
     text = message.text.strip()
+    if not any(c.isalpha() for c in text):
+        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
+        return
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
         "soul_urge": get_translation(message.from_user.id, "soul_urge"),
@@ -853,6 +862,9 @@ async def start_destiny(message: types.Message, state: FSMContext):
 @dp.message_handler(state=DestinyStates.waiting_for_name)
 async def process_destiny(message: types.Message, state: FSMContext):
     text = message.text.strip()
+    if not any(c.isalpha() for c in text):
+        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
+        return
 
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
@@ -916,6 +928,9 @@ async def start_birthday_number(message: types.Message, state: FSMContext):
 @dp.message_handler(state=BirthdayStates.waiting_for_birthdate)
 async def process_birthday_number(message: types.Message, state: FSMContext):
     text = message.text.strip()
+    if not any(c.isalpha() for c in text):
+        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
+        return
 
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
@@ -969,6 +984,9 @@ async def start_compatibility(message: types.Message, state: FSMContext):
 @dp.message_handler(state=CompatibilityStates.waiting_for_first_date)
 async def get_first_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
+    if not any(c.isalpha() for c in text):
+        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
+        return
 
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
@@ -998,6 +1016,9 @@ async def get_first_date(message: types.Message, state: FSMContext):
 @dp.message_handler(state=CompatibilityStates.waiting_for_second_date)
 async def get_second_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
+    if not any(c.isalpha() for c in text):
+        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
+        return
 
     buttons = {
         "life_path": get_translation(message.from_user.id, "life_path"),
