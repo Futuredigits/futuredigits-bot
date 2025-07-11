@@ -941,26 +941,6 @@ async def get_second_date(message: types.Message, state: FSMContext):
     except:
         await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
-async def handle_lucky_years(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    print(f"[DEBUG] User {user_id} is_premium:", is_user_premium(user_id))
-    lang = get_user_language(user_id)
-
-    if not is_user_premium(user_id):
-        locked_msg = get_translation(user_id, "premium_tool_locked")
-        await message.answer(f"🔒 {locked_msg}", parse_mode="Markdown")
-        return
-
-    explanations = {
-        "en": "📅 *Lucky Years Forecast*\nEnter your birthdate (DD.MM.YYYY) to reveal the most aligned years in your future.",
-        "lt": "📅 *Sėkmingų Metų Prognozė*\nĮveskite gimimo datą (DD.MM.YYYY), kad sužinotumėte jums palankiausius metus.",
-        "ru": "📅 *Прогноз Удачных Лет*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать свои самые сильные годы."
-    }
-
-    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
-    await LuckyYearsStates.waiting_for_birthdate.set()
-
 
 @dp.callback_query_handler(lambda call: call.data == "simulate_premium_payment")
 async def handle_simulated_payment(call: types.CallbackQuery):
