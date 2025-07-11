@@ -651,6 +651,44 @@ async def prompt_language_change(message: types.Message, state: FSMContext):
     keyboard.add(*buttons)
     await message.answer("Choose your language / Pasirinkite kalbą / Выберите язык:", reply_markup=keyboard)
 
+@dp.message_handler(lambda message: True, state=None)
+async def process_life_path_birthdate(message: types.Message, state: FSMContext):
+    user_id = message.from_user.id
+    text = message.text.strip()
+
+    if is_menu_command(text, user_id):
+        await route_menu_command(message, state)
+        return
+
+    try:
+        day, month, year = map(int, text.split('.'))
+        birthdate_digits = [int(d) for d in f"{day:02d}{month:02d}{year}"]
+        total = sum(birthdate_digits)
+        while total > 9 and total not in [11, 22, 33]:
+            total = sum(int(d) for d in str(total))
+
+        number = total
+        lang = get_user_language(user_id)
+        title = get_translation(user_id, "life_path_result_title")
+        description = get_translation(user_id, f"life_path_description_{number}")
+
+        await message.answer(f"{title} {number}\n\n{description}", parse_mode="Markdown")
+
+        await message.answer(
+            get_translation(user_id, "premium_cta"),
+            parse_mode="Markdown"
+        )
+
+        await message.answer(
+            get_translation(user_id, "done_choose_tool"),
+            parse_mode="Markdown",
+            reply_markup=main_menu_keyboard(user_id)
+        )
+
+    except:
+        await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
+
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "soul_urge"))
 async def start_soul_urge(message: types.Message, state: FSMContext):
