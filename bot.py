@@ -363,18 +363,19 @@ async def process_lucky_years(message: types.Message, state: FSMContext):
 
     try:
         day, month, year = map(int, text.split('.'))
-        birth_year = int(year)
-        lucky_years = [birth_year + 28, birth_year + 35, birth_year + 42]
-
+        now_year = datetime.datetime.now().year
+        lucky_years = [now_year, now_year + 7, now_year + 14]
+      
         msg = {
-            "en": f"📅 *Your Lucky Years*\nYour next aligned years for growth and transformation:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
-            "lt": f"📅 *Jūsų Sėkmingi Metai*\nArtimiausi palankūs metai augimui ir proveržiui:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
-            "ru": f"📅 *Ваши Удачные Годы*\nБлижайшие годы роста и трансформации:\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}"
+            "en": f"📅 *Your Lucky Years Are Calling*\nThese are your most powerful years for breakthrough, transformation, and growth.\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "lt": f"📅 *Jūsų Sėkmingi Metai*\nŠie metai atneš proveržį, augimą ir dvasinę stiprybę. Būkite pasiruošę didžiausiems šuoliams!\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}",
+            "ru": f"📅 *Ваши Удачные Годы*\nЭти годы принесут вам прорыв, рост и реализацию. Пришло время сиять!\n\n🔹 {lucky_years[0]}, {lucky_years[1]}, {lucky_years[2]}"
         }
 
         lang = get_user_language(user_id)
         await message.answer(msg.get(lang, msg["en"]), parse_mode="Markdown")
-        await message.answer(get_translation(user_id, "premium_cta"), parse_mode="Markdown")
+
+        
         await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
         await state.finish()
 
