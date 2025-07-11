@@ -385,15 +385,14 @@ async def process_lucky_years(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"))
 async def handle_career_profile(message: types.Message, state: FSMContext):
-    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
     if not is_user_premium(user_id):
-        description = {
-            "en": "💼 *Career Profile*\nReveal your natural talents and how they align with your professional mission.",
-            "lt": "💼 *Karjeros Profilis*\nSužinokite savo prigimtinius talentus ir jų ryšį su profesine misija.",
-            "ru": "💼 *Карьерный Профиль*\nОткройте свои природные таланты и их связь с жизненным призванием."
+        descriptions = {
+            "en": "💼 *Career & Calling Insight*\nYou are not here by accident — your talents, drive, and inner rhythms point toward something unique.\nThis tool reveals the energy that guides your *natural success path*, so you can align with purpose and thrive.",
+            "lt": "💼 *Karjeros ir Pašaukimo Įžvalga*\nJūs čia ne veltui — jūsų talentai, vidinė jėga ir natūralūs ritmai veda į išskirtinį kelią.\nŠis įrankis atskleidžia energiją, kuri nukreipia jus į *natūralų sėkmės kelią*.",
+            "ru": "💼 *Карьерный Профиль и Предназначение*\nВы здесь не случайно — ваши таланты, энергия и внутренние ритмы ведут к особому пути.\nЭтот инструмент покажет, в чём ваша *природная энергия успеха и призвания*."
         }
         cta = {
             "en": "🔓 Unlock Premium",
@@ -402,65 +401,91 @@ async def handle_career_profile(message: types.Message, state: FSMContext):
         }
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(cta.get(lang), callback_data="simulate_premium_payment"))
-        await message.answer(description.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
+        await message.answer(descriptions.get(lang) + "\n\n🔒 " + get_translation(user_id, "premium_tool_locked"),
                              parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    explanations = {
-        "en": "💼 *Career Profile*\nEnter your birthdate (DD.MM.YYYY) to reveal your strongest career path based on your personal numerology.",
-        "lt": "💼 *Karjeros Profilis*\nĮveskite savo gimimo datą (DD.MM.YYYY), kad sužinotumėte jums tinkamiausią profesinį kelią pagal numerologiją.",
-        "ru": "💼 *Карьерный Профиль*\nВведите дату рождения (ДД.ММ.ГГГГ), чтобы узнать ваш наилучший карьерный путь по нумерологии."
+    # Premium intro
+    intro = {
+        "en": "💼 *Career & Calling Insight*\nYou are not here by accident — your talents, drive, and inner rhythms point toward something unique.\nLet’s reveal the energy that guides your natural success path.\n\nPlease enter your *full name*:",
+        "lt": "💼 *Karjeros ir Pašaukimo Įžvalga*\nJūs čia ne veltui — jūsų talentai, vidinė jėga ir natūralūs ritmai veda į išskirtinį kelią.\nAtskleiskime jūsų natūralios sėkmės energiją.\n\nĮveskite savo *pilną vardą*:",
+        "ru": "💼 *Карьерный Профиль и Предназначение*\nВы здесь не случайно — ваши таланты, энергия и ритмы ведут к уникальному пути.\nДавайте откроем вашу природную энергию успеха.\n\nВведите *полное имя*:"
     }
 
-    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
+    await message.answer(intro.get(lang, intro["en"]), parse_mode="Markdown")
     await CareerProfileStates.waiting_for_birthdate.set()
+
 
 @dp.message_handler(state=CareerProfileStates.waiting_for_birthdate)
 async def process_career_profile(message: types.Message, state: FSMContext):
-    text = message.text.strip()
     user_id = message.from_user.id
+    full_name = message.text.strip()
 
-    if is_menu_command(text, user_id):
+    if is_menu_command(full_name, user_id):
         await state.finish()
         await route_menu_command(message, state)
         return
 
     try:
-        day, month, year = map(int, text.split('.'))
-        total = sum(int(d) for d in f"{day:02}{month:02}{year}")
-        while total > 9 and total not in [11, 22, 33]:
-            total = sum(int(d) for d in str(total))
-
-        career_map = {
-            1: "Leadership, entrepreneurship, or pioneering roles suit you. You excel when creating your own path.",
-            2: "You thrive in teamwork, diplomacy, and support roles. Careers in HR, counseling, or healing fit well.",
-            3: "You shine in creative fields—media, writing, marketing, art. Communication is your strength.",
-            4: "You’re reliable and structured. Engineering, planning, or technical work aligns with your nature.",
-            5: "You need freedom and movement. Travel, sales, media, or innovation-driven roles suit you.",
-            6: "You’re a nurturer and community builder. Careers in care, design, education, or family services align.",
-            7: "You are analytical and introspective. Science, tech, psychology, or research is your zone.",
-            8: "You’re built for leadership, business, finance, or management. Power and success motivate you.",
-            9: "You’re idealistic and humanitarian. Nonprofit, art, healing, or mission-based work fulfills you.",
-            11: "You’re a spiritual leader or visionary. Teaching, art, or guiding others is your path.",
-            22: "You’re a master builder. Architecture, systems leadership, or social reform suit your vision.",
-            33: "You’re a healer-teacher. Counseling, spiritual work, or emotional leadership is your highest path."
-        }
-
+        # 🧠 Use your existing Expression Number logic
+        number = calculate_expression_number(full_name)
         lang = get_user_language(user_id)
-        summary = career_map.get(total, "Career insight not available.")
-        title = {
-            "en": f"💼 *Career Path: Number {total}*",
-            "lt": f"💼 *Karjeros Kryptis: Skaičius {total}*",
-            "ru": f"💼 *Карьера по Числу {total}*"
+
+        descriptions = {
+            "en": {
+                1: "Leadership, innovation, and independence are your core career traits. You're here to build and inspire.",
+                2: "Harmony, diplomacy, and cooperation define your path. You're a master at building bridges.",
+                3: "Your creative spirit thrives in self-expression, communication, and the arts. You light up any room.",
+                4: "Discipline, systems, and steady growth. You're a builder of strong foundations.",
+                5: "You’re meant to move — freedom, adaptability, and dynamic change fuel your purpose.",
+                6: "You're a natural healer and nurturer. Service, care, and community light your success.",
+                7: "You’re a deep thinker. Wisdom, teaching, and introspection define your true calling.",
+                8: "You're made for power. Success, business, leadership, and financial mastery are your path.",
+                9: "Your soul calls for purpose. You're here to serve, inspire, and lead through compassion.",
+                11: "You're a visionary. Spiritual truth, intuition, and inspiration define your sacred work.",
+                22: "You're a Master Builder. You’re here to manifest big dreams and leave legacy-level impact."
+            },
+            "lt": {
+                1: "Liderystė, inovacijos ir nepriklausomybė. Esate čia tam, kad kurtumėte ir įkvėptumėte.",
+                2: "Harmonija, diplomatija ir bendradarbiavimas – jūsų kelio esminiai bruožai.",
+                3: "Kūrybiškumas, bendravimas ir menas. Jūs šviečiate scenoje ir gyvenime.",
+                4: "Tvarka, struktūra ir stabilumas. Jūs statote tvirtus pamatus.",
+                5: "Laisvė, pokyčiai ir judėjimas. Jus veda nuotykiai ir dinamika.",
+                6: "Jūs esate natūralus globėjas – rūpinimasis, bendruomenė ir pasiaukojimas – jūsų sėkmė.",
+                7: "Išmintis, analizė ir dvasinis gylis. Jūsų pašaukimas – mokyti ir suprasti.",
+                8: "Galia, verslas ir finansinė sėkmė – tai jūsų kelias.",
+                9: "Jūs čia tam, kad tarnautumėte žmonijai ir įkvėptumėte iš širdies.",
+                11: "Vizija, intuicija ir įkvėpimas. Jūs – dvasinis švyturys.",
+                22: "Didžių darbų kūrėjas. Jūsų misija – palikti ilgalaikį poveikį."
+            },
+            "ru": {
+                1: "Лидерство, новаторство, независимость. Вы пришли, чтобы вдохновлять и создавать.",
+                2: "Гармония, дипломатия, партнёрство — ваш путь строителя связей.",
+                3: "Творчество, искусство, выражение. Вы сияете в любой среде.",
+                4: "Структура, дисциплина, порядок. Вы создаёте прочные основы.",
+                5: "Свобода, перемены, движение. Вы рождены меняться и вести.",
+                6: "Забота, служение, сообщество. Ваша сила — в помощи другим.",
+                7: "Мудрость, анализ, духовность. Ваш путь — в глубине знаний.",
+                8: "Власть, бизнес, достижения. Вы рождены для успеха.",
+                9: "Сострадание, гуманизм, служение. Ваша душа зовёт к великому.",
+                11: "Вы — визионер. Интуиция, свет, вдохновение — ваш дар.",
+                22: "Мастер-строитель. Ваша миссия — воплотить великое на Земле."
+            }
         }
 
-        await message.answer(f"{title.get(lang, title['en'])}\n\n{summary}", parse_mode="Markdown")
-        await message.answer(get_translation(user_id, "premium_cta"), parse_mode="Markdown")
+        header = {
+            "en": "💼 *Your Career Energy*",
+            "lt": "💼 *Jūsų Karjeros Energija*",
+            "ru": "💼 *Ваша Энергия Карьеры*"
+        }
+
+        text = f"{header.get(lang)}\n{descriptions.get(lang, descriptions['en']).get(number)}"
+        await message.answer(text, parse_mode="Markdown")
         await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
         await state.finish()
 
     except:
-        await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
+        await message.answer(get_translation(user_id, "invalid_name"), parse_mode="Markdown")
 
 
 
@@ -1121,3 +1146,15 @@ async def on_shutdown():
 @app.get("/")
 async def health_check():
     return {"status": "ok"}
+
+def calculate_expression_number(name: str) -> int:
+    letter_map = {
+        'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8, 'i':9,
+        'j':1, 'k':2, 'l':3, 'm':4, 'n':5, 'o':6, 'p':7, 'q':8, 'r':9,
+        's':1, 't':2, 'u':3, 'v':4, 'w':5, 'x':6, 'y':7, 'z':8
+    }
+    total = sum(letter_map.get(c.lower(), 0) for c in name if c.isalpha())
+    while total > 9 and total not in [11, 22, 33]:
+        total = sum(int(d) for d in str(total))
+    return total
+
