@@ -1109,37 +1109,6 @@ async def handle_simulated_payment(call: types.CallbackQuery):
     await call.message.answer(confirmation.get(get_user_language(user_id), confirmation["en"]), parse_mode="Markdown")
 
 
-@dp.message_handler(state=None)
-async def handle_all_inputs(message: types.Message):
-    try:
-        day, month, year = map(int, message.text.strip().split('.'))
-        life_path = sum(int(digit) for digit in f"{day:02}{month:02}{year}")
-        while life_path > 9 and life_path not in [11, 22, 33]:
-            life_path = sum(int(d) for d in str(life_path))
-
-        user_id = message.from_user.id
-        title = get_translation(user_id, "life_path_result_title")
-        description = get_translation(user_id, f"life_path_description_{life_path}")
-
-        await message.answer(f"{title} {life_path}\n\n{description}", parse_mode="Markdown")
-
-        await message.answer(
-            get_translation(user_id, "done_choose_tool"),
-            parse_mode="Markdown",
-            reply_markup=main_menu_keyboard(user_id)
-        )
-
-        await message.answer(
-            get_translation(user_id, "premium_cta"),
-            parse_mode="Markdown"
-        )
-
-    except:
-        await message.answer(
-            get_translation(message.from_user.id, "invalid_format"),
-            parse_mode="Markdown"
-        )
-
 from fastapi import FastAPI, Request
 import uvicorn
 
