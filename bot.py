@@ -329,8 +329,6 @@ async def handle_lucky_years(message: types.Message, state: FSMContext):
             "lt": "📅 *Sėkmingų Metų Prognozė*\nSužinokite, kurie metai jums bus palankiausi sėkmei, pokyčiams ir augimui.",
             "ru": "📅 *Прогноз Удачных Лет*\nУзнайте, какие годы принесут вам успех, трансформацию и рост."
         }
-        await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
-        await LuckyYearsStates.waiting_for_birthdate.set()
         cta = {
             "en": "🔓 Unlock Premium",
             "lt": "🔓 Atrakinti Premium",
@@ -342,8 +340,16 @@ async def handle_lucky_years(message: types.Message, state: FSMContext):
                              parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    await message.answer(get_translation(user_id, "birthdate_prompt"), parse_mode="Markdown")
+    # 🛠️ ADD THIS BLOCK – THE MISSING EXPLANATION!
+    explanations = {
+        "en": "📅 *Lucky Years Forecast*\nDiscover your most aligned years for success, transformation, and growth.\n\nPlease enter your birthdate (DD.MM.YYYY):",
+        "lt": "📅 *Sėkmingų Metų Prognozė*\nSužinokite, kurie metai jums bus palankiausi sėkmei, pokyčiams ir augimui.\n\nĮveskite gimimo datą (DD.MM.YYYY):",
+        "ru": "📅 *Прогноз Удачных Лет*\nУзнайте, какие годы принесут вам успех, трансформацию и рост.\n\nВведите дату рождения (ДД.ММ.ГГГГ):"
+    }
+
+    await message.answer(explanations.get(lang, explanations["en"]), parse_mode="Markdown")
     await LuckyYearsStates.waiting_for_birthdate.set()
+
 
 @dp.message_handler(state=LuckyYearsStates.waiting_for_birthdate)
 async def process_lucky_years(message: types.Message, state: FSMContext):
