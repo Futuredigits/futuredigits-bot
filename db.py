@@ -1,8 +1,11 @@
 import sqlite3
 import os
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 db_path = os.path.abspath("users.db")
-print(f"[DEBUG] Using database at: {db_path}")
+logging.debug(f"Using database at: {db_path}")
 conn = sqlite3.connect(db_path)
 
 cursor = conn.cursor()
@@ -67,7 +70,7 @@ def set_user_premium(user_id, is_premium=True):
 def is_user_premium(user_id):
     cursor.execute('SELECT premium FROM users WHERE user_id = ?', (user_id,))
     result = cursor.fetchone()
-    print(f"[DEBUG] Premium check for user {user_id}: {result}")
+    logging.debug(f"Premium check for user {user_id}: {result}")
     return result[0] == 1 if result else False
 
 # ✅ Optional: Get user creation date

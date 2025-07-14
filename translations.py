@@ -20,6 +20,7 @@ translations = {
         "destiny": "🌟 Destiny Number",
         "birthday_number": "🎂 Birthday Number",
         "compatibility": "🔗 Compatibility Analysis",
+        "expression_result_title_en": "🧠 Expression Number:",
         "change_language": "🌐 Change Language",
         "birthdate_prompt": "Please enter your birthdate (DD.MM.YYYY):",
         "your_life_path": "Your Life Path Number is",
@@ -162,6 +163,7 @@ translations = {
         "soul_urge": "💖 Sielos Troškimo Skaičius",
         "soul_urge_result_title": "💖 Jūsų Sielos Troškimo Skaičius:",
         "expression": "🧠 Saviraiškos Skaičius",
+        "expression_result_title_lt": "🧠 Saviraiškos skaičius:",
         "personality": "😎 Asmenybės Skaičius",
         "lucky_years_btn": "📅 Sėkmingi Metai",
         "lucky_years": "📅 Sėkmingų Metų Gidas\nSužinokite, kurie metai atneš sėkmę, augimą ar proveržį.",
@@ -309,6 +311,7 @@ translations = {
         "soul_urge": "💖 Число Душевного Стремления",
         "soul_urge_result_title": "💖 Ваше Число Душевного Стремления:",
         "expression": "🧠 Число Выражения",
+        "expression_result_title_ru": "🧠 Чисlo Выражения:",
         "lucky_years_btn": "📅 Удачные Годы",
         "lucky_years": "📅 Гид по Удачным Годам\nУзнайте, какие годы принесут вам удачу, рост и успех.",
         "career_profile_btn": "💼 Карьера",
@@ -441,11 +444,7 @@ translations = {
         "compatibility_interpretation_40": "⚖️ Возможны трудности, но через компромиссы и рост возможна любовь.",
         "compatibility_interpretation_0": "🔥 Это кармические или очень интенсивные отношения. Испытания возможны, но они могут привести к росту.",
     },
-    "expression_result_title": {
-    "en": "🧠 Expression Number:",
-    "lt": "🧠 Saviraiškos skaičius:",
-    "ru": "🧠 Число Выражения:"
-    },
+    
     "destiny_result_title": {
     "en": "🌟 Destiny Number:",
     "lt": "🌟 Likimo skaičius:",
