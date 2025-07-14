@@ -19,6 +19,21 @@ import datetime
 
 import logging
 
+def is_valid_date(text: str) -> bool:
+    try:
+        day, month, year = map(int, text.split('.'))
+        datetime.datetime(year, month, day)
+        return True
+    except:
+        return False
+
+def get_life_path(day: int, month: int, year: int) -> int:
+    digits = [int(d) for d in f"{day:02}{month:02}{year}"]
+    total = sum(digits)
+    while total > 9 and total not in [11, 22, 33]:
+        total = sum(int(d) for d in str(total))
+    return total
+
 def get_buttons(user_id):
     return {
         "life_path": get_translation(user_id, "life_path"),
@@ -629,28 +644,6 @@ async def handle_detailed_compatibility(message: types.Message):
     )
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "life_path"), state=None)
-async def handle_life_path(message: types.Message, state: FSMContext):
-    await state.finish()
-    lang = get_user_language(message.from_user.id)
-    
-    explanations = {
-        "en": "✨ *Life Path Number*\nThis number reveals your core purpose, personality, and life direction. It’s calculated using your birthdate.\nLet’s find out what your life path is!",
-        "lt": "✨ *Gyvenimo Kelio Skaičius*\nŠis skaičius atskleidžia jūsų gyvenimo tikslą, asmenybę ir kryptį. Jis skaičiuojamas pagal jūsų gimimo datą.\nSužinokime jūsų gyvenimo kelią!",
-        "ru": "✨ *Число Жизненного Пути*\nЭто число раскрывает вашу основную цель, личность и направление в жизни. Оно рассчитывается по дате рождения.\nДавайте узнаем ваш путь!"
-    }
-
-    explanation = explanations.get(lang, explanations["en"])
-    await message.answer(explanation, parse_mode="Markdown")
-    await message.answer(get_translation(message.from_user.id, "birthdate_prompt"))
-
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, 'change_language'))
-async def prompt_language_change(message: types.Message, state: FSMContext):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    buttons = ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"]
-    keyboard.add(*buttons)
-    await message.answer("Choose your language / Pasirinkite kalbą / Выберите язык:", reply_markup=keyboard)
-
 @dp.message_handler(lambda message: True, state=None)
 async def process_life_path_birthdate(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
@@ -660,33 +653,29 @@ async def process_life_path_birthdate(message: types.Message, state: FSMContext)
         await route_menu_command(message, state)
         return
 
-    try:
-        day, month, year = map(int, text.split('.'))
-        birthdate_digits = [int(d) for d in f"{day:02d}{month:02d}{year}"]
-        total = sum(birthdate_digits)
-        while total > 9 and total not in [11, 22, 33]:
-            total = sum(int(d) for d in str(total))
-
-        number = total
-        lang = get_user_language(user_id)
-        title = get_translation(user_id, "life_path_result_title")
-        description = get_translation(user_id, f"life_path_description_{number}")
-
-        await message.answer(f"{title} {number}\n\n{description}", parse_mode="Markdown")
-
-        await message.answer(
-            get_translation(user_id, "premium_cta"),
-            parse_mode="Markdown"
-        )
-
-        await message.answer(
-            get_translation(user_id, "done_choose_tool"),
-            parse_mode="Markdown",
-            reply_markup=main_menu_keyboard(user_id)
-        )
-
-    except:
+    if not is_valid_date(text):
         await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
+        return
+
+    day, month, year = map(int, text.split('.'))
+    number = get_life_path(day, month, year)
+
+    lang = get_user_language(user_id)
+    title = get_translation(user_id, "life_path_result_title")
+    description = get_translation(user_id, f"life_path_description_{number}")
+
+    await message.answer(f"{title} {number}\n\n{description}", parse_mode="Markdown")
+
+    await message.answer(
+        get_translation(user_id, "premium_cta"),
+        parse_mode="Markdown"
+    )
+
+    await message.answer(
+        get_translation(user_id, "done_choose_tool"),
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(user_id)
+    )
 
 
 
@@ -1010,6 +999,7 @@ async def process_birthday_number(message: types.Message, state: FSMContext):
     except:
         await message.answer(get_translation(message.from_user.id, "invalid_format"), parse_mode="Markdown")
 
+
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"), state="*")
 async def start_compatibility(message: types.Message, state: FSMContext):
     await state.finish()
@@ -1027,112 +1017,81 @@ async def start_compatibility(message: types.Message, state: FSMContext):
 @dp.message_handler(state=CompatibilityStates.waiting_for_first_date)
 async def get_first_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
-    if not any(c.isalpha() for c in text):
-        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
-        return
+    user_id = message.from_user.id
 
-    buttons = {
-        "life_path": get_translation(message.from_user.id, "life_path"),
-        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
-        "expression": get_translation(message.from_user.id, "expression"),
-        "personality": get_translation(message.from_user.id, "personality"),
-        "destiny": get_translation(message.from_user.id, "destiny"),
-        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
-        "compatibility": get_translation(message.from_user.id, "compatibility"),
-        "change_language": get_translation(message.from_user.id, "change_language"),
-        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
-    }
-
-    if is_menu_command(text, message.from_user.id):
+    if is_menu_command(text, user_id):
         await state.finish()
         await route_menu_command(message, state)
         return
-       
-    try:
-        day, month, year = map(int, text.split('.'))
-        await state.update_data(first_date=text)  # ✅ Essential line
-        await CompatibilityStates.next()
-        await message.answer("Now enter the second birthdate (DD.MM.YYYY):")
-    except:
-        await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
+
+    if not is_valid_date(text):
+        await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
+        return
+
+    await state.update_data(first_date=text)
+    await CompatibilityStates.next()
+    await message.answer("Now enter the second birthdate (DD.MM.YYYY):")
+
 
 @dp.message_handler(state=CompatibilityStates.waiting_for_second_date)
 async def get_second_date(message: types.Message, state: FSMContext):
     text = message.text.strip()
-    if not any(c.isalpha() for c in text):
-        await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
-        return
+    user_id = message.from_user.id
 
-    buttons = {
-        "life_path": get_translation(message.from_user.id, "life_path"),
-        "soul_urge": get_translation(message.from_user.id, "soul_urge"),
-        "expression": get_translation(message.from_user.id, "expression"),
-        "personality": get_translation(message.from_user.id, "personality"),
-        "destiny": get_translation(message.from_user.id, "destiny"),
-        "birthday_number": get_translation(message.from_user.id, "birthday_number"),
-        "compatibility": get_translation(message.from_user.id, "compatibility"),
-        "change_language": get_translation(message.from_user.id, "change_language"),
-        "back_to_menu": get_translation(message.from_user.id, "back_to_menu")
-    }
-
-    if is_menu_command(text, message.from_user.id):
+    if is_menu_command(text, user_id):
         await state.finish()
         await route_menu_command(message, state)
         return
-        
-    try:
-        day2, month2, year2 = map(int, text.split('.'))
-        data = await state.get_data()
-        first_date = data.get("first_date")
 
-        if not first_date:
-            await message.answer("⚠️ First birthdate is missing. Please start again.")
-            await start_compatibility(message, state)
-            return
+    if not is_valid_date(text):
+        await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
+        return
 
-        day1, month1, year1 = map(int, first_date.split('.'))
+    data = await state.get_data()
+    first_date = data.get("first_date")
 
-        def get_life_path(d, m, y):
-            total = sum(int(d) for d in f"{d:02}{m:02}{y}")
-            while total > 9 and total not in [11, 22, 33]:
-                total = sum(int(x) for x in str(total))
-            return total
+    if not first_date:
+        await message.answer("⚠️ First birthdate is missing. Please start again.")
+        await start_compatibility(message, state)
+        return
 
-        lp1 = get_life_path(day1, month1, year1)
-        lp2 = get_life_path(day2, month2, year2)
-        compatibility = 100 - abs(lp1 - lp2) * 10
-        compatibility = max(0, min(compatibility, 100))
+    # Extract both dates
+    day1, month1, year1 = map(int, first_date.split('.'))
+    day2, month2, year2 = map(int, text.split('.'))
 
-        # Determine meaning key
-        if compatibility >= 90:
-            meaning_key = "compatibility_interpretation_90"
-        elif compatibility >= 75:
-            meaning_key = "compatibility_interpretation_75"
-        elif compatibility >= 60:
-            meaning_key = "compatibility_interpretation_60"
-        elif compatibility >= 40:
-            meaning_key = "compatibility_interpretation_40"
-        else:
-            meaning_key = "compatibility_interpretation_0"
+    # Use centralized Life Path calculation
+    lp1 = get_life_path(day1, month1, year1)
+    lp2 = get_life_path(day2, month2, year2)
+    compatibility = max(0, min(100 - abs(lp1 - lp2) * 10, 100))
 
-        lang = get_user_language(message.from_user.id)
-        desc1 = translations.get(lang, translations['en']).get(f"life_path_description_{lp1}", "")
-        desc2 = translations.get(lang, translations['en']).get(f"life_path_description_{lp2}", "")
-        title = translations.get(lang, translations['en']).get("life_path_result_title", "Life Path")
-        meaning = get_translation(message.from_user.id, meaning_key)
+    # Interpretation tier
+    if compatibility >= 90:
+        meaning_key = "compatibility_interpretation_90"
+    elif compatibility >= 75:
+        meaning_key = "compatibility_interpretation_75"
+    elif compatibility >= 60:
+        meaning_key = "compatibility_interpretation_60"
+    elif compatibility >= 40:
+        meaning_key = "compatibility_interpretation_40"
+    else:
+        meaning_key = "compatibility_interpretation_0"
 
-        result = (
-            f"{title} {lp1}\n🔹 {desc1}\n\n"
-            f"{title} {lp2}\n🔹 {desc2}\n\n"
-            f"❤️ Compatibility: {compatibility}%\n\n{meaning}"
-        )
+    lang = get_user_language(user_id)
+    desc1 = translations[lang].get(f"life_path_description_{lp1}", "")
+    desc2 = translations[lang].get(f"life_path_description_{lp2}", "")
+    title = translations[lang].get("life_path_result_title", "Life Path")
+    meaning = get_translation(user_id, meaning_key)
 
-        await message.answer(result, parse_mode="Markdown")
-        await message.answer(get_translation(message.from_user.id, "done_choose_tool"), reply_markup=main_menu_keyboard(message.from_user.id))
-        await state.finish()
+    result = (
+        f"{title} {lp1}\n🔹 {desc1}\n\n"
+        f"{title} {lp2}\n🔹 {desc2}\n\n"
+        f"❤️ Compatibility: {compatibility}%\n\n{meaning}"
+    )
 
-    except:
-        await message.answer("❌ Invalid date format. Please use DD.MM.YYYY.")
+    await message.answer(result, parse_mode="Markdown")
+    await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
+    await state.finish()
+
 
 
 @dp.callback_query_handler(lambda call: call.data == "simulate_premium_payment")
