@@ -350,7 +350,7 @@ async def show_premium_menu(message: types.Message, state: FSMContext):
 
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"), state="*")
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"), state="*")
 async def handle_lucky_years(message: types.Message, state: FSMContext):
     await state.finish()
     user_id = message.from_user.id
