@@ -301,7 +301,7 @@ async def buy_premium(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == "💎 Premium Tools")
 async def show_premium_menu(message: types.Message, state: FSMContext):
-    await state.finish()  # ✅ cancel any previous input state
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -327,14 +327,10 @@ async def show_premium_menu(message: types.Message, state: FSMContext):
         "ru": "💎 *Премиум Инструменты*\nУглубите понимание себя с помощью расширенной нумерологии. Выберите инструмент ниже 👇"
     }
 
-    await message.answer(descriptions.get(lang, descriptions["en"]), parse_mode="Markdown", reply_markup=keyboard)
-
-        text = descriptions.get(lang, descriptions["en"])
+    text = descriptions.get(lang, descriptions["en"])  # ✅ Fix: align this correctly
 
     if not is_user_premium(user_id):
-        # Add lock + CTA into same message
         text += "\n\n🔒 " + get_translation(user_id, "premium_tool_locked")
-
         cta_button = types.InlineKeyboardMarkup()
         cta_button.add(types.InlineKeyboardButton(
             {
@@ -344,7 +340,6 @@ async def show_premium_menu(message: types.Message, state: FSMContext):
             }.get(lang, "🔓 Unlock Premium"),
             callback_data="simulate_premium_payment"
         ))
-
         await message.answer(text, parse_mode="Markdown", reply_markup=cta_button)
     else:
         await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
