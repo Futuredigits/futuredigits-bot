@@ -1215,3 +1215,8 @@ async def get_second_date(message: types.Message, state: FSMContext):
 @dp.callback_query_handler(lambda call: call.data == "simulate_premium_payment")
 
 
+@dp.callback_query_handler(lambda call: call.data == "simulate_premium_payment")
+async def simulate_premium_payment(call: types.CallbackQuery):
+    user_id = call.from_user.id
+    set_user_premium(user_id, True)
+    await call.message.answer("✅ Premium access granted! You can now use all premium tools.", reply_markup=main_menu_keyboard(user_id))
