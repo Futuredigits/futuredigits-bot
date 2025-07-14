@@ -644,6 +644,22 @@ async def handle_detailed_compatibility(message: types.Message):
     )
 
 
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "life_path"), state="*")
+async def handle_life_path(message: types.Message, state: FSMContext):
+    await state.finish()
+    lang = get_user_language(message.from_user.id)
+
+    explanations = {
+        "en": "✨ *Life Path Number*\nThis number reveals your core purpose, personality, and life direction. It’s calculated using your birthdate.\nLet’s find out what your life path is!",
+        "lt": "✨ *Gyvenimo Kelio Skaičius*\nŠis skaičius atskleidžia jūsų gyvenimo tikslą, asmenybę ir kryptį. Jis skaičiuojamas pagal jūsų gimimo datą.\nSužinokime jūsų gyvenimo kelią!",
+        "ru": "✨ *Число Жизненного Пути*\nЭто число раскрывает вашу основную цель, личность и направление в жизни. Оно рассчитывается по дате рождения.\nДавайте узнаем ваш путь!"
+    }
+
+    explanation = explanations.get(lang, explanations["en"])
+    await message.answer(explanation, parse_mode="Markdown")
+    await message.answer(get_translation(message.from_user.id, "birthdate_prompt"))
+
+
 @dp.message_handler(lambda message: True, state=None)
 async def process_life_path_birthdate(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
