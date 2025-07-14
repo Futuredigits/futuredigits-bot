@@ -15,6 +15,7 @@ from db import set_user_premium
 from states import LuckyYearsStates
 from states import CareerProfileStates
 from db import is_user_premium
+from utils import get_soul_urge
 import datetime
 import logging
 
@@ -730,26 +731,24 @@ async def start_soul_urge(message: types.Message, state: FSMContext):
 @dp.message_handler(state=SoulUrgeStates.waiting_for_name)
 async def process_soul_urge(message: types.Message, state: FSMContext):
     text = message.text.strip()
+
     if not any(c.isalpha() for c in text):
         await message.answer(get_translation(message.from_user.id, "invalid_name"), parse_mode="Markdown")
         return
-
-    buttons = get_all_buttons(translations, message.from_user.id, get_translation)
-
 
     if is_menu_command(text, message.from_user.id):
         await state.finish()
         await route_menu_command(message, state)
         return
-              
-    number = calculate_soul_urge_number(text)
 
-    description_key = f"soul_urge_description_{number}"
+    total = get_soul_urge(text)
+
+    description_key = f"soul_urge_description_{total}"
     description = get_translation(message.from_user.id, description_key)
     title = get_translation(message.from_user.id, "soul_urge_result_title")
-
+    
     await message.answer(f"{title} {total}\n\n{description}", parse_mode="Markdown")
-
+    
     await message.answer(
         get_translation(message.from_user.id, "premium_cta"),
         parse_mode="Markdown"
