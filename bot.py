@@ -15,7 +15,7 @@ from db import set_user_premium
 from states import LuckyYearsStates
 from states import CareerProfileStates
 from db import is_user_premium
-from utils import get_soul_urge
+from utils import calculate_soul_urge_number
 import datetime
 import logging
 
@@ -741,7 +741,7 @@ async def process_soul_urge(message: types.Message, state: FSMContext):
         await route_menu_command(message, state)
         return
 
-    total = get_soul_urge(text)
+    total = calculate_soul_urge_number(text)
 
     description_key = f"soul_urge_description_{total}"
     description = get_translation(message.from_user.id, description_key)
