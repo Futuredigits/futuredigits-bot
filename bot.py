@@ -155,8 +155,9 @@ def main_menu_keyboard(user_id):
 
     return keyboard
 
-@dp.message_handler(commands=['start'])
-async def send_welcome(message: types.Message):
+@dp.message_handler(commands=['start'], state="*")
+async def send_welcome(message: types.Message, state: FSMContext):
+    await state.finish()
     set_user_language(message.from_user.id, 'en')
     text = get_translation(message.from_user.id, "welcome")
 
@@ -172,8 +173,10 @@ async def show_about_from_button(call: types.CallbackQuery):
     await call.message.answer(get_translation(call.from_user.id, "about"), parse_mode="Markdown")
     await call.answer()
 
-@dp.message_handler(commands=['help'])
-async def send_help(message: types.Message):
+@dp.message_handler(commands=['help'], state="*")
+async def send_help(message: types.Message, state: FSMContext):
+    await state.finish()  # ✅ Cancel any active state
+
     help_text = (
         "📌 *FutureDigits Help Menu*\n\n"
         "Welcome! Here's what you can do:\n\n"
@@ -185,6 +188,7 @@ async def send_help(message: types.Message):
         "If you need help at any time, just type /help ✨"
     )
     await message.answer(help_text, parse_mode="Markdown")
+
 
 @dp.message_handler(commands=["about"])
 async def send_about(message: types.Message):
@@ -348,6 +352,7 @@ async def show_premium_menu(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
 async def handle_lucky_years(message: types.Message, state: FSMContext):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -417,6 +422,7 @@ async def process_lucky_years(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"))
 async def handle_career_profile(message: types.Message, state: FSMContext):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -523,6 +529,7 @@ async def process_career_profile(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "name_numerology_btn"))
 async def handle_name_numerology(message: types.Message):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -548,6 +555,7 @@ async def handle_name_numerology(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"))
 async def handle_lucky_colors(message: types.Message):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -573,6 +581,7 @@ async def handle_lucky_colors(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "relationship_insights_btn"))
 async def handle_relationship_insights(message: types.Message):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -599,6 +608,7 @@ async def handle_relationship_insights(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "purpose_analysis_btn"))
 async def handle_purpose_analysis(message: types.Message):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -625,6 +635,7 @@ async def handle_purpose_analysis(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "detailed_compatibility_btn"))
 async def handle_detailed_compatibility(message: types.Message):
+    await state.finish()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
