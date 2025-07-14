@@ -350,7 +350,7 @@ async def show_premium_menu(message: types.Message, state: FSMContext):
 
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"), state="*")
 async def handle_lucky_years(message: types.Message, state: FSMContext):
     await state.finish()
     user_id = message.from_user.id
@@ -420,7 +420,7 @@ async def process_lucky_years(message: types.Message, state: FSMContext):
         await message.answer(get_translation(user_id, "invalid_format"), parse_mode="Markdown")
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"))
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "career_profile_btn"), state="*")
 async def handle_career_profile(message: types.Message, state: FSMContext):
     await state.finish()
     user_id = message.from_user.id
@@ -525,7 +525,7 @@ async def process_career_profile(message: types.Message, state: FSMContext):
 
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "name_numerology_btn"))
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "name_numerology_btn"), state="*")
 async def handle_name_numerology(message: types.Message):
     await state.finish()
     user_id = message.from_user.id
@@ -551,7 +551,7 @@ async def handle_name_numerology(message: types.Message):
     await message.answer(get_translation(user_id, "name_numerology"), parse_mode="Markdown")
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"))
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_colors_btn"), state="*")
 async def handle_lucky_colors(message: types.Message):
     await state.finish()
     user_id = message.from_user.id
@@ -577,7 +577,7 @@ async def handle_lucky_colors(message: types.Message):
     await message.answer(get_translation(user_id, "lucky_colors"), parse_mode="Markdown")
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "relationship_insights_btn"))
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "relationship_insights_btn"), state="*")
 async def handle_relationship_insights(message: types.Message):
     await state.finish()
     user_id = message.from_user.id
@@ -604,7 +604,7 @@ async def handle_relationship_insights(message: types.Message):
 
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "purpose_analysis_btn"))
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "purpose_analysis_btn"), state="*")
 async def handle_purpose_analysis(message: types.Message):
     await state.finish()
     user_id = message.from_user.id
@@ -631,7 +631,7 @@ async def handle_purpose_analysis(message: types.Message):
 
 
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "detailed_compatibility_btn"))
+@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "detailed_compatibility_btn"), state="*")
 async def handle_detailed_compatibility(message: types.Message):
     await state.finish()
     user_id = message.from_user.id
