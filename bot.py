@@ -443,7 +443,6 @@ async def handle_career_profile(message: types.Message, state: FSMContext):
                              parse_mode="Markdown", reply_markup=keyboard)
         return
 
-    # Premium intro
     intro = {
         "en": "💼 *Career & Calling Insight*\nYou are not here by accident — your talents, drive, and inner rhythms point toward something unique.\nLet’s reveal the energy that guides your natural success path.\n\nPlease enter your *full name*:",
         "lt": "💼 *Karjeros ir Pašaukimo Įžvalga*\nJūs čia ne veltui — jūsų talentai, vidinė jėga ir natūralūs ritmai veda į išskirtinį kelią.\nAtskleiskime jūsų natūralios sėkmės energiją.\n\nĮveskite savo *pilną vardą*:",
@@ -451,10 +450,10 @@ async def handle_career_profile(message: types.Message, state: FSMContext):
     }
 
     await message.answer(intro.get(lang, intro["en"]), parse_mode="Markdown")
-    await CareerProfileStates.waiting_for_birthdate.set()
+    await CareerProfileStates.waiting_for_name.set()
 
 
-@dp.message_handler(state=CareerProfileStates.waiting_for_birthdate)
+@dp.message_handler(state=CareerProfileStates.waiting_for_name)
 async def process_career_profile(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     full_name = message.text.strip()
@@ -465,7 +464,6 @@ async def process_career_profile(message: types.Message, state: FSMContext):
         return
 
     try:
-        # 🧠 Use your existing Expression Number logic
         number = calculate_expression_number(full_name)
         lang = get_user_language(user_id)
 
@@ -517,8 +515,8 @@ async def process_career_profile(message: types.Message, state: FSMContext):
             "ru": "💼 *Ваша Энергия Карьеры*"
         }
 
-        text = f"{header.get(lang)}\n{descriptions.get(lang, descriptions['en']).get(number)}"
-        await message.answer(text, parse_mode="Markdown")
+        result = f"{header.get(lang)}\n{descriptions.get(lang, descriptions['en']).get(number)}"
+        await message.answer(result, parse_mode="Markdown")
         await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
         await state.finish()
 
