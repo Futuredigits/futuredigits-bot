@@ -300,9 +300,8 @@ async def buy_premium(message: types.Message):
     await message.answer(text.get(lang, text["en"]), reply_markup=keyboard, parse_mode="Markdown")
 
 @dp.message_handler(lambda message: message.text == "💎 Premium Tools")
-async def show_premium_menu(message: types.Message, state: FSMContext):  # <-- add state here
+async def show_premium_menu(message: types.Message, state: FSMContext):
     await state.finish()  # ✅ cancel any previous input state
-
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
@@ -328,11 +327,29 @@ async def show_premium_menu(message: types.Message, state: FSMContext):  # <-- a
         "ru": "💎 *Премиум Инструменты*\nУглубите понимание себя с помощью расширенной нумерологии. Выберите инструмент ниже 👇"
     }
 
-    await message.answer(
-        descriptions.get(lang, descriptions["en"]),
-        parse_mode="Markdown",
-        reply_markup=keyboard
-    )
+    await message.answer(descriptions.get(lang, descriptions["en"]), parse_mode="Markdown", reply_markup=keyboard)
+
+        text = descriptions.get(lang, descriptions["en"])
+
+    if not is_user_premium(user_id):
+        # Add lock + CTA into same message
+        text += "\n\n🔒 " + get_translation(user_id, "premium_tool_locked")
+
+        cta_button = types.InlineKeyboardMarkup()
+        cta_button.add(types.InlineKeyboardButton(
+            {
+                "en": "🔓 Unlock Premium",
+                "lt": "🔓 Atrakinti Premium",
+                "ru": "🔓 Получить Premium"
+            }.get(lang, "🔓 Unlock Premium"),
+            callback_data="simulate_premium_payment"
+        ))
+
+        await message.answer(text, parse_mode="Markdown", reply_markup=cta_button)
+    else:
+        await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
+
+
 
 @dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "lucky_years_btn"))
 async def handle_lucky_years(message: types.Message, state: FSMContext):
