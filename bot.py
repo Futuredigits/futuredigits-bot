@@ -3,11 +3,14 @@ import logging
 from aiogram import Bot
 from aiogram import types
 from loader import bot, dp
+from handlers import all_routers
+for router in all_routers:
+    dp.include_router(router)
 from fastapi import FastAPI, Request
 import uvicorn
 import handlers
 from db import set_user_language
-from aiogram.dispatcher import FSMContext 
+from aiogram.fsm.context import FSMContext 
 from utils import get_translation, main_menu_keyboard
 from db import set_user_language, get_user_language, set_user_premium, is_user_premium
 
