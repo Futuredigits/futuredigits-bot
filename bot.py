@@ -1,23 +1,15 @@
 import os
-from aiogram import Bot, Dispatcher, executor, types
-from dotenv import load_dotenv
-from translations import translations
-from db import set_user_language, get_user_language
-from aiogram.dispatcher import FSMContext
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from states import CompatibilityStates
-from states import SoulUrgeStates
-from states import ExpressionStates
-from states import PersonalityStates
-from states import DestinyStates
-from states import BirthdayStates
-from db import set_user_premium
-from states import LuckyYearsStates
-from states import CareerProfileStates
-from db import is_user_premium
-import datetime
-
 import logging
+from aiogram import executor
+from loader import bot, dp
+from aiogram import types
+from fastapi import FastAPI, Request
+import uvicorn
+from db import set_user_language
+from aiogram.dispatcher import FSMContext
+import handlers  
+from utils import get_translation, main_menu_keyboard
+from db import set_user_language, get_user_language, set_user_premium, is_user_premium
 
 
 def is_menu_command(text: str, user_id: int) -> bool:
