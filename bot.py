@@ -110,6 +110,31 @@ async def set_language(message: types.Message, state: FSMContext):
     set_user_language(message.from_user.id, selected_lang)
     await message.answer(get_translation(message.from_user.id, "language_set"), reply_markup=main_menu_keyboard(message.from_user.id))
 
+def main_menu_keyboard(user_id):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)     
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "life_path")),
+        types.KeyboardButton(get_translation(user_id, "soul_urge"))        
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "expression")),
+        types.KeyboardButton(get_translation(user_id, "personality"))                
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "destiny")),
+        types.KeyboardButton(get_translation(user_id, "birthday_number"))
+    )
+    keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
+
+    keyboard.add(types.KeyboardButton("💎 Premium Tools"))
+
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "change_language")),
+        types.KeyboardButton(get_translation(user_id, "back_to_menu"))
+    )
+
+    return keyboard
+
 @dp.message_handler(commands=["premium"])
 async def send_premium_info(message: types.Message):
     user_id = message.from_user.id
