@@ -8,7 +8,6 @@ import uvicorn
 from db import set_user_language
 from aiogram.dispatcher import FSMContext
 import handlers  
-from db import init_db
 from utils import get_translation, main_menu_keyboard
 from db import set_user_language, get_user_language, set_user_premium, is_user_premium
 
