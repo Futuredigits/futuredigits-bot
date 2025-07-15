@@ -1,9 +1,8 @@
 import os
 import logging
 from aiogram import Bot
-from aiogram import executor
-from loader import bot, dp
 from aiogram import types
+from loader import bot, dp
 from fastapi import FastAPI, Request
 import uvicorn
 import handlers
