@@ -51,12 +51,16 @@ logging.basicConfig(
 async def send_welcome(message: types.Message, state: FSMContext):
     await state.finish()
     set_user_language(message.from_user.id, 'en')
+
+    # 1. Send welcome text with full reply keyboard (menu)
     text = get_translation(message.from_user.id, "welcome")
+    await message.answer(text, parse_mode="Markdown", reply_markup=main_menu_keyboard(message.from_user.id))
 
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton("ℹ️ About", callback_data="about_info"))
-
-    await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)    
+    # 2. Optionally send the "ℹ️ About" button as separate inline button
+    about_button = types.InlineKeyboardMarkup()
+    about_button.add(types.InlineKeyboardButton("ℹ️ About", callback_data="about_info"))
+    await message.answer("ℹ️ Learn more about FutureDigits:", reply_markup=about_button)
+   
     
 
 @dp.callback_query_handler(lambda call: call.data == "about_info")
@@ -110,30 +114,6 @@ async def set_language(message: types.Message, state: FSMContext):
     set_user_language(message.from_user.id, selected_lang)
     await message.answer(get_translation(message.from_user.id, "language_set"), reply_markup=main_menu_keyboard(message.from_user.id))
 
-def main_menu_keyboard(user_id):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)     
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "life_path")),
-        types.KeyboardButton(get_translation(user_id, "soul_urge"))        
-    )
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "expression")),
-        types.KeyboardButton(get_translation(user_id, "personality"))                
-    )
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "destiny")),
-        types.KeyboardButton(get_translation(user_id, "birthday_number"))
-    )
-    keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
-
-    keyboard.add(types.KeyboardButton("💎 Premium Tools"))
-
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "change_language")),
-        types.KeyboardButton(get_translation(user_id, "back_to_menu"))
-    )
-
-    return keyboard
 
 @dp.message_handler(commands=["premium"])
 async def send_premium_info(message: types.Message):
