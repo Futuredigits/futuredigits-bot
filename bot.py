@@ -1,7 +1,9 @@
 import logging
 from aiogram import executor
 from loader import bot, dp
-import handlers  # this automatically loads all handler modules
+from aiogram import types
+from aiogram.dispatcher import FSMContext
+import handlers  
 from db import init_db
 from utils import get_translation, main_menu_keyboard
 
