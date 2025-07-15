@@ -1,5 +1,6 @@
 import os
 import logging
+from aiogram import Bot
 from aiogram import executor
 from loader import bot, dp
 from aiogram import types
@@ -261,9 +262,7 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def on_startup():
-    from aiogram import Bot
-    Bot.set_current(bot)  # ✅ ensures Aiogram knows which bot instance to use
-
+    Bot.set_current(bot) 
     webhook_url = f"{os.getenv('WEBHOOK_BASE')}/webhook/{os.getenv('BOT_TOKEN')}"
     await bot.set_webhook(webhook_url)
     logging.info(f"✅ Webhook set to: {webhook_url}")
@@ -271,6 +270,7 @@ async def on_startup():
 
 @app.post("/webhook/{token}")
 async def telegram_webhook(token: str, request: Request):
+    Bot.set_current(bot)
     if token != os.getenv("BOT_TOKEN"):
         return {"error": "Invalid token"}
     update = await request.json()
