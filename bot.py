@@ -47,7 +47,7 @@ logging.basicConfig(
 @dp.message_handler(commands=['start'], state="*")
 async def send_welcome(message: types.Message, state: FSMContext):
     await state.finish()
-    set_language(message.from_user.id, 'en')
+    await set_language(message.from_user.id, 'en')
     text = get_translation(message.from_user.id, "welcome")
 
     keyboard = types.InlineKeyboardMarkup()

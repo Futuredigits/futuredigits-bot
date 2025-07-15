@@ -89,10 +89,12 @@ def init_db():
     conn.commit()
     conn.close()
 
-def set_language(user_id: int, language_code: str):
+def get_user_language(user_id: int):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    cursor.execute("INSERT OR REPLACE INTO users (user_id, language) VALUES (?, ?)", (user_id, language_code))
-    conn.commit()
+    cursor.execute("SELECT language FROM users WHERE user_id = ?", (user_id,))
+    result = cursor.fetchone()
     conn.close()
+    return result[0] if result else 'en'
+
 
