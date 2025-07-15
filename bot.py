@@ -1,3 +1,4 @@
+import os
 import logging
 from aiogram import executor
 from loader import bot, dp
