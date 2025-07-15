@@ -3,11 +3,14 @@ import logging
 from aiogram import executor
 from loader import bot, dp
 from aiogram import types
+from fastapi import FastAPI, Request
+import uvicorn
 from db import set_user_language
 from aiogram.dispatcher import FSMContext
 import handlers  
 from db import init_db
 from utils import get_translation, main_menu_keyboard
+from db import set_user_language, get_user_language, set_user_premium, is_user_premium
 
 
 def is_menu_command(text: str, user_id: int) -> bool:
@@ -47,7 +50,7 @@ logging.basicConfig(
 @dp.message_handler(commands=['start'], state="*")
 async def send_welcome(message: types.Message, state: FSMContext):
     await state.finish()
-    await set_user_language(message.from_user.id, 'en')
+    set_user_language(message.from_user.id, 'en')
     text = get_translation(message.from_user.id, "welcome")
 
     keyboard = types.InlineKeyboardMarkup()
