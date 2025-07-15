@@ -6,39 +6,11 @@ from loader import bot, dp
 from aiogram import types
 from fastapi import FastAPI, Request
 import uvicorn
+import handlers
 from db import set_user_language
-from aiogram.dispatcher import FSMContext
-import handlers  
+from aiogram.dispatcher import FSMContext 
 from utils import get_translation, main_menu_keyboard
 from db import set_user_language, get_user_language, set_user_premium, is_user_premium
-
-
-def is_menu_command(text: str, user_id: int) -> bool:
-    return text in get_all_buttons(user_id, get_translation).values()
-    
-async def route_menu_command(message, state):
-    text = message.text
-    user_id = message.from_user.id
-    if text == get_translation(user_id, "life_path"):
-        return await handle_life_path(message, state)
-    elif text == get_translation(user_id, "soul_urge"):
-        return await start_soul_urge(message, state)
-    elif text == get_translation(user_id, "expression"):
-        return await start_expression(message, state)
-    elif text == get_translation(user_id, "personality"):
-        return await start_personality(message, state)
-    elif text == get_translation(user_id, "destiny"):
-        return await start_destiny(message, state)
-    elif text == get_translation(user_id, "birthday_number"):
-        return await start_birthday_number(message, state)
-    elif text == get_translation(user_id, "compatibility"):
-        return await start_compatibility(message, state)
-    elif text == get_translation(user_id, "change_language"):
-        return await prompt_language_change(message, state)
-    elif text == get_translation(user_id, "back_to_menu"):
-        return await back_to_main_menu(message, state)
-    elif text == "💎 Premium Tools":  
-        return await show_premium_menu(message, state)
 
 
 logging.basicConfig(
@@ -60,9 +32,8 @@ async def send_welcome(message: types.Message, state: FSMContext):
     about_button = types.InlineKeyboardMarkup()
     about_button.add(types.InlineKeyboardButton("ℹ️ About", callback_data="about_info"))
     await message.answer("ℹ️ Learn more about FutureDigits:", reply_markup=about_button)
-   
-    
 
+   
 @dp.callback_query_handler(lambda call: call.data == "about_info")
 async def show_about_from_button(call: types.CallbackQuery):
     await call.message.answer(get_translation(call.from_user.id, "about"), parse_mode="Markdown")
