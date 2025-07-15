@@ -54,7 +54,6 @@ def get_all_buttons(user_id, get_translation):
 
 from aiogram import types
 from db import is_user_premium
-from translations import get_translation
 
 async def handle_premium_lock(message: types.Message, user_id: int, lang: str, description: str) -> bool:
     if is_user_premium(user_id):
