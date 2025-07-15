@@ -73,8 +73,8 @@ def is_user_premium(user_id):
     logging.debug(f"Premium check for user {user_id}: {result}")
     return result[0] == 1 if result else False
 
-# ✅ Optional: get creation date
 def get_user_created_at(user_id):
     cursor.execute("SELECT created_at FROM users WHERE user_id = ?", (user_id,))
     result = cursor.fetchone()
-    return result[0] if
+    return result[0] if result else None
+
