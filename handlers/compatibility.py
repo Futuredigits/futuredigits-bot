@@ -1,5 +1,5 @@
 from aiogram import types
-from aiogram.dispatcher import FSMContext
+from aiogram.fsm.context import FSMContext
 from loader import dp
 from states import CompatibilityStates
 from db import get_user_language
