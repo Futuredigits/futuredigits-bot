@@ -38,7 +38,7 @@ def get_life_path(day: int, month: int, year: int) -> int:
     total = sum(digits)
     return reduce_to_core_number(total)
 
-def get_all_buttons(translations, user_id, get_translation):
+def get_all_buttons(user_id, get_translation):
     return {
         "life_path": get_translation(user_id, "life_path"),
         "soul_urge": get_translation(user_id, "soul_urge"),
@@ -49,5 +49,64 @@ def get_all_buttons(translations, user_id, get_translation):
         "compatibility": get_translation(user_id, "compatibility"),
         "change_language": get_translation(user_id, "change_language"),
         "back_to_menu": get_translation(user_id, "back_to_menu"),
-        "premium_tools": "💎 Premium Tools"  
+        "premium_tools": "💎 Premium Tools"
     }
+
+from aiogram import types
+from db import is_user_premium
+from translations import get_translation
+
+async def handle_premium_lock(message: types.Message, user_id: int, lang: str, description: str) -> bool:
+    if is_user_premium(user_id):
+        return False  # User is premium — allow access
+
+    premium_cta = {
+        "en": "🔓 Unlock Premium",
+        "lt": "🔓 Atrakinti Premium",
+        "ru": "🔓 Разблокировать Премиум"
+    }
+
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(
+        types.InlineKeyboardButton(
+            premium_cta.get(lang, "🔓 Unlock Premium"),
+            callback_data="simulate_premium_payment"
+        )
+    )
+
+    await message.answer(
+        f"{description}\n\n🔒 {get_translation(user_id, 'premium_tool_locked')}",
+        reply_markup=keyboard,
+        parse_mode="Markdown"
+    )
+    return True  # Not premium — stop handler
+
+def get_translation(user_id, key):
+    lang = get_user_language(user_id)
+    return translations.get(lang, translations['en']).get(key, key)
+
+
+def main_menu_keyboard(user_id):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)     
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "life_path")),
+        types.KeyboardButton(get_translation(user_id, "soul_urge"))        
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "expression")),
+        types.KeyboardButton(get_translation(user_id, "personality"))                
+    )
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "destiny")),
+        types.KeyboardButton(get_translation(user_id, "birthday_number"))
+    )
+    keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
+
+    keyboard.add(types.KeyboardButton("💎 Premium Tools"))
+
+    keyboard.row(
+        types.KeyboardButton(get_translation(user_id, "change_language")),
+        types.KeyboardButton(get_translation(user_id, "back_to_menu"))
+    )
+
+    return keyboard
