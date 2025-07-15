@@ -1,4 +1,7 @@
-from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.fsm.state import StatesGroup, State
+
+class LifePathStates(StatesGroup):
+    waiting_for_birthdate = State()
 
 class CompatibilityStates(StatesGroup):
     waiting_for_first_date = State()
