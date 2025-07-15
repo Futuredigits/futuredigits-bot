@@ -89,3 +89,10 @@ def init_db():
     conn.commit()
     conn.close()
 
+def set_language(user_id: int, language_code: str):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("INSERT OR REPLACE INTO users (user_id, language) VALUES (?, ?)", (user_id, language_code))
+    conn.commit()
+    conn.close()
+
