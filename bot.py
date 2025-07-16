@@ -242,8 +242,7 @@ import uvicorn
 app = FastAPI()
 
 @app.on_event("startup")
-async def on_startup():
-    Bot.set_current(bot) 
+async def on_startup(): 
     webhook_url = f"{os.getenv('WEBHOOK_BASE')}/webhook/{os.getenv('BOT_TOKEN')}"
     await bot.set_webhook(webhook_url)
     logging.info(f"✅ Webhook set to: {webhook_url}")
@@ -251,7 +250,6 @@ async def on_startup():
 
 @app.post("/webhook/{token}")
 async def telegram_webhook(token: str, request: Request):
-    Bot.set_current(bot)
     if token != os.getenv("BOT_TOKEN"):
         return {"error": "Invalid token"}
     update = await request.json()
