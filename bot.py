@@ -254,7 +254,7 @@ async def telegram_webhook(token: str, request: Request):
         return {"error": "Invalid token"}
     update = await request.json()
     telegram_update = types.Update(**update)
-    await dp.process_update(telegram_update)
+    await dp.feed_update(bot, telegram_update)
     return {"status": "ok"}
 
 @app.on_event("shutdown")
