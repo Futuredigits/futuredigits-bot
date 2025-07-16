@@ -87,26 +87,28 @@ def get_translation(user_id, key):
     return translations.get(lang, translations['en']).get(key, key)
 
 def main_menu_keyboard(user_id):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)     
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "life_path")),
-        types.KeyboardButton(get_translation(user_id, "soul_urge"))        
+    keyboard = types.ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                types.KeyboardButton(get_translation(user_id, "life_path")),
+                types.KeyboardButton(get_translation(user_id, "soul_urge")),
+            ],
+            [
+                types.KeyboardButton(get_translation(user_id, "expression")),
+                types.KeyboardButton(get_translation(user_id, "personality")),
+            ],
+            [
+                types.KeyboardButton(get_translation(user_id, "destiny")),
+                types.KeyboardButton(get_translation(user_id, "birthday_number")),
+            ],
+            [types.KeyboardButton(get_translation(user_id, "compatibility"))],
+            [types.KeyboardButton("💎 Premium Tools")],
+            [
+                types.KeyboardButton(get_translation(user_id, "change_language")),
+                types.KeyboardButton(get_translation(user_id, "back_to_menu")),
+            ],
+        ],
+        resize_keyboard=True
     )
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "expression")),
-        types.KeyboardButton(get_translation(user_id, "personality"))                
-    )
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "destiny")),
-        types.KeyboardButton(get_translation(user_id, "birthday_number"))
-    )
-    keyboard.add(types.KeyboardButton(get_translation(user_id, "compatibility")))
-
-    keyboard.add(types.KeyboardButton("💎 Premium Tools"))
-
-    keyboard.row(
-        types.KeyboardButton(get_translation(user_id, "change_language")),
-        types.KeyboardButton(get_translation(user_id, "back_to_menu"))
-    )
-
     return keyboard
+
