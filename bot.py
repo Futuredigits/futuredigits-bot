@@ -2,6 +2,8 @@ import os
 import logging
 from aiogram import Bot
 from aiogram import types
+from aiogram import Router
+router = Router()
 from loader import bot, dp
 from handlers import all_routers
 for router in all_routers:
@@ -21,7 +23,7 @@ logging.basicConfig(
 )
 
 
-@dp.message_handler(commands=['start'], state="*")
+@router.message(commands=['start'], state="*")
 async def send_welcome(message: types.Message, state: FSMContext):
     await state.finish()
     set_user_language(message.from_user.id, 'en')
@@ -36,12 +38,12 @@ async def send_welcome(message: types.Message, state: FSMContext):
     await message.answer("ℹ️ Learn more about FutureDigits:", reply_markup=about_button)
 
    
-@dp.callback_query_handler(lambda call: call.data == "about_info")
+@router.callback_query(lambda call: call.data == "about_info")
 async def show_about_from_button(call: types.CallbackQuery):
     await call.message.answer(get_translation(call.from_user.id, "about"), parse_mode="Markdown")
     await call.answer()
 
-@dp.message_handler(commands=['help'], state="*")
+@router.message(commands=['help'], state="*")
 async def send_help(message: types.Message, state: FSMContext):
     await state.finish()  # ✅ Cancel any active state
 
@@ -58,24 +60,24 @@ async def send_help(message: types.Message, state: FSMContext):
     await message.answer(help_text, parse_mode="Markdown")
 
 
-@dp.message_handler(commands=["about"])
+@router.message(commands=["about"])
 async def send_about(message: types.Message):
     text = get_translation(message.from_user.id, "about")
     await message.answer(text, parse_mode="Markdown")
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "back_to_menu"), state="*")
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "back_to_menu"), state="*")
 async def back_to_main_menu(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("🔙 You are back in the main menu. Choose a tool below 👇", reply_markup=main_menu_keyboard(message.from_user.id))
 
-@dp.message_handler(commands=['language'])
+@router.message(commands=['language'])
 async def choose_language(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"]
     keyboard.add(*buttons)
     await message.answer("Choose your language / Pasirinkite kalbą / Выберите язык:", reply_markup=keyboard)
 
-@dp.message_handler(lambda message: message.text in ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"], state="*")
+@router.message(lambda message: message.text in ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"], state="*")
 async def set_language(message: types.Message, state: FSMContext):
     await state.finish()  # Cancel any ongoing input state
     lang_map = {
@@ -88,7 +90,7 @@ async def set_language(message: types.Message, state: FSMContext):
     await message.answer(get_translation(message.from_user.id, "language_set"), reply_markup=main_menu_keyboard(message.from_user.id))
 
 
-@dp.message_handler(commands=["premium"])
+@router.message(commands=["premium"])
 async def send_premium_info(message: types.Message):
     user_id = message.from_user.id
     lang = get_user_language(user_id)
@@ -111,12 +113,12 @@ async def send_premium_info(message: types.Message):
 
     await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
 
-@dp.message_handler(commands=["set_premium"])
+@router.message(commands=["set_premium"])
 async def make_user_premium(message: types.Message):
     set_user_premium(message.from_user.id, True)
     await message.answer("✅ You are now a premium user.")
 
-@dp.message_handler(commands=["buy_premium"])
+@router.message(commands=["buy_premium"])
 async def buy_premium(message: types.Message):
     user_id = message.from_user.id
     lang = get_user_language(user_id)
@@ -172,7 +174,7 @@ async def buy_premium(message: types.Message):
 
     await message.answer(text.get(lang, text["en"]), reply_markup=keyboard, parse_mode="Markdown")
 
-@dp.message_handler(lambda message: message.text == "💎 Premium Tools")
+@router.message(lambda message: message.text == "💎 Premium Tools")
 async def show_premium_menu(message: types.Message, state: FSMContext):
     await state.finish()
     user_id = message.from_user.id
@@ -218,7 +220,7 @@ async def show_premium_menu(message: types.Message, state: FSMContext):
         await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
 
 
-@dp.callback_query_handler(lambda call: call.data == "simulate_premium_payment")
+@router.callback_query(lambda call: call.data == "simulate_premium_payment")
 async def handle_simulated_payment(call: types.CallbackQuery):
     user_id = call.from_user.id
     set_user_premium(user_id, True)
@@ -265,6 +267,9 @@ async def on_shutdown():
 @app.get("/")
 async def health_check():
     return {"status": "ok"}
+
+dp.include_router(router)
+
 
 
 
