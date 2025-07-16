@@ -5,14 +5,11 @@ from utils import get_translation, is_valid_date, get_life_path, main_menu_keybo
 
 router = Router()
 
-@router.message()
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "compatibility"))
 async def start_compatibility(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if message.text != get_translation(user_id, "compatibility"):
-        return
-
-    await message.answer(get_translation(user_id, "enter_first_birthdate"))
+    await message.answer(get_translation(message.from_user.id, "enter_first_birthdate"))
     await state.set_state(CompatibilityStates.waiting_for_first_date)
+
 
 @router.message(CompatibilityStates.waiting_for_first_date)
 async def get_first_date(message: types.Message, state: FSMContext):

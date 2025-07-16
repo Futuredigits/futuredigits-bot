@@ -6,14 +6,11 @@ from utils import get_translation, is_valid_date, get_life_path, main_menu_keybo
 
 router = Router()
 
-@router.message()
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "life_path"))
 async def start_life_path(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if message.text != get_translation(user_id, "life_path"):
-        return
-
-    await message.answer(get_translation(user_id, "birthdate_prompt"))
+    await message.answer(get_translation(message.from_user.id, "birthdate_prompt"))
     await state.set_state(LifePathStates.waiting_for_birthdate)
+
 
 @router.message(LifePathStates.waiting_for_birthdate)
 async def process_life_path_birthdate(message: types.Message, state: FSMContext):

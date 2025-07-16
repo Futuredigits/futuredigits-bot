@@ -6,14 +6,11 @@ from utils import get_translation, is_valid_date, main_menu_keyboard
 
 router = Router()
 
-@router.message()
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "birthday_number"))
 async def start_birthday_number(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if message.text != get_translation(user_id, "birthday_number"):
-        return
-
-    await message.answer(get_translation(user_id, "birthdate_prompt"))
+    await message.answer(get_translation(message.from_user.id, "birthdate_prompt"))
     await state.set_state(BirthdayStates.waiting_for_birthdate)
+
 
 @router.message(BirthdayStates.waiting_for_birthdate)
 async def process_birthday_number(message: types.Message, state: FSMContext):

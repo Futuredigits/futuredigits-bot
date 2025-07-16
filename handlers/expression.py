@@ -6,13 +6,9 @@ from utils import get_translation, calculate_expression_number, main_menu_keyboa
 
 router = Router()
 
-@router.message()
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "expression"))
 async def start_expression(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if message.text != get_translation(user_id, "expression"):
-        return
-
-    await message.answer(get_translation(user_id, "enter_full_name"))
+    await message.answer(get_translation(message.from_user.id, "enter_full_name"))
     await state.set_state(ExpressionStates.waiting_for_name)
 
 @router.message(ExpressionStates.waiting_for_name)

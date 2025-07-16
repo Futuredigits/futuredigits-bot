@@ -6,14 +6,11 @@ from utils import get_translation, calculate_soul_urge_number, main_menu_keyboar
 
 router = Router()
 
-@router.message()
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "soul_urge"))
 async def start_soul_urge(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if message.text != get_translation(user_id, "soul_urge"):
-        return
-
-    await message.answer(get_translation(user_id, "enter_full_name"))
+    await message.answer(get_translation(message.from_user.id, "enter_full_name"))
     await state.set_state(SoulUrgeStates.waiting_for_name)
+
 
 @router.message(SoulUrgeStates.waiting_for_name)
 async def process_soul_urge_name(message: types.Message, state: FSMContext):

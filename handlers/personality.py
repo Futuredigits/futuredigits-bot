@@ -6,14 +6,11 @@ from utils import get_translation, calculate_personality_number, main_menu_keybo
 
 router = Router()
 
-@router.message()
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "personality"))
 async def start_personality(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if message.text != get_translation(user_id, "personality"):
-        return
-
-    await message.answer(get_translation(user_id, "enter_full_name"))
+    await message.answer(get_translation(message.from_user.id, "enter_full_name"))
     await state.set_state(PersonalityStates.waiting_for_name)
+
 
 @router.message(PersonalityStates.waiting_for_name)
 async def process_personality_name(message: types.Message, state: FSMContext):
