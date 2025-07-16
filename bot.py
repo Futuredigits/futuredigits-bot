@@ -66,9 +66,9 @@ async def send_about(message: types.Message):
     text = get_translation(message.from_user.id, "about")
     await message.answer(text, parse_mode="Markdown")
 
-@router.message(lambda message: message.text == get_translation(message.from_user.id, "back_to_menu"), state="*")
+@router.message(lambda message: message.text == get_translation(message.from_user.id, "back_to_menu"))
 async def back_to_main_menu(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.clear()
     await message.answer("🔙 You are back in the main menu. Choose a tool below 👇", reply_markup=main_menu_keyboard(message.from_user.id))
 
 @router.message(Command("language"))
