@@ -26,7 +26,7 @@ logging.basicConfig(
 
 @main_router.message(CommandStart())
 async def send_welcome(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.clear()
     set_user_language(message.from_user.id, 'en')
 
     # 1. Send welcome text with full reply keyboard (menu)
@@ -46,7 +46,7 @@ async def show_about_from_button(call: types.CallbackQuery):
 
 @main_router.message(Command("help"))
 async def send_help(message: types.Message, state: FSMContext):
-    await state.finish()  # ✅ Cancel any active state
+    await state.clear() 
 
     help_text = (
         "📌 *FutureDigits Help Menu*\n\n"
@@ -80,7 +80,7 @@ async def choose_language(message: types.Message):
 
 @main_router.message(lambda message: message.text in ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"])
 async def set_language(message: types.Message, state: FSMContext):
-    await state.finish()  # Cancel any ongoing input state
+    await state.clear()  
     lang_map = {
         "English 🇬🇧": "en",
         "Lietuvių 🇱🇹": "lt",
@@ -177,7 +177,7 @@ async def buy_premium(message: types.Message):
 
 @main_router.message(lambda message: message.text == "💎 Premium Tools")
 async def show_premium_menu(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.clear()
     user_id = message.from_user.id
     lang = get_user_language(user_id)
 
