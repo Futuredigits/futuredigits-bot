@@ -29,14 +29,16 @@ async def send_welcome(message: types.Message, state: FSMContext):
     await state.clear()
     set_user_language(message.from_user.id, 'en')
 
-    # 1. Send welcome text with full reply keyboard (menu)
     text = get_translation(message.from_user.id, "welcome")
     await message.answer(text, parse_mode="Markdown", reply_markup=main_menu_keyboard(message.from_user.id))
 
-    # 2. Optionally send the "ℹ️ About" button as separate inline button
-    about_button = types.InlineKeyboardMarkup()
-    about_button.add(types.InlineKeyboardButton("ℹ️ About", callback_data="about_info"))
+    about_button = types.InlineKeyboardMarkup(
+        inline_keyboard=[
+            [types.InlineKeyboardButton(text="ℹ️ About", callback_data="about_info")]
+        ]
+    )
     await message.answer("ℹ️ Learn more about FutureDigits:", reply_markup=about_button)
+
 
    
 @main_router.callback_query(lambda call: call.data == "about_info")
