@@ -3,7 +3,7 @@ from .soul_urge import router as soul_urge_router
 from .expression import router as expression_router
 from .personality import router as personality_router
 from .destiny import router as destiny_router
-from .birthday_number import router as birthday_router
+from .birthday import router as birthday_router
 from .compatibility import router as compatibility_router
 
 all_routers = [
