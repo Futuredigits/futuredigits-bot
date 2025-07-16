@@ -269,7 +269,6 @@ async def on_shutdown():
 async def health_check():
     return {"status": "ok"}
 
-dp.include_router(router)
 dp.include_router(main_router)
 
 
