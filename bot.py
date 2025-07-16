@@ -2,6 +2,7 @@ import os
 import logging
 from aiogram import Bot
 from aiogram import types
+from aiogram.filters import CommandStart, Command
 from aiogram import Router
 router = Router()
 from loader import bot, dp
@@ -23,7 +24,7 @@ logging.basicConfig(
 )
 
 
-@router.message(commands=['start'], state="*")
+@router.message(CommandStart())
 async def send_welcome(message: types.Message, state: FSMContext):
     await state.finish()
     set_user_language(message.from_user.id, 'en')
@@ -43,7 +44,7 @@ async def show_about_from_button(call: types.CallbackQuery):
     await call.message.answer(get_translation(call.from_user.id, "about"), parse_mode="Markdown")
     await call.answer()
 
-@router.message(commands=['help'], state="*")
+@router.message(Command("help"))
 async def send_help(message: types.Message, state: FSMContext):
     await state.finish()  # ✅ Cancel any active state
 
@@ -60,7 +61,7 @@ async def send_help(message: types.Message, state: FSMContext):
     await message.answer(help_text, parse_mode="Markdown")
 
 
-@router.message(commands=["about"])
+@router.message(Command("about"))
 async def send_about(message: types.Message):
     text = get_translation(message.from_user.id, "about")
     await message.answer(text, parse_mode="Markdown")
@@ -70,14 +71,14 @@ async def back_to_main_menu(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("🔙 You are back in the main menu. Choose a tool below 👇", reply_markup=main_menu_keyboard(message.from_user.id))
 
-@router.message(commands=['language'])
+@router.message(Command("language"))
 async def choose_language(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"]
     keyboard.add(*buttons)
     await message.answer("Choose your language / Pasirinkite kalbą / Выберите язык:", reply_markup=keyboard)
 
-@router.message(lambda message: message.text in ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"], state="*")
+@router.message(lambda message: message.text in ["English 🇬🇧", "Lietuvių 🇱🇹", "Русский 🇷🇺"])
 async def set_language(message: types.Message, state: FSMContext):
     await state.finish()  # Cancel any ongoing input state
     lang_map = {
@@ -90,7 +91,7 @@ async def set_language(message: types.Message, state: FSMContext):
     await message.answer(get_translation(message.from_user.id, "language_set"), reply_markup=main_menu_keyboard(message.from_user.id))
 
 
-@router.message(commands=["premium"])
+@router.message(Command("premium"))
 async def send_premium_info(message: types.Message):
     user_id = message.from_user.id
     lang = get_user_language(user_id)
@@ -113,12 +114,12 @@ async def send_premium_info(message: types.Message):
 
     await message.answer(text, parse_mode="Markdown", reply_markup=keyboard)
 
-@router.message(commands=["set_premium"])
+@router.message(Command("set_premium"))
 async def make_user_premium(message: types.Message):
     set_user_premium(message.from_user.id, True)
     await message.answer("✅ You are now a premium user.")
 
-@router.message(commands=["buy_premium"])
+@router.message(Command("buy_premium"))
 async def buy_premium(message: types.Message):
     user_id = message.from_user.id
     lang = get_user_language(user_id)
