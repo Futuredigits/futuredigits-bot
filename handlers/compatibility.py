@@ -1,58 +1,56 @@
-from aiogram import types
+from aiogram import types, Router
 from aiogram.fsm.context import FSMContext
-from loader import dp
 from states import CompatibilityStates
-from db import get_user_language
-from utils import get_translation, is_valid_date, get_life_path, get_all_buttons
+from utils import get_translation, is_valid_date, get_life_path, main_menu_keyboard
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "compatibility"))
+router = Router()
+
+@router.message()
 async def start_compatibility(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
-    lang = get_user_language(user_id)
-    await message.answer(get_translation(user_id, "enter_first_birthdate_compatibility"))
-    await CompatibilityStates.waiting_for_first_birthdate.set()
+    if message.text != get_translation(user_id, "compatibility"):
+        return
 
-@dp.message_handler(state=CompatibilityStates.waiting_for_first_birthdate)
-async def process_first_birthdate(message: types.Message, state: FSMContext):
-    text = message.text.strip()
+    await message.answer(get_translation(user_id, "enter_first_birthdate"))
+    await state.set_state(CompatibilityStates.waiting_for_first_date)
+
+@router.message(CompatibilityStates.waiting_for_first_date)
+async def get_first_date(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    text = message.text.strip()
 
     if not is_valid_date(text):
-        await message.answer(get_translation(user_id, "invalid_date"))
+        await message.answer(get_translation(user_id, "invalid_format"))
         return
 
     await state.update_data(first_birthdate=text)
-    await message.answer(get_translation(user_id, "enter_second_birthdate_compatibility"))
-    await CompatibilityStates.waiting_for_second_birthdate.set()
+    await message.answer(get_translation(user_id, "enter_second_birthdate"))
+    await state.set_state(CompatibilityStates.waiting_for_second_date)
 
-@dp.message_handler(state=CompatibilityStates.waiting_for_second_birthdate)
-async def process_second_birthdate(message: types.Message, state: FSMContext):
+@router.message(CompatibilityStates.waiting_for_second_date)
+async def get_second_date(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
-    text = message.text.strip()
-    lang = get_user_language(user_id)
+    second = message.text.strip()
 
-    if not is_valid_date(text):
-        await message.answer(get_translation(user_id, "invalid_date"))
+    if not is_valid_date(second):
+        await message.answer(get_translation(user_id, "invalid_format"))
         return
 
     data = await state.get_data()
-    first_birthdate = data.get("first_birthdate")
+    first = data.get("first_birthdate")
 
-    day1, month1, year1 = map(int, first_birthdate.split('.'))
-    day2, month2, year2 = map(int, text.split('.'))
+    d1, m1, y1 = map(int, first.split('.'))
+    d2, m2, y2 = map(int, second.split('.'))
 
-    number1 = get_life_path(day1, month1, year1)
-    number2 = get_life_path(day2, month2, year2)
-    pair_key = f"{min(number1, number2)}_{max(number1, number2)}"
-    description = get_translation(user_id, f"compatibility_{pair_key}")
-    buttons = get_all_buttons(user_id, get_translation)
+    lp1 = get_life_path(d1, m1, y1)
+    lp2 = get_life_path(d2, m2, y2)
+    key = f"{min(lp1, lp2)}_{max(lp1, lp2)}"
+    description = get_translation(user_id, f"compatibility_interpretation_{key}")
 
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(buttons["life_path"], buttons["soul_urge"])
-    keyboard.add(buttons["expression"], buttons["personality"])
-    keyboard.add(buttons["destiny"], buttons["birthday_number"])
-    keyboard.add(buttons["premium_tools"], buttons["change_language"])
-
-    await message.answer(f"*{get_translation(user_id, 'compatibility_result')}*\n\n{description}",
-                         parse_mode="Markdown", reply_markup=keyboard)
-    await state.finish()
+    await message.answer(
+        f"\U0001F48F *{get_translation(user_id, 'compatibility')}*
+\n\n{description}",
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(user_id)
+    )
+    await state.clear()

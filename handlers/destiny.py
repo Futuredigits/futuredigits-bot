@@ -1,33 +1,32 @@
-from aiogram import types
+from aiogram import types, Router
 from aiogram.fsm.context import FSMContext
-from loader import dp
 from states import DestinyStates
 from db import get_user_language
-from utils import get_translation, calculate_destiny_number, get_all_buttons
+from utils import get_translation, calculate_expression_number, main_menu_keyboard
 
-@dp.message_handler(lambda message: message.text == get_translation(message.from_user.id, "destiny"))
+router = Router()
+
+@router.message()
 async def start_destiny(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
-    lang = get_user_language(user_id)
-    await message.answer(get_translation(user_id, "enter_full_name_destiny"))
-    await DestinyStates.waiting_for_name.set()
+    if message.text != get_translation(user_id, "destiny"):
+        return
 
-@dp.message_handler(state=DestinyStates.waiting_for_name)
+    await message.answer(get_translation(user_id, "enter_full_name"))
+    await state.set_state(DestinyStates.waiting_for_name)
+
+@router.message(DestinyStates.waiting_for_name)
 async def process_destiny_name(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     name = message.text.strip()
-    lang = get_user_language(user_id)
 
-    number = calculate_destiny_number(name)
+    # Destiny number = Expression number logic
+    number = calculate_expression_number(name)
     description = get_translation(user_id, f"destiny_description_{number}")
-    buttons = get_all_buttons(user_id, get_translation)
 
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(buttons["life_path"], buttons["soul_urge"])
-    keyboard.add(buttons["expression"], buttons["personality"])
-    keyboard.add(buttons["birthday_number"], buttons["compatibility"])
-    keyboard.add(buttons["premium_tools"], buttons["change_language"])
-
-    await message.answer(f"*{get_translation(user_id, 'destiny_result')} {number}*\n\n{description}",
-                         parse_mode="Markdown", reply_markup=keyboard)
-    await state.finish()
+    await message.answer(
+        f"\U0001F31F *{get_translation(user_id, 'destiny_result_title')} {number}*\n\n{description}",
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard(user_id)
+    )
+    await state.clear()
