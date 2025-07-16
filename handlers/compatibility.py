@@ -48,9 +48,9 @@ async def get_second_date(message: types.Message, state: FSMContext):
     description = get_translation(user_id, f"compatibility_interpretation_{key}")
 
     await message.answer(
-        f"\U0001F48F *{get_translation(user_id, 'compatibility')}*
-\n\n{description}",
-        parse_mode="Markdown",
-        reply_markup=main_menu_keyboard(user_id)
-    )
+    f"\U0001F48F *{get_translation(user_id, 'compatibility')}*\n\n{description}",
+    parse_mode="Markdown",
+    reply_markup=main_menu_keyboard(user_id)
+)
+
     await state.clear()
