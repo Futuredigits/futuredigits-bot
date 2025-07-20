@@ -25,13 +25,13 @@ main_menu = ReplyKeyboardMarkup(
 
 premium_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="🎯 Expression"), KeyboardButton(text="🌟 Destiny")],
-        [KeyboardButton(text="🧩 Passion"), KeyboardButton(text="🕳 Karmic Debt")],
-        [KeyboardButton(text="💑 Compatibility"), KeyboardButton(text="❤️ Love Vibes")],
+        [KeyboardButton(text="🧩 Passion Number"), KeyboardButton(text="🕳 Karmic Debt"), KeyboardButton(text="💑 Compatibility")],
+        [KeyboardButton(text="❤️ Love Vibes"), KeyboardButton(text="🌌 Personal Year Forecast"), KeyboardButton(text="🌕 Moon Energy Today")],
+        [KeyboardButton(text="🗓 Daily Universal Vibe"), KeyboardButton(text="🪬 Angel Number Decoder"), KeyboardButton(text="🌀 Name Vibration")],
         [KeyboardButton(text="🔙 Back to Main Menu")]
     ],
     resize_keyboard=True,
-    input_field_placeholder="Explore premium tools..."
+    input_field_placeholder="Select a premium tool..."
 )
 
 
