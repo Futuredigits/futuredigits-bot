@@ -7,6 +7,10 @@ from aiogram.types import Update
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
+from handlers.life_path import router as life_path_router
+dp.include_router(life_path_router)
+
+
 
 load_dotenv()
 

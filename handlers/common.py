@@ -90,37 +90,6 @@ async def show_main_menu(message: Message, state: FSMContext):
     )
 
 
-# --- Life Path Number Tool ---
-@router.message(F.text == "🔢 Life Path")
-async def ask_birthdate_life_path(message: Message, state: FSMContext):
-    print("🧪 Life Path button pressed")
-    try:
-        print("📦 Checking imports:", life_path_intro[:20], type(main_menu))
-        await state.clear()
-        await message.answer(life_path_intro, reply_markup=main_menu)
-        await state.set_state(LifePathStates.waiting_for_birthdate)
-    except Exception as e:
-        import traceback
-        print("❗ CRASH inside Life Path handler:")
-        traceback.print_exc()
-        await message.answer("⚠️ Internal error in Life Path tool.")
-
-
-
-@router.message(LifePathStates.waiting_for_birthdate)
-async def handle_birthdate_life_path(message: Message, state: FSMContext):
-    try:
-        date_str = message.text.strip()
-        number = calculate_life_path_number(date_str)
-        result = get_life_path_result(number)
-        await message.answer(result, reply_markup=main_menu)
-    except Exception:
-        await message.answer("❗ *Invalid date format.*\nPlease enter your birthdate in the format: `DD-MM-YYYY` 📅", parse_mode=ParseMode.MARKDOWN)
-        return  # 🔁 keep user in same state — don't clear it
-
-    await state.clear()
-
-
 # --- Register this router once ---
 def register_common_handlers(dp):
     if router not in dp.sub_routers:
