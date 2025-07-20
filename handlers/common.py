@@ -10,17 +10,27 @@ from tools.life_path import calculate_life_path_number, get_life_path_result
 
 router = Router(name=__name__)  # ✅ Unique router name
 
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="🔢 Life Path"), KeyboardButton(text="💖 Soul Urge")],
         [KeyboardButton(text="🎭 Personality"), KeyboardButton(text="🔐 Birthday")],
-        [KeyboardButton(text="🎯 Expression (Premium)"), KeyboardButton(text="🌟 Destiny (Premium)")],
-        [KeyboardButton(text="🧩 Passion (Premium)"), KeyboardButton(text="🕳 Karmic Debt (Premium)")],
-        [KeyboardButton(text="💑 Compatibility (Premium)"), KeyboardButton(text="❤️ Love Vibes (Premium)")],
         [KeyboardButton(text="🎁 Premium Tools")]
     ],
     resize_keyboard=True,
     input_field_placeholder="Choose a numerology tool..."
+)
+
+premium_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="🎯 Expression (Premium)"), KeyboardButton(text="🌟 Destiny (Premium)")],
+        [KeyboardButton(text="🧩 Passion (Premium)"), KeyboardButton(text="🕳 Karmic Debt (Premium)")],
+        [KeyboardButton(text="💑 Compatibility (Premium)"), KeyboardButton(text="❤️ Love Vibes (Premium)")],
+        [KeyboardButton(text="🔙 Back to Main Menu")]
+    ],
+    resize_keyboard=True,
+    input_field_placeholder="Explore premium tools..."
 )
 
 
@@ -60,6 +70,24 @@ async def premium_handler(message: Message):
         parse_mode=ParseMode.MARKDOWN
     )
 
+
+@router.message(F.text == "🎁 Premium Tools")
+async def show_premium_menu(message: Message):
+    await message.answer(
+        "💎 *Premium Tools Menu*\n\nUnlock deeper insights, karmic secrets, and powerful relationship readings.",
+        reply_markup=premium_menu,
+        parse_mode=ParseMode.MARKDOWN
+    )
+
+@router.message(F.text == "🔙 Back to Main Menu")
+async def show_main_menu(message: Message):
+    await message.answer(
+        "🏠 *Back to Main Menu*\n\nChoose a numerology tool below to get started:",
+        reply_markup=main_menu,
+        parse_mode=ParseMode.MARKDOWN
+    )
+
+
 # --- Life Path Number Tool ---
 @router.message(F.text == "🔢 Life Path")
 async def ask_birthdate_life_path(message: Message, state: FSMContext):
@@ -75,7 +103,7 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
         result = get_life_path_result(number)
         await message.answer(result)
     except Exception:
-        await message.answer("❗ Please enter a valid date in the format: YYYY-MM-DD")
+        await message.answer("❗ Please enter a valid date in the format: DD.MM.YYYY")
     await state.clear()
 
 # --- Register this router once ---
