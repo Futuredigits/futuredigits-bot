@@ -81,7 +81,8 @@ async def show_premium_menu(message: Message):
     )
 
 @router.message(F.text == "🔙 Back to Main Menu")
-async def show_main_menu(message: Message):
+async def show_main_menu(message: Message, state: FSMContext):
+    await state.clear()  # ✅ clear any active tool state
     await message.answer(
         "🏠 *Back to Main Menu*\n\nChoose a numerology tool below to get started:",
         reply_markup=main_menu,
