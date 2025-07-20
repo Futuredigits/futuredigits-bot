@@ -1,7 +1,6 @@
 def calculate_life_path_number(date_str: str) -> int:
-    # Accept DD-MM-YYYY format
     try:
-        day, month, year = map(int, date_str.split('-'))
+        day, month, year = map(int, date_str.split('.'))
     except ValueError:
         raise ValueError("Invalid date format. Use DD.MM.YYYY.")
     
