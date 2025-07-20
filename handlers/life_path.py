@@ -3,7 +3,6 @@ from aiogram import types, Router
 from aiogram.fsm.context import FSMContext
 from states import LifePathStates
 from utils import get_translation, is_valid_date, get_life_path, main_menu_keyboard
-from db import is_user_premium
 
 router = Router()
 
@@ -11,7 +10,7 @@ router = Router()
 async def start_life_path(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
 
-    intro = {
+    intro_map = {
         "en": (
             "🔢 *Life Path Number*
 "
@@ -44,18 +43,19 @@ async def start_life_path(message: types.Message, state: FSMContext):
 
 "
             "📅 Введите дату рождения (ДД.ММ.ГГГГ):"
-        ),
+        )
     }
 
-    lang = get_translation(user_id, "language_set")  # temp call to get user lang
-    lang_code = "en"
-    for code in ["en", "lt", "ru"]:
-        if get_translation(user_id, "life_path") == get_translation(user_id, "life_path", code=code):
-            lang_code = code
+    # Try to detect language
+    for lang_code in ["en", "lt", "ru"]:
+        if get_translation(user_id, "life_path") == get_translation(user_id, "life_path", lang_code):
+            intro = intro_map.get(lang_code, intro_map["en"])
             break
+    else:
+        intro = intro_map["en"]
 
     await state.set_state(LifePathStates.waiting_for_birthdate)
-    await message.answer(intro.get(lang_code, intro["en"]), parse_mode="Markdown")
+    await message.answer(intro, parse_mode="Markdown")
 
 @router.message(LifePathStates.waiting_for_birthdate)
 async def process_life_path_birthdate(message: types.Message, state: FSMContext):
@@ -75,6 +75,5 @@ async def process_life_path_birthdate(message: types.Message, state: FSMContext)
 
 {description}"
     await message.answer(response, parse_mode="Markdown")
-
     await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
     await state.clear()
