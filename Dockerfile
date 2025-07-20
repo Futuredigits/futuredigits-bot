@@ -1,14 +1,19 @@
+# Use official Python base image
 FROM python:3.10-slim
 
+# Set working directory
 WORKDIR /app
 
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy app code
 COPY . .
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Expose port for Render (optional but helpful)
+EXPOSE 10000
 
-# This is the fix: expose the port Render provides
-ENV PORT 10000
-EXPOSE $PORT
+# Start the FastAPI app using the PORT Render provides
+CMD ["sh", "-c", "uvicorn bot:app --host 0.0.0.0 --port $PORT"]
 
-CMD ["uvicorn", "bot:app", "--host", "0.0.0.0", "--port", "10000"]
