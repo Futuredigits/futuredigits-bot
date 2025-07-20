@@ -25,7 +25,9 @@ app = FastAPI()
 @app.on_event("startup")
 async def on_startup():
     logging.info("Bot is starting...")
-    await bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
+    result = await bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
+    logging.info(f"Webhook set result: {result}")
+
 
 @app.on_event("shutdown")
 async def on_shutdown():
@@ -41,12 +43,13 @@ async def webhook(request: Request):
         update = Update.model_validate(data)
         await dp.feed_update(bot, update)
     except Exception as e:
-        logging.exception("Error processing update")
+        import traceback
+        print("🔥 UNHANDLED ERROR:")
+        traceback.print_exc()
     return JSONResponse(content={"ok": True})
 
 
-from handlers.common import register_common_handlers
-register_common_handlers(dp)
+
 
 
 
