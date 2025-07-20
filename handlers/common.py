@@ -101,10 +101,13 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
         date_str = message.text.strip()
         number = calculate_life_path_number(date_str)
         result = get_life_path_result(number)
-        await message.answer(result)
+        await message.answer(result, reply_markup=main_menu)
     except Exception:
-        await message.answer("❗ Please enter a valid date in the format: DD.MM.YYYY")
+        await message.answer("❗ *Invalid date format.*\nPlease enter your birthdate in the format: `DD-MM-YYYY` 📅", parse_mode=ParseMode.MARKDOWN)
+        return  # 🔁 keep user in same state — don't clear it
+
     await state.clear()
+
 
 # --- Register this router once ---
 def register_common_handlers(dp):
