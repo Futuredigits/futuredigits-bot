@@ -10,20 +10,10 @@ router = Router()
 @router.message(lambda message: message.text == get_translation(message.from_user.id, "life_path"))
 async def start_life_path(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
+    lang_code = get_user_language(user_id)
 
-    intro_map = {
-        "en": (
-            "🔢 *Life Path Number*
-"
-            "This number is the most important in your numerology chart.
-
-"
-            "It’s calculated from your birthdate and reveals your core personality, challenges, and destiny.
-
-"
-            "📅 Please enter your birthdate (DD.MM.YYYY):"
-        ),
-        "lt": (
+    if lang_code == "lt":
+        intro_text = (
             "🔢 *Gyvenimo Kelio Skaičius*
 "
             "Tai svarbiausias skaičius jūsų numerologinėje analizėje.
@@ -33,8 +23,9 @@ async def start_life_path(message: types.Message, state: FSMContext):
 
 "
             "📅 Įveskite savo gimimo datą (DD.MM.YYYY):"
-        ),
-        "ru": (
+        )
+    elif lang_code == "ru":
+        intro_text = (
             "🔢 *Число Жизненного Пути*
 "
             "Это главное число в вашей нумерологической карте.
@@ -45,10 +36,18 @@ async def start_life_path(message: types.Message, state: FSMContext):
 "
             "📅 Введите дату рождения (ДД.ММ.ГГГГ):"
         )
-    }
+    else:
+        intro_text = (
+            "🔢 *Life Path Number*
+"
+            "This number is the most important in your numerology chart.
 
-    lang_code = get_user_language(user_id)
-    intro_text = intro_map.get(lang_code, intro_map["en"])
+"
+            "It’s calculated from your birthdate and reveals your core personality, challenges, and destiny.
+
+"
+            "📅 Please enter your birthdate (DD.MM.YYYY):"
+        )
 
     await state.set_state(LifePathStates.waiting_for_birthdate)
     await message.answer(intro_text, parse_mode="Markdown")
