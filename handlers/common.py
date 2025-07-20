@@ -95,6 +95,7 @@ async def show_main_menu(message: Message, state: FSMContext):
 async def ask_birthdate_life_path(message: Message, state: FSMContext):
     print("🧪 Life Path button pressed")
     try:
+        print("📦 Checking imports:", life_path_intro[:20], type(main_menu))
         await state.clear()
         await message.answer(life_path_intro, reply_markup=main_menu)
         await state.set_state(LifePathStates.waiting_for_birthdate)
@@ -103,6 +104,7 @@ async def ask_birthdate_life_path(message: Message, state: FSMContext):
         print("❗ CRASH inside Life Path handler:")
         traceback.print_exc()
         await message.answer("⚠️ Internal error in Life Path tool.")
+
 
 
 @router.message(LifePathStates.waiting_for_birthdate)
