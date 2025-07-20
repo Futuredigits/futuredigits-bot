@@ -1,10 +1,14 @@
-from aiogram import Router
-router = Router(name=__name__)
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
+from aiogram import F, Router
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from aiogram.filters import CommandStart, Command
 from aiogram.enums import ParseMode
+from aiogram.fsm.context import FSMContext
 
-router = Router()
+from states import LifePathStates
+from descriptions import life_path_intro
+from tools.life_path import calculate_life_path_number, get_life_path_result
+
+router = Router(name=__name__)  # ✅ Unique router name
 
 # --- Main Menu Keyboard ---
 main_menu = ReplyKeyboardMarkup(
@@ -53,21 +57,7 @@ async def premium_handler(message: Message):
         parse_mode=ParseMode.MARKDOWN
     )
 
-
-def register_common_handlers(dp):
-    dp.include_router(router)
-
-def register_common_handlers(dp):
-    if router not in dp.sub_routers:
-        dp.include_router(router)
-
-
-from aiogram.fsm.context import FSMContext
-from states import LifePathStates
-from descriptions import life_path_intro
-from tools.life_path import calculate_life_path_number, get_life_path_result
-from aiogram.types import ReplyKeyboardRemove
-
+# --- Life Path Number Tool ---
 @router.message(F.text == "🔢 Life Path Number")
 async def ask_birthdate_life_path(message: Message, state: FSMContext):
     await message.answer(life_path_intro, reply_markup=ReplyKeyboardRemove())
@@ -79,10 +69,12 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
         date_str = message.text.strip()
         number = calculate_life_path_number(date_str)
         result = get_life_path_result(number)
-
         await message.answer(result)
     except Exception:
         await message.answer("❗ Please enter a valid date in the format: YYYY-MM-DD")
-
     await state.clear()
 
+# --- Register this router once ---
+def register_common_handlers(dp):
+    if router not in dp.sub_routers:
+        dp.include_router(router)
