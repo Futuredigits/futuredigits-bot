@@ -3,7 +3,8 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from fastapi import FastAPI, Request
-from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
+from aiogram.types import Update
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
 
@@ -35,8 +36,14 @@ async def on_shutdown():
 
 @app.post("/webhook")
 async def webhook(request: Request):
-    handler = SimpleRequestHandler(dispatcher=dp, bot=bot)
-    return await handler.handle(request)
+    try:
+        data = await request.json()
+        update = Update.model_validate(data)
+        await dp.feed_update(bot, update)
+    except Exception as e:
+        logging.exception("Error processing update")
+    return JSONResponse(content={"ok": True})
+
 
 from handlers.common import register_common_handlers
 register_common_handlers(dp)
