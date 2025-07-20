@@ -1,4 +1,5 @@
-from aiogram import Router, F
+from aiogram import Router
+router = Router(name=__name__)
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import CommandStart, Command
 from aiogram.enums import ParseMode
@@ -55,6 +56,11 @@ async def premium_handler(message: Message):
 
 def register_common_handlers(dp):
     dp.include_router(router)
+
+def register_common_handlers(dp):
+    if router not in dp.sub_routers:
+        dp.include_router(router)
+
 
 from aiogram.fsm.context import FSMContext
 from states import LifePathStates
