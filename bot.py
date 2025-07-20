@@ -38,6 +38,11 @@ async def on_shutdown():
     await bot.session.close()
 
 
+@app.get("/")
+async def root():
+    return {"status": "Futuredigits bot is running"}
+
+
 @app.post("/webhook")
 async def webhook(request: Request):
     try:
