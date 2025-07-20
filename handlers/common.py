@@ -24,9 +24,9 @@ main_menu = ReplyKeyboardMarkup(
 
 premium_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="🎯 Expression (Premium)"), KeyboardButton(text="🌟 Destiny (Premium)")],
-        [KeyboardButton(text="🧩 Passion (Premium)"), KeyboardButton(text="🕳 Karmic Debt (Premium)")],
-        [KeyboardButton(text="💑 Compatibility (Premium)"), KeyboardButton(text="❤️ Love Vibes (Premium)")],
+        [KeyboardButton(text="🎯 Expression"), KeyboardButton(text="🌟 Destiny")],
+        [KeyboardButton(text="🧩 Passion"), KeyboardButton(text="🕳 Karmic Debt")],
+        [KeyboardButton(text="💑 Compatibility"), KeyboardButton(text="❤️ Love Vibes")],
         [KeyboardButton(text="🔙 Back to Main Menu")]
     ],
     resize_keyboard=True,
