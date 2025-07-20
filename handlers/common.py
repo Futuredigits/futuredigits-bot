@@ -10,16 +10,19 @@ from tools.life_path import calculate_life_path_number, get_life_path_result
 
 router = Router(name=__name__)  # ✅ Unique router name
 
-# --- Main Menu Keyboard ---
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="🔢 Life Path Number"), KeyboardButton(text="💖 Soul Urge Number")],
-        [KeyboardButton(text="🎭 Personality Number"), KeyboardButton(text="🔮 Expression Number")],
-        [KeyboardButton(text="🌟 Destiny Number"), KeyboardButton(text="🎁 Premium Tools")]
+        [KeyboardButton(text="🔢 Life Path"), KeyboardButton(text="💖 Soul Urge")],
+        [KeyboardButton(text="🎭 Personality"), KeyboardButton(text="🔐 Birthday")],
+        [KeyboardButton(text="🎯 Expression (Premium)"), KeyboardButton(text="🌟 Destiny (Premium)")],
+        [KeyboardButton(text="🧩 Passion (Premium)"), KeyboardButton(text="🕳 Karmic Debt (Premium)")],
+        [KeyboardButton(text="💑 Compatibility (Premium)"), KeyboardButton(text="❤️ Love Vibes (Premium)")],
+        [KeyboardButton(text="🎁 Premium Tools")]
     ],
     resize_keyboard=True,
     input_field_placeholder="Choose a numerology tool..."
 )
+
 
 # --- /start Command ---
 @router.message(CommandStart())
