@@ -7,10 +7,6 @@ from aiogram.types import Update
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
-from handlers.life_path import router as life_path_router
-dp.include_router(life_path_router)
-
-
 
 load_dotenv()
 
@@ -20,8 +16,10 @@ bot = Bot(token=TOKEN, parse_mode="Markdown")
 dp = Dispatcher(storage=MemoryStorage())
 
 from handlers.common import register_common_handlers
-register_common_handlers(dp)
+from handlers.life_path import router as life_path_router
 
+register_common_handlers(dp)
+dp.include_router(life_path_router)
 
 app = FastAPI()
 
