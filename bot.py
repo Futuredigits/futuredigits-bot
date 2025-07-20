@@ -5,8 +5,6 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from fastapi import FastAPI, Request
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from dotenv import load_dotenv
-from handlers.common import register_common_handlers
-register_common_handlers(dp)
 
 
 load_dotenv()
@@ -15,6 +13,9 @@ load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN, parse_mode="Markdown")
 dp = Dispatcher(storage=MemoryStorage())
+
+from handlers.common import register_common_handlers
+register_common_handlers(dp)
 
 
 app = FastAPI()
