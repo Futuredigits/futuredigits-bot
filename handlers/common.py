@@ -15,8 +15,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="🔢 Life Path"), KeyboardButton(text="💖 Soul Urge")],
-        [KeyboardButton(text="🎭 Personality"), KeyboardButton(text="🔐 Birthday")],
-        [KeyboardButton(text="🎁 Premium Tools")]
+        [KeyboardButton(text="🎭 Personality"), KeyboardButton(text="🎁 Birthday")],
+        [KeyboardButton(text="🔐 Premium Tools")]
     ],
     resize_keyboard=True,
     input_field_placeholder="Choose a numerology tool..."
