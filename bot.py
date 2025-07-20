@@ -6,6 +6,7 @@ from fastapi import FastAPI, Request
 from aiogram.types import Update
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
+import asyncio
 
 
 load_dotenv()
@@ -26,9 +27,23 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def on_startup():
-    logging.info("Bot is starting...")
-    result = await bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
-    logging.info(f"Webhook set result: {result}")
+    logging.info("🚀 Bot is starting...")
+    print("📡 Setting webhook to:", os.getenv("WEBHOOK_URL"))
+    try:
+        result = await bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
+        print("✅ Webhook set result:", result)
+    except Exception as e:
+        print("❌ Failed to set webhook")
+        import traceback
+        traceback.print_exc()
+
+    # 🛡 Safety: keep the event loop alive
+    asyncio.create_task(idle_loop())
+
+
+async def idle_loop():
+    while True:
+        await asyncio.sleep(3600)
 
 
 @app.on_event("shutdown")
