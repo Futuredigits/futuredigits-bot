@@ -25,18 +25,14 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
     try:
         date_str = message.text.strip()
         number = calculate_life_path_number(date_str)
-
-        await message.answer(f"📅 You entered: `{date_str}`", parse_mode=ParseMode.MARKDOWN)
-        await message.answer(f"🔢 Your Life Path Number is *{number}*", parse_mode=ParseMode.MARKDOWN)
-
         result = get_life_path_result(number)
+
         await message.answer(result, reply_markup=main_menu)
+        await state.clear()
 
     except Exception:
         await message.answer(
             "❗ *Invalid date format.*\nPlease enter your birthdate in the format: `DD.MM.YYYY` 📅",
             parse_mode=ParseMode.MARKDOWN
         )
-        return  # 🛑 Keep user in the same state to re-enter
 
-    await state.clear()
