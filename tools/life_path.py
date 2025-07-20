@@ -3,7 +3,7 @@ def calculate_life_path_number(date_str: str) -> int:
     try:
         day, month, year = map(int, date_str.split('-'))
     except ValueError:
-        raise ValueError("Invalid date format. Use DD-MM-YYYY.")
+        raise ValueError("Invalid date format. Use DD.MM.YYYY.")
     
     digits = [int(d) for d in f"{day:02d}{month:02d}{year}"]
     total = sum(digits)

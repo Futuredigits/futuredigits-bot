@@ -91,7 +91,7 @@ async def show_main_menu(message: Message):
 # --- Life Path Number Tool ---
 @router.message(F.text == "🔢 Life Path")
 async def ask_birthdate_life_path(message: Message, state: FSMContext):
-    await message.answer(life_path_intro, reply_markup=ReplyKeyboardRemove())
+    await message.answer(life_path_intro, reply_markup=main_menu)
     await state.set_state(LifePathStates.waiting_for_birthdate)
 
 
