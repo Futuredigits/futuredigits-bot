@@ -25,9 +25,7 @@ async def process_life_path_birthdate(message: types.Message, state: FSMContext)
     description = get_translation(user_id, f"life_path_description_{number}")
     title = get_translation(user_id, "life_path_result_title")
 
-    response = f"💯 *{title} {number}*\n\n{description}"
-
-{description}"
-    await message.answer(response, parse_mode="Markdown")
+    full_text = "💯 *{} {}*\n\n{}".format(title, number, description)
+    await message.answer(full_text, parse_mode="Markdown")
     await message.answer(get_translation(user_id, "done_choose_tool"), reply_markup=main_menu_keyboard(user_id))
     await state.clear()
