@@ -7,8 +7,7 @@ def calculate_personality_number(name: str) -> int:
     }
 
     total = sum(consonants.get(char, 0) for char in name if char in consonants)
-    print("✅ Total consonant value:", total)  # ← Debug line
-
+    
     def reduce(n):
         if n in {11, 22, 33}:
             return n
@@ -37,6 +36,9 @@ def get_personality_result(number: int) -> str:
         22: "🏛 *Personality 22 – The Master Builder Aura*\n\nYou carry the energy of leadership and long-term vision. People sense you’re capable of big things. You radiate trust, strength, and purpose. 🌐\n\nStand in your legacy.",
         33: "🌟 *Personality 33 – The Radiant Healer*\n\nYou shine with compassion, wisdom, and spiritual beauty. People feel your loving presence, even from afar. You carry the vibration of peace. ✨\n\nYou are the light in dark places."
     }
+
+    if number not in results:
+        return "⚠️ Personality Number could not be interpreted."
 
     text = results.get(number, "⚠️ An error occurred while calculating your Personality Number.")
     return text + "\n\n🔓 *Want deeper insight? Try Expression or Destiny in Premium Tools!*"
