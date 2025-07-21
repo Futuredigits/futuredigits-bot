@@ -20,6 +20,27 @@ personality_intro = (
     "Please enter your full name to discover your Personality Number. ✍️"
 )
 
+birthday_intro = (
+    "🎂 *Birthday Number*\n\n"
+    "This number comes from the day you were born and reveals a natural gift or strength you're born with. "
+    "It’s a hidden gem of your character. 🌟\n\n"
+    "Please enter your birthdate in the format: `DD.MM.YYYY` 📅"
+)
+
+expression_intro = (
+    "🎯 *Expression Number*\n\n"
+    "Also known as the Destiny Number, this reveals your natural talents, capabilities, and what you're here to express in the world. ✨\n\n"
+    "Please enter your full name to calculate your Expression Number. ✍️"
+)
+
+destiny_intro = (
+    "🌟 *Destiny Number*\n\n"
+    "This number reflects your life’s larger purpose — a combination of your name and birthdate. "
+    "It reveals what your soul is destined to master and embody. 🔮\n\n"
+    "Please enter your full name followed by your birthdate on one line:\n\n"
+    "`Example: Sarah Johnson 21.08.1992`"
+)
+
 
 
 

@@ -9,3 +9,12 @@ class SoulUrgeStates(StatesGroup):
 class PersonalityStates(StatesGroup):
     waiting_for_full_name = State()
 
+class BirthdayStates(StatesGroup):
+    waiting_for_birthdate = State()
+
+class ExpressionStates(StatesGroup):
+    waiting_for_full_name = State()
+
+class DestinyStates(StatesGroup):
+    waiting_for_birthdate_and_name = State()
+
