@@ -6,3 +6,11 @@ life_path_intro = (
     "Please enter your birthdate in the format: `DD.MM.YYYY` 📅"
 )
 
+soul_urge_intro = (
+    "💖 *Soul Urge Number*\n\n"
+    "Your Soul Urge Number reveals your heart’s deepest desires, inner motivations, and spiritual longings. "
+    "It’s the true force behind your decisions and passions. 🌟\n\n"
+    "Please enter your full birth name (as it appears on your birth certificate). ✍️"
+)
+
+
