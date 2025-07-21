@@ -7,6 +7,7 @@ def calculate_personality_number(name: str) -> int:
     }
 
     total = sum(consonants.get(char, 0) for char in name if char in consonants)
+    print("✅ Total consonant value:", total)  # ← Debug line
 
     def reduce(n):
         if n in {11, 22, 33}:
@@ -15,7 +16,10 @@ def calculate_personality_number(name: str) -> int:
             n = sum(int(d) for d in str(n))
         return n
 
-    return reduce(total)
+    reduced = reduce(total)
+    print("✅ Reduced personality number:", reduced)  # ← Debug line
+
+    return reduced
 
 
 def get_personality_result(number: int) -> str:
