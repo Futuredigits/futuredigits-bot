@@ -26,19 +26,20 @@ def calculate_expression_number(name: str) -> int:
 
 def get_expression_result(number: int) -> str:
     results = {
-        1: "🔥 *Expression 1 – The Pioneer*\n\nYou’re here to lead with originality and courage. You bring fresh ideas and independent thinking.",
-        2: "🤝 *Expression 2 – The Diplomat*\n\nYou are supportive, intuitive, and a master of harmony. You’re here to build bridges.",
-        3: "🎤 *Expression 3 – The Artist*\n\nYou’re creative, expressive, and magnetic. You're here to uplift through communication or art.",
-        4: "🏗 *Expression 4 – The Organizer*\n\nYou’re practical, reliable, and structured. You bring order and lasting systems.",
-        5: "🌍 *Expression 5 – The Explorer*\n\nYou’re dynamic, freedom-loving, and full of curiosity. You’re here to inspire change.",
-        6: "💞 *Expression 6 – The Healer*\n\nYou’re nurturing, responsible, and loving. You bring people together with compassion.",
-        7: "🧘 *Expression 7 – The Thinker*\n\nYou’re analytical, spiritual, and reflective. You’re here to seek deeper truths.",
-        8: "💼 *Expression 8 – The Executive*\n\nYou’re ambitious, strategic, and influential. You're here to lead with power and integrity.",
-        9: "🌟 *Expression 9 – The Visionary*\n\nYou’re compassionate, wise, and idealistic. You’re here to uplift and enlighten others.",
-        11: "⚡ *Expression 11 – The Inspired Leader*\n\nYou’re intuitive, expressive, and spiritually gifted. You lead with divine insight.",
-        22: "🏛 *Expression 22 – The Master Builder*\n\nYou’re capable of turning dreams into structures that serve the world. You hold great potential.",
-        33: "🌟 *Expression 33 – The Master Teacher*\n\nYou’re selfless, artistic, and deeply loving. You’re here to guide and heal with higher purpose."
+        1: "🔥 *Expression 1 – The Trailblazer*\n\nYou were born to lead, initiate, and stand on your own. With natural confidence and originality, you have the strength to overcome obstacles and break new ground. You may resist authority — because you were born to be it. You thrive when taking bold action aligned with your vision.",
+        2: "🌸 *Expression 2 – The Peacemaker*\n\nYour soul speaks the language of sensitivity, grace, and collaboration. You’re not here to dominate — you’re here to unify. Your gifts lie in intuition, diplomacy, and creating emotional safety. People feel calmer around you. Harmony is your calling, and love is your true power.",
+        3: "🎭 *Expression 3 – The Creative Voice*\n\nYou’re blessed with expressive charm, humor, and a vivid imagination. Communication is your gift — whether through words, art, or performance. You’re here to uplift and inspire through joy. When you trust your unique voice, you become a beacon of light to others.",
+        4: "🏗 *Expression 4 – The Foundation Builder*\n\nYour talents lie in structure, practicality, and discipline. You are the one who turns dreams into tangible form. Others rely on your consistency and clear thinking. You thrive in systems, plans, and step-by-step growth. Your legacy is built through hard work and honesty.",
+        5: "✈️ *Expression 5 – The Adventurer*\n\nFreedom, variety, and exploration are embedded in your soul. You’re quick-thinking, adaptable, and born to experience life in its full spectrum. Routine is your prison — movement is your medicine. You express best when life is flowing and new stories are unfolding.",
+        6: "💞 *Expression 6 – The Compassionate Healer*\n\nYou are called to serve, protect, and create beauty. With a strong sense of responsibility and a loving heart, you attract others who need your care. You thrive in roles of service, family, healing, and artistry. Love, loyalty, and harmony are the essence of your gift.",
+        7: "🔮 *Expression 7 – The Inner Sage*\n\nYour nature is analytical, spiritual, and deeply intuitive. You are here to ask the big questions and search for higher truths. Often introspective and private, you find strength in solitude. Wisdom is your true expression — share it when ready.",
+        8: "💼 *Expression 8 – The Manifestor of Power*\n\nYou possess the inner drive, ambition, and strategic mind to achieve great things. Business, influence, and leadership are natural expressions of your purpose. Money is a tool, not a master. When you lead with integrity, success becomes service.",
+        9: "🌈 *Expression 9 – The Inspired Humanitarian*\n\nYou carry the soul of an artist, healer, and visionary. Compassion, beauty, and global consciousness flow through your energy. You’re here to serve and elevate humanity through wisdom, art, and emotional depth. Release the past — your heart is your compass.",
+        11: "⚡ *Expression 11 – The Spiritual Illuminator*\n\nYou are here to awaken others. Your gifts lie in insight, inspiration, and intuitive brilliance. You may walk a path of extremes — but you were born to rise above. When you embrace your light, you become a channel for divine truth.",
+        22: "🏛 *Expression 22 – The Master Architect*\n\nYou were born with extraordinary potential. Practical and visionary, you have the ability to create lasting systems that uplift others. This number carries both burden and blessing — but when you focus your energy, you can shape the world.",    
+        33: "🌟 *Expression 33 – The Divine Teacher*\n\nYours is the highest path of service and unconditional love. You are here to nurture, heal, and uplift through wisdom, compassion, and creativity. When you surrender ego and embrace selfless purpose, your presence becomes transformative."
     }
+
 
     text = results.get(number, "⚠️ An error occurred while calculating your Expression Number.")
     return text + "\n\n🔓 *Want deeper insight? Try Expression or Destiny in Premium Tools!*"

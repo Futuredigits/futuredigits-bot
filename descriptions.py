@@ -35,11 +35,12 @@ expression_intro = (
 
 destiny_intro = (
     "🌟 *Destiny Number*\n\n"
-    "This number reflects your life’s larger purpose — a combination of your name and birthdate. "
-    "It reveals what your soul is destined to master and embody. 🔮\n\n"
-    "Please enter your full name followed by your birthdate on one line:\n\n"
-    "`Example: Sarah Johnson 21.08.1992`"
+    "Your Destiny Number reveals the greater path your soul is meant to walk — combining the vibration of your name and birthdate. "
+    "It reflects your higher calling, life mastery, and the impact you're here to make. 🔮\n\n"
+    "Please enter your full name followed by your birthdate on one line:\n"
+    "`Name DD.MM.YYYY`"
 )
+
 
 
 
