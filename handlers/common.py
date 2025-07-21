@@ -16,7 +16,7 @@ main_menu = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="🔢 Life Path"), KeyboardButton(text="💖 Soul Urge"), KeyboardButton(text="🎭 Personality")],
         [KeyboardButton(text="🎂 Birthday"), KeyboardButton(text="🎯 Expression"), KeyboardButton(text="🌟 Destiny")],
-        [KeyboardButton(text="🎁 Premium Tools")]
+        [KeyboardButton(text="🔓 Premium Tools")]
     ],
     resize_keyboard=True,
     input_field_placeholder="Choose a numerology tool..."

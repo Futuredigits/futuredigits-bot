@@ -8,9 +8,10 @@ life_path_intro = (
 
 soul_urge_intro = (
     "💖 *Soul Urge Number*\n\n"
-    "Your Soul Urge Number reveals your heart’s deepest desires, inner motivations, and spiritual longings. "
-    "It’s the true force behind your decisions and passions. 🌟\n\n"
-    "Please enter your full birth name (as it appears on your birth certificate). ✍️"
+    "This number reveals the secret longings of your heart — your inner motivations, passions, and emotional drive. "
+    "It uncovers what your soul truly craves beneath the surface. 🌟\n\n"
+    "Please enter your full name to discover your Soul Urge Number. ✍️"
 )
+
 
 
