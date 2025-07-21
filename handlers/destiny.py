@@ -20,13 +20,24 @@ async def handle_destiny(message: Message, state: FSMContext):
     try:
         raw = message.text.strip()
         *name_parts, date_str = raw.split()
+        
+        if not name_parts:
+            raise ValueError("Missing name.")
+        
+        # Validate date format
+        import datetime
+        datetime.datetime.strptime(date_str, "%d.%m.%Y")
+
         name = " ".join(name_parts)
         number = calculate_destiny_number(name, date_str)
         result = get_destiny_result(number)
+
         await message.answer(result, reply_markup=main_menu)
         await state.clear()
-    except:
+
+    except Exception:
         await message.answer(
-            "❗ *Invalid format.* Please send name and birthdate like:\n`Emma Grace 14.02.1990`",
+            "❗ *Invalid format.* Please send your full name followed by your birthdate:\n`Emma Grace 21.08.1992`",
             parse_mode=ParseMode.MARKDOWN
         )
+
