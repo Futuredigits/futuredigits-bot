@@ -13,5 +13,13 @@ soul_urge_intro = (
     "Please enter your full name to discover your Soul Urge Number. ✍️"
 )
 
+personality_intro = (
+    "🎭 *Personality Number*\n\n"
+    "This number reflects how others see you — the first impression your energy gives. "
+    "It reveals your outer traits, social style, and the mask you wear to the world. 🌟\n\n"
+    "Please enter your full name to discover your Personality Number. ✍️"
+)
+
+
 
 

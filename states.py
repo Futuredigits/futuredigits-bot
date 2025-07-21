@@ -5,3 +5,7 @@ class LifePathStates(StatesGroup):
 
 class SoulUrgeStates(StatesGroup):
     waiting_for_full_name = State()
+
+class PersonalityStates(StatesGroup):
+    waiting_for_full_name = State()
+

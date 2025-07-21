@@ -19,11 +19,14 @@ dp = Dispatcher(storage=MemoryStorage())
 from handlers.common import register_common_handlers
 from handlers.life_path import router as life_path_router
 from handlers.soul_urge import router as soul_urge_router
+from handlers.personality import router as personality_router
 
 
 register_common_handlers(dp)
 dp.include_router(life_path_router)
 dp.include_router(soul_urge_router)
+dp.include_router(personality_router)
+
 
 app = FastAPI()
 
