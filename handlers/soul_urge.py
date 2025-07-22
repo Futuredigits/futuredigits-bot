@@ -15,8 +15,12 @@ router = Router(name="soul_urge")
 @router.message(F.text == "💖 Soul Urge")
 async def ask_full_name(message: Message, state: FSMContext):
     await state.clear()
-    await state.set_state(SoulUrgeStates.waiting_for_full_name) 
+    print("[DEBUG] State cleared in Soul Urge entry")
+    await state.set_state(SoulUrgeStates.waiting_for_full_name)
+    current = await state.get_state()
+    print(f"[DEBUG] After setting Soul Urge state: {current}")
     await message.answer(soul_urge_intro, reply_markup=main_menu)
+
 
 @router.message(SoulUrgeStates.waiting_for_full_name)
 async def handle_full_name(message: Message, state: FSMContext):

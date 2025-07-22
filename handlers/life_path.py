@@ -18,6 +18,9 @@ async def ask_birthdate_life_path(message: Message, state: FSMContext):
 
 @router.message(LifePathStates.waiting_for_birthdate)
 async def handle_birthdate_life_path(message: Message, state: FSMContext):
+    current = await state.get_state()
+    print(f"[DEBUG] ⚠️ Life Path handler triggered with FSM: {current}")
+
     try:
         date_str = message.text.strip()
         number = calculate_life_path_number(date_str)
@@ -25,6 +28,7 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
 
         await message.answer(result, reply_markup=main_menu)
         await state.clear()
+
 
     except Exception:
         await message.answer(
