@@ -11,7 +11,7 @@ router = Router(name="birthday")
 
 @router.message(F.text == "🎂 Birthday")
 async def ask_birthday(message: Message, state: FSMContext):
-    await state.clear()
+    await state.set_state(None)
     await message.answer(birthday_intro, reply_markup=main_menu)
     await state.set_state(BirthdayStates.waiting_for_birthdate)
 
@@ -22,6 +22,6 @@ async def handle_birthday(message: Message, state: FSMContext):
         number = calculate_birthday_number(date_str)
         result = get_birthday_result(number)
         await message.answer(result, reply_markup=main_menu)
-        await state.clear()
+        await state.set_state(None)
     except:
         await message.answer("❗ *Invalid date format.* Please use `DD.MM.YYYY`", parse_mode=ParseMode.MARKDOWN)

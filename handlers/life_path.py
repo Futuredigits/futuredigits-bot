@@ -12,7 +12,7 @@ router = Router(name="life_path")
 
 @router.message(F.text == "🔢 Life Path")
 async def ask_birthdate_life_path(message: Message, state: FSMContext):
-    await state.clear()
+    await state.set_state(None)
     await message.answer(life_path_intro, reply_markup=main_menu)
     await state.set_state(LifePathStates.waiting_for_birthdate)
 
@@ -27,7 +27,7 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
         result = get_life_path_result(number)
 
         await message.answer(result, reply_markup=main_menu)
-        await state.clear()
+        await state.set_state(None)
 
 
     except Exception:

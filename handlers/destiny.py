@@ -12,7 +12,7 @@ router = Router(name="destiny")
 
 @router.message(F.text == "🌟 Destiny")
 async def ask_destiny_input(message: Message, state: FSMContext):
-    await state.clear()
+    await state.set_state(None)
     await message.answer(destiny_intro, reply_markup=main_menu)
     await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
 
@@ -32,7 +32,7 @@ async def handle_destiny(message: Message, state: FSMContext):
         result = get_destiny_result(number)
 
         await message.answer(result, reply_markup=main_menu)
-        await state.clear()
+        await state.set_state(None)
 
     except Exception:
         await message.answer(

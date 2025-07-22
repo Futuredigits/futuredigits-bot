@@ -14,7 +14,7 @@ router = Router(name="soul_urge")
 
 @router.message(F.text == "💖 Soul Urge")
 async def ask_full_name(message: Message, state: FSMContext):
-    await state.clear()
+    await state.set_state(None)
     print("[DEBUG] State cleared in Soul Urge entry")
     await state.set_state(SoulUrgeStates.waiting_for_full_name)
     current = await state.get_state()
@@ -37,7 +37,7 @@ async def handle_full_name(message: Message, state: FSMContext):
         number = calculate_soul_urge_number(name)
         result = get_soul_urge_result(number)
         await message.answer(result, reply_markup=main_menu)
-        await state.clear()
+        await state.set_state(None)
     except Exception as e:
         print(f"[Soul Urge] Error: {e}")
         await message.answer(

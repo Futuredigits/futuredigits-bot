@@ -11,7 +11,7 @@ router = Router(name="expression")
 
 @router.message(F.text == "🎯 Expression")
 async def ask_expression_name(message: Message, state: FSMContext):
-    await state.clear()
+    await state.set_state(None)
     await message.answer(expression_intro, reply_markup=main_menu)
     await state.set_state(ExpressionStates.waiting_for_full_name)
 
@@ -22,6 +22,6 @@ async def handle_expression(message: Message, state: FSMContext):
         number = calculate_expression_number(name)
         result = get_expression_result(number)
         await message.answer(result, reply_markup=main_menu)
-        await state.clear()
+        await state.set_state(None)
     except:
         await message.answer("❗ *Invalid input.* Please enter your full name.", parse_mode=ParseMode.MARKDOWN)
