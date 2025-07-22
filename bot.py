@@ -2,7 +2,8 @@ import os
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.fsm.storage.redis import RedisStorage, Redis
+from aiogram.fsm.storage.redis import RedisStorage
+from redis.asyncio import from_url
 from fastapi import FastAPI, Request
 from aiogram.types import Update
 from fastapi.responses import JSONResponse
@@ -15,8 +16,8 @@ load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN, parse_mode="Markdown")
-redis = Redis(host="localhost")  # or your Redis service URL
-storage = RedisStorage(redis=redis)
+redis = from_url("redis-cli --tls -u redis://default:ATl7AAIjcDEwYjdkZjhmYTczNjk0YzZmOWY4Zjg0ODE4NmU1YTcwN3AxMA@ideal-pegasus-14715.upstash.io:6379")
+storage = RedisStorage(redis)
 dp = Dispatcher(storage=storage)
 
 
