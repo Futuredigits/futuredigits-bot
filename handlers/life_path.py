@@ -26,7 +26,7 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
         number = calculate_life_path_number(date_str)
         result = get_life_path_result(number)
 
-        await message.answer(result, reply_markup=main_menu)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
         await state.set_state(None)
 
 
