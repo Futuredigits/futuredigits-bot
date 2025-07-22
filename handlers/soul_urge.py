@@ -9,6 +9,8 @@ from tools.soul_urge import calculate_soul_urge_number, get_soul_urge_result
 from handlers.common import main_menu
 
 import re
+import asyncio
+
 
 router = Router(name="soul_urge")
 
