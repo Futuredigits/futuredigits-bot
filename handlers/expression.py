@@ -15,7 +15,7 @@ async def ask_expression_name(message: Message, state: FSMContext):
     await message.answer(expression_intro, reply_markup=main_menu)
     await state.set_state(ExpressionStates.waiting_for_full_name)
 
-@router.message(ExpressionStates.waiting_for_full_name)
+@router.message(F.state == ExpressionStates.waiting_for_full_name)
 async def handle_expression(message: Message, state: FSMContext):
     try:
         name = message.text.strip()
