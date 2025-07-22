@@ -16,7 +16,7 @@ async def ask_birthdate_life_path(message: Message, state: FSMContext):
     await message.answer(life_path_intro, reply_markup=main_menu)
     await state.set_state(LifePathStates.waiting_for_birthdate)
 
-@router.message(F.state == LifePathStates.waiting_for_birthdate)
+@router.message(LifePathStates.waiting_for_birthdate)
 async def handle_birthdate_life_path(message: Message, state: FSMContext):
     try:
         date_str = message.text.strip()

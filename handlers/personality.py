@@ -16,7 +16,7 @@ async def ask_name_for_personality(message: Message, state: FSMContext):
     await message.answer(personality_intro, reply_markup=main_menu)
     await state.set_state(PersonalityStates.waiting_for_full_name)
 
-@router.message(F.state == PersonalityStates.waiting_for_full_name)
+@router.message(PersonalityStates.waiting_for_full_name)
 async def handle_name_for_personality(message: Message, state: FSMContext):
     try:
         name = message.text.strip()
