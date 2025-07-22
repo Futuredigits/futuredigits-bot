@@ -19,16 +19,29 @@ async def ask_full_name(message: Message, state: FSMContext):
     await state.set_state(SoulUrgeStates.waiting_for_full_name)
 
 
+import re
+
 @router.message(SoulUrgeStates.waiting_for_full_name)
 async def handle_full_name(message: Message, state: FSMContext):
+    name = message.text.strip()
+
+    # Validate name before trying calculation
+    if not re.fullmatch(r"[A-Za-zÀ-ÿ' -]+", name):
+        await message.answer(
+            "❗ *Invalid input.* Please enter your full name using only letters, spaces, hyphens or apostrophes.",
+            parse_mode=ParseMode.MARKDOWN
+        )
+        return
+
     try:
-        name = message.text.strip()
         number = calculate_soul_urge_number(name)
         result = get_soul_urge_result(number)
         await message.answer(result, reply_markup=main_menu)
         await state.clear()
-    except Exception:
+    except Exception as e:
+        print(f"[Soul Urge] Error: {e}")  # This will help with debugging
         await message.answer(
-            "❗ *Invalid input.* Please enter your full name as it appears on your birth certificate.",
+            "❗ *Something went wrong.* Please try again or enter a different name.",
             parse_mode=ParseMode.MARKDOWN
         )
+
