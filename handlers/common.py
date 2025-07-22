@@ -89,6 +89,17 @@ async def show_main_menu(message: Message, state: FSMContext):
         parse_mode=ParseMode.MARKDOWN
     )
 
+@router.message()
+async def handle_unexpected(message: Message, state: FSMContext):
+    current = await state.get_state()
+    print(f"[DEBUG] Unexpected input with FSM: {current}")
+    await state.clear()
+    await message.answer(
+        "❗ I didn't understand that input. Please select a tool from the menu to begin again.",
+        reply_markup=main_menu
+    )
+
+
 
 # --- Register this router once ---
 def register_common_handlers(dp):
