@@ -2,6 +2,7 @@ import os
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.redis import RedisStorage, Redis
 from fastapi import FastAPI, Request
 from aiogram.types import Update
 from fastapi.responses import JSONResponse
@@ -14,7 +15,10 @@ load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN, parse_mode="Markdown")
-dp = Dispatcher(storage=MemoryStorage())
+redis = Redis(host="localhost")  # or your Redis service URL
+storage = RedisStorage(redis=redis)
+dp = Dispatcher(storage=storage)
+
 
 from handlers.common import register_common_handlers
 from handlers.life_path import router as life_path_router
