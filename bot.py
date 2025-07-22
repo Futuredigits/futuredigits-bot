@@ -16,7 +16,7 @@ load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN, parse_mode="Markdown")
-redis = from_url("redis-cli --tls -u redis://default:ATl7AAIjcDEwYjdkZjhmYTczNjk0YzZmOWY4Zjg0ODE4NmU1YTcwN3AxMA@ideal-pegasus-14715.upstash.io:6379")
+redis = from_url("rediss://default:ATl7AAIjcDEwYjdkZjhmYTczNjk0YzZmOWY4Zjg0ODE4NmU1YTcwN3AxMA@ideal-pegasus-14715.upstash.io:6379")
 storage = RedisStorage(redis)
 dp = Dispatcher(storage=storage)
 
