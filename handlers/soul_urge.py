@@ -26,7 +26,8 @@ async def handle_full_name(message: Message, state: FSMContext):
         await message.answer(result, reply_markup=main_menu)
         await state.clear()
 
-    except Exception:
+    except Exception as e:
+        print("[ERROR] Soul Urge Exception:", e)
         await message.answer(
             "❗ *Invalid input.*\nPlease enter your full name to calculate your Soul Urge Number. ✍️",
             parse_mode=ParseMode.MARKDOWN
