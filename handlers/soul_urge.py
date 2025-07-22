@@ -8,39 +8,26 @@ from descriptions import soul_urge_intro
 from tools.soul_urge import calculate_soul_urge_number, get_soul_urge_result
 from handlers.common import main_menu
 
-import re
-import asyncio
-
-
 router = Router(name="soul_urge")
 
 @router.message(F.text == "💖 Soul Urge")
 async def ask_full_name(message: Message, state: FSMContext):
-    await state.clear()
-    await state.set_state(SoulUrgeStates.waiting_for_full_name)
-    await asyncio.sleep(0.15)
+    await state.set_state(None)
     await message.answer(soul_urge_intro, reply_markup=main_menu)
-
+    await state.set_state(SoulUrgeStates.waiting_for_full_name)
 
 @router.message(F.state == SoulUrgeStates.waiting_for_full_name)
 async def handle_full_name(message: Message, state: FSMContext):
-    name = message.text.strip()
-
-    if not re.fullmatch(r"[A-Za-zÀ-ÿ' -]+", name):
-        await message.answer(
-            "❗ *Invalid input.* Please enter your full name using only letters, spaces, hyphens or apostrophes.",
-            parse_mode=ParseMode.MARKDOWN
-        )
-        return
-
     try:
+        name = message.text.strip()
         number = calculate_soul_urge_number(name)
         result = get_soul_urge_result(number)
+
         await message.answer(result, reply_markup=main_menu)
-        await state.set_state(None)
-    except Exception as e:
-        print(f"[Soul Urge] Error: {e}")
+        await state.clear()
+
+    except Exception:
         await message.answer(
-            "❗ *Something went wrong.* Please try again or enter a different name.",
+            "❗ *Invalid input.*\nPlease enter your full name to calculate your Soul Urge Number. ✍️",
             parse_mode=ParseMode.MARKDOWN
         )
