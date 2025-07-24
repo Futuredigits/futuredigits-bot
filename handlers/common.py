@@ -72,13 +72,14 @@ async def premium_handler(message: Message):
     )
 
 
-@router.message(F.text == "🎁 Premium Tools")
+@router.message(F.text == "🔓 Premium Tools")
 async def show_premium_menu(message: Message):
     await message.answer(
         "💎 *Premium Tools Menu*\n\nUnlock deeper insights, karmic secrets, and powerful relationship readings.",
         reply_markup=premium_menu,
         parse_mode=ParseMode.MARKDOWN
     )
+
 
 @router.message(F.text == "🔙 Back to Main Menu")
 async def show_main_menu(message: Message, state: FSMContext):
