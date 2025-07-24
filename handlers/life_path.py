@@ -15,10 +15,11 @@ router = Router(name="life_path")
 async def ask_birthdate_for_life_path(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
-        life_path_intro + "\n\n🗓 *Please enter your birthdate in the format:* `DD.MM.YYYY`",
+        life_path_intro,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=main_menu
     )
+
     await state.set_state(LifePathStates.waiting_for_birthdate)
 
 
