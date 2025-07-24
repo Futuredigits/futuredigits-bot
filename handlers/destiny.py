@@ -2,6 +2,7 @@ from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
+from aiogram.filters import StateFilter
 from states import DestinyStates
 from descriptions import destiny_intro
 from tools.destiny import calculate_destiny_number, get_destiny_result
@@ -16,7 +17,7 @@ async def ask_destiny_input(message: Message, state: FSMContext):
     await message.answer(destiny_intro, reply_markup=main_menu)
     await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
 
-@router.message(DestinyStates.waiting_for_birthdate_and_name)
+@router.message(StateFilter(DestinyStates.waiting_for_birthdate_and_name))
 async def handle_destiny(message: Message, state: FSMContext):
     try:
         raw = message.text.strip()

@@ -2,7 +2,7 @@ from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
-
+from aiogram.filters import StateFilter
 from states import SoulUrgeStates
 from descriptions import soul_urge_intro
 from tools.soul_urge import calculate_soul_urge_number, get_soul_urge_result
@@ -16,7 +16,7 @@ async def ask_full_name(message: Message, state: FSMContext):
     await message.answer(soul_urge_intro, reply_markup=main_menu)
     await state.set_state(SoulUrgeStates.waiting_for_full_name)
 
-@router.message(SoulUrgeStates.waiting_for_full_name)
+@router.message(StateFilter(SoulUrgeStates.waiting_for_full_name))
 async def handle_name_for_soul_urge(message: Message, state: FSMContext):
     print(f"[DEBUG] Soul Urge handler triggered, name: {message.text}")  # Debug log
     

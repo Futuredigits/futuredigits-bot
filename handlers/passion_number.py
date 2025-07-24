@@ -2,7 +2,7 @@ from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
-
+from aiogram.filters import StateFilter
 from states import PassionNumberStates
 from descriptions import passion_intro
 from tools.passion_number import calculate_passion_number, get_passion_result
@@ -16,7 +16,7 @@ async def ask_full_name_passion(message: Message, state: FSMContext):
     await message.answer(passion_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
     await state.set_state(PassionNumberStates.waiting_for_full_name)
 
-@router.message(PassionNumberStates.waiting_for_full_name)
+@router.message(StateFilter(PassionNumberStates.waiting_for_full_name))
 async def handle_passion_number(message: Message, state: FSMContext):
     try:
         full_name = message.text.strip()

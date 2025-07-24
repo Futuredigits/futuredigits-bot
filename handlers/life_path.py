@@ -3,7 +3,7 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
 from aiogram.filters import StateFilter  # ✅ Aiogram 3.x correct import
-
+from aiogram.filters import StateFilter
 from states import LifePathStates
 from descriptions import life_path_intro
 from tools.life_path import calculate_life_path_number, get_life_path_result

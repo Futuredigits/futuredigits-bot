@@ -2,6 +2,7 @@ from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
+from aiogram.filters import StateFilter
 from states import ExpressionStates
 from descriptions import expression_intro
 from tools.expression import calculate_expression_number, get_expression_result
@@ -15,7 +16,7 @@ async def ask_expression_name(message: Message, state: FSMContext):
     await message.answer(expression_intro, reply_markup=main_menu)
     await state.set_state(ExpressionStates.waiting_for_full_name)
 
-@router.message(ExpressionStates.waiting_for_full_name)
+@router.message(StateFilter(ExpressionStates.waiting_for_full_name))
 async def handle_expression(message: Message, state: FSMContext):
     try:
         name = message.text.strip()
