@@ -36,7 +36,7 @@ premium_menu = ReplyKeyboardMarkup(
 
 
 # --- /start Command ---
-@router.message(CommandStart(), state="*")   # ✅ Always works
+@router.message(CommandStart(), StateFilter("*"))   # ✅ Always works
 async def start_handler(message: Message, state: FSMContext):
     await state.clear()  # ✅ also reset FSM
     await message.answer(
@@ -52,7 +52,7 @@ async def start_handler(message: Message, state: FSMContext):
     )
 
 # --- /help Command ---
-@router.message(Command("help"), state="*")  # ✅ Always works
+@router.message(Command("help"), StateFilter("*"))  # ✅ Always works
 async def help_handler(message: Message, state: FSMContext):
     await state.clear()  # ✅ Reset FSM if needed
     await message.answer(
@@ -64,7 +64,7 @@ async def help_handler(message: Message, state: FSMContext):
     )
 
 # --- /premium Command ---
-@router.message(Command("premium"), state="*")  # ✅ Always works
+@router.message(Command("premium"), StateFilter("*"))  # ✅ Always works
 async def premium_handler(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
@@ -74,7 +74,7 @@ async def premium_handler(message: Message, state: FSMContext):
         parse_mode=ParseMode.MARKDOWN
     )
 
-@router.message(F.text == "🔓 Premium Tools", state="*")  # ✅ Always works
+@router.message(F.text == "🔓 Premium Tools", StateFilter("*"))  # ✅ Always works
 async def show_premium_menu(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
@@ -83,7 +83,7 @@ async def show_premium_menu(message: Message, state: FSMContext):
         parse_mode=ParseMode.MARKDOWN
     )
 
-@router.message(F.text == "🔙 Back to Main Menu", state="*")  # ✅ Always works
+@router.message(F.text == "🔙 Back to Main Menu", StateFilter("*"))  # ✅ Always works
 async def show_main_menu(message: Message, state: FSMContext):
     await state.clear()  # ✅ clear any active tool state
     await message.answer(

@@ -10,7 +10,7 @@ from handlers.common import main_menu
 
 router = Router(name="premium_passion")
 
-@router.message(F.text == "🧩 Passion Number", state="*")
+@router.message(F.text == "🧩 Passion Number", StateFilter("*"))
 async def ask_full_name_passion(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(passion_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
