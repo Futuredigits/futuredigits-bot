@@ -31,6 +31,7 @@ from handlers.birthday import router as birthday_router
 from handlers.expression import router as expression_router
 from handlers.destiny import router as destiny_router
 from handlers.passion_number import router as passion_router
+from handlers.premium_karmic_debt import router as karmic_router
 
 
 dp.include_router(life_path_router)
@@ -40,6 +41,7 @@ dp.include_router(birthday_router)
 dp.include_router(expression_router)
 dp.include_router(destiny_router)
 dp.include_router(passion_router)
+dp.include_router(karmic_router)
 
 
 app = FastAPI()
