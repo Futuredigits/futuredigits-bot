@@ -1,5 +1,5 @@
 def calculate_passion_number(full_name: str) -> int:
-    """Calculate Passion Number using vowels in the name"""
+    """Calculate Passion Number using only vowels in the name"""
     vowels = "AEIOUY"
     letter_values = {'A':1, 'E':5, 'I':9, 'O':6, 'U':3, 'Y':7}
     name = full_name.upper()
