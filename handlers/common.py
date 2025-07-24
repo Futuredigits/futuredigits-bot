@@ -13,6 +13,7 @@ from states import (
     ExpressionStates,
     DestinyStates,
     PassionNumberStates,
+    KarmicDebtStates,
 )
 
 from descriptions import (
@@ -204,7 +205,8 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
         await state.set_state(PassionNumberStates.waiting_for_full_name)
 
     elif choice == "🕳 Karmic Debt":
-        await message.answer(karmic_debt_intro, parse_mode=ParseMode.MARKDOWN)
+        await message.answer(karmic_debt_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(KarmicDebtStates.waiting_for_birthdate)
 
     elif choice == "💑 Compatibility":
         await message.answer(compatibility_intro, parse_mode=ParseMode.MARKDOWN)

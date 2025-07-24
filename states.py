@@ -21,6 +21,9 @@ class DestinyStates(StatesGroup):
 class PassionNumberStates(StatesGroup):
     waiting_for_full_name = State()
 
+class KarmicDebtStates(StatesGroup):
+    waiting_for_birthdate = State()
+
 
 
 
