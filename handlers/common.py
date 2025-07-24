@@ -12,6 +12,7 @@ from states import (
     BirthdayStates,
     ExpressionStates,
     DestinyStates,
+    PassionNumberStates,
 )
 
 from descriptions import (
