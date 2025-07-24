@@ -3,6 +3,7 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
 from aiogram.filters import StateFilter
+
 from states import PassionNumberStates
 from descriptions import passion_intro
 from tools.passion_number import calculate_passion_number, get_passion_result
