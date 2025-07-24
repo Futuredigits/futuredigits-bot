@@ -28,6 +28,7 @@ from handlers.personality import router as personality_router
 from handlers.birthday import router as birthday_router
 from handlers.expression import router as expression_router
 from handlers.destiny import router as destiny_router
+from handlers.angel_numbers import router as angel_numbers_router
 
 
 register_common_handlers(dp)
@@ -37,6 +38,7 @@ dp.include_router(personality_router)
 dp.include_router(birthday_router)
 dp.include_router(expression_router)
 dp.include_router(destiny_router)
+dp.include_router(angel_numbers_router)
 
 
 app = FastAPI()
