@@ -12,7 +12,7 @@ router = Router(name="personality")
 
 @router.message(F.text == "🎭 Personality")
 async def ask_name_for_personality(message: Message, state: FSMContext):
-    await state.set_state(None)
+    await state.clear()
     await message.answer(personality_intro, reply_markup=main_menu)
     await state.set_state(PersonalityStates.waiting_for_full_name)
 
@@ -23,7 +23,7 @@ async def handle_name_for_personality(message: Message, state: FSMContext):
         number = calculate_personality_number(name)
         result = get_personality_result(number)
         await message.answer(result, reply_markup=main_menu)
-        await state.set_state(None)
+        await state.clear()
     except Exception:
         await message.answer(
             "❗ *Invalid input.* Please enter your full name.",
