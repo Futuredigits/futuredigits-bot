@@ -36,8 +36,9 @@ premium_menu = ReplyKeyboardMarkup(
 
 
 # --- /start Command ---
-@router.message(CommandStart())
-async def start_handler(message: Message):
+@router.message(CommandStart(), state="*")   # ✅ Always works
+async def start_handler(message: Message, state: FSMContext):
+    await state.clear()  # ✅ also reset FSM
     await message.answer(
         text=(
             "👋 *Welcome to Futuredigits!*\n\n"
@@ -51,8 +52,9 @@ async def start_handler(message: Message):
     )
 
 # --- /help Command ---
-@router.message(Command("help"))
-async def help_handler(message: Message):
+@router.message(Command("help"), state="*")  # ✅ Always works
+async def help_handler(message: Message, state: FSMContext):
+    await state.clear()  # ✅ Reset FSM if needed
     await message.answer(
         "🛠 *How to Use Futuredigits*\n\n"
         "Choose any numerology tool from the menu. You’ll be asked for your birth date or name.\n\n"
@@ -62,8 +64,9 @@ async def help_handler(message: Message):
     )
 
 # --- /premium Command ---
-@router.message(Command("premium"))
-async def premium_handler(message: Message):
+@router.message(Command("premium"), state="*")  # ✅ Always works
+async def premium_handler(message: Message, state: FSMContext):
+    await state.clear()
     await message.answer(
         "💎 *Futuredigits Premium*\n\n"
         "Premium tools offer deeper readings, hidden number meanings, and exclusive interpretations.\n\n"
@@ -71,16 +74,16 @@ async def premium_handler(message: Message):
         parse_mode=ParseMode.MARKDOWN
     )
 
-
-@router.message(F.text == "🎁 Premium Tools")
-async def show_premium_menu(message: Message):
+@router.message(F.text == "🔓 Premium Tools", state="*")  # ✅ Always works
+async def show_premium_menu(message: Message, state: FSMContext):
+    await state.clear()
     await message.answer(
         "💎 *Premium Tools Menu*\n\nUnlock deeper insights, karmic secrets, and powerful relationship readings.",
         reply_markup=premium_menu,
         parse_mode=ParseMode.MARKDOWN
     )
 
-@router.message(F.text == "🔙 Back to Main Menu")
+@router.message(F.text == "🔙 Back to Main Menu", state="*")  # ✅ Always works
 async def show_main_menu(message: Message, state: FSMContext):
     await state.clear()  # ✅ clear any active tool state
     await message.answer(
@@ -88,7 +91,6 @@ async def show_main_menu(message: Message, state: FSMContext):
         reply_markup=main_menu,
         parse_mode=ParseMode.MARKDOWN
     )
-
 
 
 # --- Register this router once ---

@@ -10,7 +10,7 @@ import datetime
 
 router = Router(name="destiny")
 
-@router.message(F.text == "🌟 Destiny")
+@router.message(F.text == "🌟 Destiny", state="*")
 async def ask_destiny_input(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(destiny_intro, reply_markup=main_menu)

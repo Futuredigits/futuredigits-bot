@@ -9,7 +9,7 @@ from handlers.common import main_menu
 
 router = Router(name="expression")
 
-@router.message(F.text == "🎯 Expression")
+@router.message(F.text == "🎯 Expression", state="*")
 async def ask_expression_name(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(expression_intro, reply_markup=main_menu)

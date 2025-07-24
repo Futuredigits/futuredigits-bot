@@ -11,7 +11,7 @@ from handlers.common import main_menu
 router = Router(name="life_path")
 
 
-@router.message(F.text == "🔢 Life Path")
+@router.message(F.text == "🔢 Life Path", state="*")
 async def ask_birthdate_for_life_path(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(

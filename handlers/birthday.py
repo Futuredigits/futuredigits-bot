@@ -9,7 +9,7 @@ from handlers.common import main_menu
 
 router = Router(name="birthday")
 
-@router.message(F.text == "🎂 Birthday")
+@router.message(F.text == "🎂 Birthday", state="*")
 async def ask_birthday(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(birthday_intro, reply_markup=main_menu)
