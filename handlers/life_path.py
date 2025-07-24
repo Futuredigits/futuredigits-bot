@@ -22,27 +22,24 @@ async def ask_birthdate_for_life_path(message: Message, state: FSMContext):
     await state.set_state(LifePathStates.waiting_for_birthdate)
 
 
-@router.message(F.state == LifePathStates.waiting_for_birthdate)
+@router.message(LifePathStates.waiting_for_birthdate)
 async def handle_birthdate_life_path(message: Message, state: FSMContext):
-    current = await state.get_state()
-    print(f"[DEBUG] ⚠️ Life Path handler triggered with FSM: {current}")
-
+    print(f"[DEBUG] Life Path handler triggered, input: {message.text}")  # Debug log
+    
     try:
         date_str = message.text.strip()
-        print("[DEBUG] Birthdate received:", date_str)
-
         number = calculate_life_path_number(date_str)
-        print("[DEBUG] Calculated Life Path number:", number)
-
+        print(f"[DEBUG] Calculated Life Path number: {number}")  # Debug log
+        
         result = get_life_path_result(number)
-
-        await state.clear()
+        
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
-
-    except Exception:
+        await state.clear()
+    
+    except Exception as e:
         import traceback
         print("[ERROR] Life Path exception:\n", traceback.format_exc())
         await message.answer(
-            "❗ *Invalid date format.*\nPlease enter your birthdate like this: `04.07.1992`",
+            "❗ *Invalid date format.*\nPlease enter like this: `04.07.1992`",
             parse_mode=ParseMode.MARKDOWN
         )
