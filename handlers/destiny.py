@@ -11,11 +11,6 @@ import datetime
 
 router = Router(name="destiny")
 
-@router.message(F.text == "🌟 Destiny", StateFilter("*"))
-async def ask_destiny_input(message: Message, state: FSMContext):
-    await state.clear()
-    await message.answer(destiny_intro, reply_markup=main_menu)
-    await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
 
 @router.message(StateFilter(DestinyStates.waiting_for_birthdate_and_name))
 async def handle_destiny(message: Message, state: FSMContext):

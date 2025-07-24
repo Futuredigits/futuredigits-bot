@@ -10,11 +10,6 @@ from handlers.common import main_menu
 
 router = Router(name="birthday")
 
-@router.message(F.text == "🎂 Birthday", StateFilter("*"))
-async def ask_birthday(message: Message, state: FSMContext):
-    await state.clear()
-    await message.answer(birthday_intro, reply_markup=main_menu)
-    await state.set_state(BirthdayStates.waiting_for_birthdate)
 
 @router.message(StateFilter(BirthdayStates.waiting_for_birthdate))
 async def handle_birthday(message: Message, state: FSMContext):

@@ -1,44 +1,78 @@
 from aiogram import F, Router
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 
-from states import LifePathStates
-from descriptions import life_path_intro
-from tools.life_path import calculate_life_path_number, get_life_path_result
+# ✅ Import all required states for menu routing
+from states import (
+    LifePathStates,
+    SoulUrgeStates,
+    PersonalityStates,
+    BirthdayStates,
+    ExpressionStates,
+    DestinyStates,
+)
+
+# ✅ Import all tool intro texts
+from descriptions import (
+    life_path_intro,
+    soul_urge_intro,
+    personality_intro,
+    birthday_intro,
+    expression_intro,
+    destiny_intro,
+)
 
 router = Router(name=__name__)  # ✅ Unique router name
 
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-
+# ✅ Main menu keyboard
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="🔢 Life Path"), KeyboardButton(text="💖 Soul Urge"), KeyboardButton(text="🎭 Personality")],
-        [KeyboardButton(text="🎂 Birthday"), KeyboardButton(text="🎯 Expression"), KeyboardButton(text="🌟 Destiny")],
-        [KeyboardButton(text="🔓 Premium Tools")]
+        [
+            KeyboardButton(text="🔢 Life Path"),
+            KeyboardButton(text="💖 Soul Urge"),
+            KeyboardButton(text="🎭 Personality"),
+        ],
+        [
+            KeyboardButton(text="🎂 Birthday"),
+            KeyboardButton(text="🎯 Expression"),
+            KeyboardButton(text="🌟 Destiny"),
+        ],
+        [KeyboardButton(text="🔓 Premium Tools")],
     ],
     resize_keyboard=True,
-    input_field_placeholder="Choose a numerology tool..."
+    input_field_placeholder="Choose a numerology tool...",
 )
 
-
+# ✅ Premium menu keyboard
 premium_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="🧩 Passion Number"), KeyboardButton(text="🕳 Karmic Debt"), KeyboardButton(text="💑 Compatibility")],
-        [KeyboardButton(text="❤️ Love Vibes"), KeyboardButton(text="🌌 Personal Year Forecast"), KeyboardButton(text="🌕 Moon Energy Today")],
-        [KeyboardButton(text="🗓 Daily Universal Vibe"), KeyboardButton(text="🪬 Angel Number Decoder"), KeyboardButton(text="🌀 Name Vibration")],
-        [KeyboardButton(text="🔙 Back to Main Menu")]
+        [
+            KeyboardButton(text="🧩 Passion Number"),
+            KeyboardButton(text="🕳 Karmic Debt"),
+            KeyboardButton(text="💑 Compatibility"),
+        ],
+        [
+            KeyboardButton(text="❤️ Love Vibes"),
+            KeyboardButton(text="🌌 Personal Year Forecast"),
+            KeyboardButton(text="🌕 Moon Energy Today"),
+        ],
+        [
+            KeyboardButton(text="🗓 Daily Universal Vibe"),
+            KeyboardButton(text="🪬 Angel Number Decoder"),
+            KeyboardButton(text="🌀 Name Vibration"),
+        ],
+        [KeyboardButton(text="🔙 Back to Main Menu")],
     ],
     resize_keyboard=True,
-    input_field_placeholder="Select a premium tool..."
+    input_field_placeholder="Select a premium tool...",
 )
 
-
 # --- /start Command ---
-@router.message(CommandStart(), StateFilter("*"))   # ✅ Always works
+@router.message(CommandStart(), StateFilter("*"))  # ✅ Always works
 async def start_handler(message: Message, state: FSMContext):
-    await state.clear()  # ✅ also reset FSM
+    await state.clear()
     await message.answer(
         text=(
             "👋 *Welcome to Futuredigits!*\n\n"
@@ -48,52 +82,93 @@ async def start_handler(message: Message, state: FSMContext):
             "Tap below to begin your numerology journey 🔮"
         ),
         reply_markup=main_menu,
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.MARKDOWN,
     )
 
 # --- /help Command ---
-@router.message(Command("help"), StateFilter("*"))  # ✅ Always works
+@router.message(Command("help"), StateFilter("*"))
 async def help_handler(message: Message, state: FSMContext):
-    await state.clear()  # ✅ Reset FSM if needed
+    await state.clear()
     await message.answer(
         "🛠 *How to Use Futuredigits*\n\n"
         "Choose any numerology tool from the menu. You’ll be asked for your birth date or name.\n\n"
         "Each result is generated instantly with deep and professional insights. "
         "Want deeper results? Unlock *Premium Tools* 🎁",
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.MARKDOWN,
     )
 
 # --- /premium Command ---
-@router.message(Command("premium"), StateFilter("*"))  # ✅ Always works
+@router.message(Command("premium"), StateFilter("*"))
 async def premium_handler(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
         "💎 *Futuredigits Premium*\n\n"
         "Premium tools offer deeper readings, hidden number meanings, and exclusive interpretations.\n\n"
         "We are preparing full premium access. Stay tuned and explore what awaits. 🌟",
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.MARKDOWN,
     )
 
-@router.message(F.text == "🔓 Premium Tools", StateFilter("*"))  # ✅ Always works
+# --- Premium menu ---
+@router.message(F.text == "🔓 Premium Tools", StateFilter("*"))
 async def show_premium_menu(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
         "💎 *Premium Tools Menu*\n\nUnlock deeper insights, karmic secrets, and powerful relationship readings.",
         reply_markup=premium_menu,
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.MARKDOWN,
     )
 
-@router.message(F.text == "🔙 Back to Main Menu", StateFilter("*"))  # ✅ Always works
+@router.message(F.text == "🔙 Back to Main Menu", StateFilter("*"))
 async def show_main_menu(message: Message, state: FSMContext):
-    await state.clear()  # ✅ clear any active tool state
+    await state.clear()
     await message.answer(
         "🏠 *Back to Main Menu*\n\nChoose a numerology tool below to get started:",
         reply_markup=main_menu,
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.MARKDOWN,
     )
 
+# ✅ Unified Main Menu Handler (handles all numerology tools)
+@router.message(
+    F.text.in_([
+        "🔢 Life Path",
+        "💖 Soul Urge",
+        "🎭 Personality",
+        "🎂 Birthday",
+        "🎯 Expression",
+        "🌟 Destiny",
+    ]),
+    StateFilter("*")  # ✅ Always works even if FSM active
+)
+async def unified_main_menu_handler(message: Message, state: FSMContext):
+    """Single handler for all main menu tool buttons"""
+    choice = message.text.strip()
+    await state.clear()  # ✅ cancel any previous FSM
 
-# --- Register this router once ---
+    if choice == "🔢 Life Path":
+        await message.answer(life_path_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(LifePathStates.waiting_for_birthdate)
+
+    elif choice == "💖 Soul Urge":
+        await message.answer(soul_urge_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(SoulUrgeStates.waiting_for_full_name)
+
+    elif choice == "🎭 Personality":
+        await message.answer(personality_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(PersonalityStates.waiting_for_full_name)
+
+    elif choice == "🎂 Birthday":
+        await message.answer(birthday_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(BirthdayStates.waiting_for_birthdate)
+
+    elif choice == "🎯 Expression":
+        await message.answer(expression_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(ExpressionStates.waiting_for_full_name)
+
+    elif choice == "🌟 Destiny":
+        await message.answer(destiny_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
+
+# --- Register this router ---
 def register_common_handlers(dp):
     if router not in dp.sub_routers:
         dp.include_router(router)

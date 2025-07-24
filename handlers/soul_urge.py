@@ -10,11 +10,6 @@ from handlers.common import main_menu
 
 router = Router(name="soul_urge")
 
-@router.message(F.text == "💖 Soul Urge", StateFilter("*"))
-async def ask_full_name(message: Message, state: FSMContext):
-    await state.clear()
-    await message.answer(soul_urge_intro, reply_markup=main_menu)
-    await state.set_state(SoulUrgeStates.waiting_for_full_name)
 
 @router.message(StateFilter(SoulUrgeStates.waiting_for_full_name))
 async def handle_name_for_soul_urge(message: Message, state: FSMContext):
