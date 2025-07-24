@@ -14,14 +14,25 @@ from states import (
     DestinyStates,
 )
 
-# ✅ Import all tool intro texts
 from descriptions import (
+    # Free tool intros
     life_path_intro,
     soul_urge_intro,
     personality_intro,
     birthday_intro,
     expression_intro,
     destiny_intro,
+
+    # Premium tool intros
+    passion_intro,
+    karmic_debt_intro,
+    compatibility_intro,
+    love_vibes_intro,
+    personal_year_intro,
+    moon_energy_intro,
+    daily_universal_vibe_intro,
+    angel_number_intro_premium,
+    name_vibration_intro,
 )
 
 router = Router(name=__name__)  # ✅ Unique router name
@@ -188,75 +199,32 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     await state.clear()
 
     if choice == "🧩 Passion Number":
-        await message.answer(
-            "🧩 *Passion Number*\n\n"
-            "Discover the hidden longings and desires that move you deeply.\n\n"
-            "👉 *Please enter your full name to calculate your Passion Number.*",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(passion_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await state.set_state(PassionNumberStates.waiting_for_full_name)
 
     elif choice == "🕳 Karmic Debt":
-        await message.answer(
-            "🕳 *Karmic Debt*\n\n"
-            "Uncover karmic lessons from past lifetimes hidden in your birthdate.\n\n"
-            "👉 *Please enter your birthdate in `DD.MM.YYYY` format.*",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(karmic_debt_intro, parse_mode=ParseMode.MARKDOWN)
 
     elif choice == "💑 Compatibility":
-        await message.answer(
-            "💑 *Compatibility Reading*\n\n"
-            "See how two souls align through numerology.\n\n"
-            "👉 *Please enter both full names separated by a comma.*\n"
-            "`Example: Emma Grace, John Carter`",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(compatibility_intro, parse_mode=ParseMode.MARKDOWN)
 
     elif choice == "❤️ Love Vibes":
-        await message.answer(
-            "❤️ *Love Vibes Today*\n\n"
-            "Find out today’s romantic numerology energy.\n\n"
-            "👉 *Please enter your full name to receive your personalized reading.*",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(love_vibes_intro, parse_mode=ParseMode.MARKDOWN)
 
     elif choice == "🌌 Personal Year Forecast":
-        await message.answer(
-            "🌌 *Personal Year Forecast*\n\n"
-            "Discover the major numerology theme for your current personal year.\n\n"
-            "👉 *Please enter your birthdate in `DD.MM.YYYY` format.*",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(personal_year_intro, parse_mode=ParseMode.MARKDOWN)
 
     elif choice == "🌕 Moon Energy Today":
-        await message.answer(
-            "🌕 *Moon Energy Today*\n\n"
-            "Receive a numerology insight based on today’s lunar vibration. 🌙\n\n"
-            "_No input needed – just tap this button again later for updated vibes._",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(moon_energy_intro, parse_mode=ParseMode.MARKDOWN)
 
     elif choice == "🗓 Daily Universal Vibe":
-        await message.answer(
-            "🗓 *Daily Universal Vibe*\n\n"
-            "See today’s universal numerology influence.\n\n"
-            "_No input needed – just tap this button again later for updated vibes._",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(daily_universal_vibe_intro, parse_mode=ParseMode.MARKDOWN)
 
     elif choice == "🪬 Angel Number Decoder":
-        await message.answer(
-            "🪬 *Angel Number Decoder*\n\n"
-            "Enter the repeating number sequence you’ve been seeing (like `111`, `222`, `1234`).",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(angel_number_intro_premium, parse_mode=ParseMode.MARKDOWN)
 
     elif choice == "🌀 Name Vibration":
-        await message.answer(
-            "🌀 *Name Vibration Analyzer*\n\n"
-            "Enter any name (your own, a brand, or business) to see its energetic numerology signature.",
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await message.answer(name_vibration_intro, parse_mode=ParseMode.MARKDOWN)
 
 # --- Register this router ---
 def register_common_handlers(dp):

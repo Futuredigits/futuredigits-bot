@@ -42,12 +42,15 @@ destiny_intro = (
 )
 
 passion_intro = (
-    "🧩 *Passion Number – Hidden Soul Desires*\n\n"
-    "Your *Passion Number* reveals the secret drives and hidden longings that move you on a soul-deep level. "
-    "It’s the vibration of what excites your spirit, what fuels your emotions, and what you truly crave beneath the surface. ✨\n\n"
-    "💫 *Premium Insight:* This goes beyond ordinary numerology — it reveals the emotional energy you’re drawn to again and again in this lifetime.\n\n"
-    "✍️ *Please enter your full name* to reveal your Passion Number."
+    "🧩 *Passion Number – The Hidden Fire Within*\n\n"
+    "Your *Passion Number* reveals the soul-level longings that quietly guide your heart. "
+    "It is the secret flame that fuels your deepest emotions, shaping your desires, attractions, and the inner drive you can’t explain. ✨\n\n"
+    "This number uncovers what excites your spirit beyond logic – the people, experiences, and callings that ignite your creativity and bring you true joy. "
+    "It is the energy you return to lifetime after lifetime, the vibration that fulfills you on a soul-deep level.\n\n"
+    "When you understand your Passion Number, you uncover the emotional blueprint that inspires you most, helping you live with more alignment and purpose. 💫\n\n"
+    "✍️ *Please enter your full name to reveal your Passion Number.*"
 )
+
 
 
 
