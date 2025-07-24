@@ -22,23 +22,24 @@ dp = Dispatcher(storage=storage)
 
 
 from handlers.common import register_common_handlers
+register_common_handlers(dp)
+
 from handlers.life_path import router as life_path_router
 from handlers.soul_urge import router as soul_urge_router
 from handlers.personality import router as personality_router
 from handlers.birthday import router as birthday_router
 from handlers.expression import router as expression_router
 from handlers.destiny import router as destiny_router
-from handlers.angel_numbers import router as angel_numbers_router
+from handlers.passion_number import router as passion_router
 
 
-register_common_handlers(dp)
 dp.include_router(life_path_router)
 dp.include_router(soul_urge_router)
 dp.include_router(personality_router)
 dp.include_router(birthday_router)
 dp.include_router(expression_router)
 dp.include_router(destiny_router)
-dp.include_router(angel_numbers_router)
+dp.include_router(passion_router)
 
 
 app = FastAPI()

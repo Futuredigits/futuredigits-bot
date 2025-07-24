@@ -41,13 +41,14 @@ destiny_intro = (
     "`Name DD.MM.YYYY`"
 )
 
-angel_number_intro = (
-    "🪬 *Angel Number Decoder*\n\n"
-    "Have you been noticing repeating numbers like *111, 222, or 1234*? "
-    "These are angelic messages guiding you on your path. ✨\n\n"
-    "Each sequence carries a unique vibration and meaning, offering insight into your thoughts, emotions, and spiritual journey.\n\n"
-    "🔢 *Simply enter the angel number you’ve been seeing*, and I’ll reveal its hidden message for you. 🌟"
+passion_intro = (
+    "🧩 *Passion Number – Hidden Soul Desires*\n\n"
+    "Your *Passion Number* reveals the secret drives and hidden longings that move you on a soul-deep level. "
+    "It’s the vibration of what excites your spirit, what fuels your emotions, and what you truly crave beneath the surface. ✨\n\n"
+    "💫 *Premium Insight:* This goes beyond ordinary numerology — it reveals the emotional energy you’re drawn to again and again in this lifetime.\n\n"
+    "✍️ *Please enter your full name* to reveal your Passion Number."
 )
+
 
 
 

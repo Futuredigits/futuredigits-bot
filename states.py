@@ -18,7 +18,9 @@ class ExpressionStates(StatesGroup):
 class DestinyStates(StatesGroup):
     waiting_for_birthdate_and_name = State()
 
-class AngelNumberStates(StatesGroup):
-    waiting_for_angel_number = State()
+class PassionNumberStates(StatesGroup):
+    waiting_for_full_name = State()
+
+
 
 
