@@ -230,7 +230,10 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
 
     elif choice == "🗓 Daily Universal Vibe":
-        await message.answer(daily_universal_vibe_intro, parse_mode=ParseMode.MARKDOWN)
+        from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
+        result = get_daily_universal_vibe_forecast()
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+
 
     elif choice == "🪬 Angel Number Decoder":
         await message.answer(angel_number_intro_premium, parse_mode=ParseMode.MARKDOWN)

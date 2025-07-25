@@ -36,6 +36,7 @@ from handlers.premium_compatibility import router as compatibility_router
 from handlers.premium_love_vibes import router as love_vibes_router
 from handlers.premium_personal_year import router as personal_year_router
 from handlers.premium_moon_energy import router as moon_energy_router
+from handlers.premium_daily_vibe import router as daily_vibe_router
 
 
 dp.include_router(life_path_router)
@@ -50,6 +51,7 @@ dp.include_router(compatibility_router)
 dp.include_router(love_vibes_router)
 dp.include_router(personal_year_router)
 dp.include_router(moon_energy_router)
+dp.include_router(daily_vibe_router)
 
 
 app = FastAPI()
