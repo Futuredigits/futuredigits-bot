@@ -39,7 +39,7 @@ from descriptions import (
     moon_energy_intro,
     daily_universal_vibe_intro,
     angel_number_intro_premium,
-    name_vibration_intro,
+    name_vibration_intro_premium,
 )
 
 router = Router(name=__name__)  # ✅ Unique router name
