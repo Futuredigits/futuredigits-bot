@@ -117,7 +117,7 @@ angel_number_intro_premium = (
     "✍️ *Please enter the number sequence you’ve been seeing, e.g. `111`, `4444`, or `123`.*"
 )
 
-name_vibration_intro = (
+name_vibration_intro_premium = (
     "🌀 *Name Vibration Analyzer – The Energy of Names*\n\n"
     "Every name carries a unique numerological vibration that shapes identity, personality, and destiny. "
     "Whether it’s your own name, a brand, or a business, this tool reveals the hidden energy it radiates. 🔮\n\n"
