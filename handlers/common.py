@@ -223,9 +223,10 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
         await message.answer(personal_year_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
         await state.set_state(PersonalYearStates.waiting_for_birthdate)
 
-
     elif choice == "🌕 Moon Energy Today":
+        # no FSM, just trigger handler directly
         await message.answer(moon_energy_intro, parse_mode=ParseMode.MARKDOWN)
+
 
     elif choice == "🗓 Daily Universal Vibe":
         await message.answer(daily_universal_vibe_intro, parse_mode=ParseMode.MARKDOWN)
