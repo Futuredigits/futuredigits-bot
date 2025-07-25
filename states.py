@@ -36,6 +36,10 @@ class PersonalYearStates(StatesGroup):
 class AngelNumberStates(StatesGroup):
     waiting_for_number = State()
 
+class NameVibrationStates(StatesGroup):
+    waiting_for_full_name = State()
+
+
 
 
 
