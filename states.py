@@ -30,6 +30,9 @@ class CompatibilityStates(StatesGroup):
 class LoveVibesStates(StatesGroup):
     waiting_for_full_name = State()
 
+class PersonalYearStates(StatesGroup):
+    waiting_for_birthdate = State()
+
 
 
 
