@@ -33,6 +33,7 @@ from handlers.destiny import router as destiny_router
 from handlers.passion_number import router as passion_router
 from handlers.premium_karmic_debt import router as karmic_router
 from handlers.premium_compatibility import router as compatibility_router
+from handlers.premium_love_vibes import router as love_vibes_router
 
 
 dp.include_router(life_path_router)
@@ -44,6 +45,7 @@ dp.include_router(destiny_router)
 dp.include_router(passion_router)
 dp.include_router(karmic_router)
 dp.include_router(compatibility_router)
+dp.include_router(love_vibes_router)
 
 
 app = FastAPI()

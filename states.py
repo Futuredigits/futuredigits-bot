@@ -27,6 +27,9 @@ class KarmicDebtStates(StatesGroup):
 class CompatibilityStates(StatesGroup):
     waiting_for_two_names = State()
 
+class LoveVibesStates(StatesGroup):
+    waiting_for_full_name = State()
+
 
 
 
