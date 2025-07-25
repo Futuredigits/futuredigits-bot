@@ -33,6 +33,10 @@ class LoveVibesStates(StatesGroup):
 class PersonalYearStates(StatesGroup):
     waiting_for_birthdate = State()
 
+class AngelNumberStates(StatesGroup):
+    waiting_for_number = State()
+
+
 
 
 

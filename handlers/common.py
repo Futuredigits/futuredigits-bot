@@ -17,6 +17,7 @@ from states import (
     CompatibilityStates,
     LoveVibesStates,
     PersonalYearStates,
+    AngelNumberStates,
 )
 
 from descriptions import (
@@ -236,7 +237,14 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
 
     elif choice == "🪬 Angel Number Decoder":
-        await message.answer(angel_number_intro_premium, parse_mode=ParseMode.MARKDOWN)
+        await message.answer(
+            "🪬 *Angel Number Decoder*\n\nEnter the angel number you keep seeing (e.g., `111`, `222`, `555`) "
+            "and I’ll reveal its divine meaning. ✨",
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=main_menu
+        )
+        await state.set_state(AngelNumberStates.waiting_for_number)
+
 
     elif choice == "🌀 Name Vibration":
         await message.answer(name_vibration_intro, parse_mode=ParseMode.MARKDOWN)
