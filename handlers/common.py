@@ -246,13 +246,14 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
         await state.set_state(AngelNumberStates.waiting_for_number)
 
 
-    elif choice == "🔤 Name Vibration Decoder":
+    elif choice == "🌀 Name Vibration":
         await message.answer(
             name_vibration_intro_premium,
             parse_mode=ParseMode.MARKDOWN,
             reply_markup=main_menu
         )
         await state.set_state(NameVibrationStates.waiting_for_full_name)
+
 
 # --- Register this router ---
 def register_common_handlers(dp):
