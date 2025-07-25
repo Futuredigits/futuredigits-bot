@@ -24,6 +24,10 @@ class PassionNumberStates(StatesGroup):
 class KarmicDebtStates(StatesGroup):
     waiting_for_birthdate = State()
 
+class CompatibilityStates(StatesGroup):
+    waiting_for_two_names = State()
+
+
 
 
 

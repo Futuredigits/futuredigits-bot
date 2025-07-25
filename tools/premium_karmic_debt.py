@@ -52,11 +52,13 @@ def get_karmic_debt_result(karmic_numbers: list) -> str:
     }
 
     if not karmic_numbers:
-        return (
-            "✨ *No major Karmic Debts found!*\n\n"
-            "Your birthdate does not carry the heavy karmic lessons of 13, 14, 16, or 19. "
-            "This suggests a smoother soul path, with more freedom to create new experiences. 🌟"
-        )
+    return (
+        "✨ *No Major Karmic Debts Found!*\n\n"
+        "Your birthdate does not carry the heavy karmic lessons of 13, 14, 16, or 19.  \n"
+        "This means your soul has resolved many of its past-life obligations and is now freer to create new experiences without being bound by old patterns. 🌿\n\n"
+        "You carry a lighter spiritual contract, allowing more effortless growth, opportunities, and alignment with your true destiny. 🌟\n\n"
+        "💫 *This lifetime is more about creation than correction—trust your inner guidance and follow the path that feels expansive and liberating.*"
+    )
 
     # Combine all karmic debt meanings
     result_parts = ["🔮 *Your Karmic Debt Analysis*:\n"]
