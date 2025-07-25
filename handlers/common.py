@@ -18,6 +18,7 @@ from states import (
     LoveVibesStates,
     PersonalYearStates,
     AngelNumberStates,
+    NameVibrationStates,
 )
 
 from descriptions import (
