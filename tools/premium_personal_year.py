@@ -1,114 +1,152 @@
 import datetime
 
-def calculate_personal_year_number(birthdate: str) -> int:
-    try:
-        day, month, year = map(int, birthdate.split('.'))
-    except ValueError:
-        raise ValueError("Invalid date format. Use DD.MM.YYYY.")
-    
-    current_year = datetime.date.today().year
-    total = day + month + sum(int(d) for d in str(current_year))
+def reduce_num(n: int) -> int:
+    while n > 9 and n not in (11, 22, 33):
+        n = sum(int(d) for d in str(n))
+    return n
 
-    def reduce_num(n):
-        while n > 9 and n not in (11, 22, 33):
-            n = sum(int(d) for d in str(n))
-        return n
-    
+def calculate_personal_year_number_for(birthdate: str, target_year: int) -> int:
+    day, month, year = map(int, birthdate.split('.'))
+    total = day + month + sum(int(d) for d in str(target_year))
     return reduce_num(total)
 
-
-def get_personal_year_result(number: int) -> str:
-    # Rich yearly messages
-    year_texts = {
+def personal_year_theme_long(n: int) -> str:
+    details = {
         1: (
-            "🌱 *Personal Year 1 – A Year of New Beginnings*\n\n"
-            "This year marks the start of a fresh 9-year cycle for you. It’s a time of planting seeds, setting intentions, "
-            "and boldly stepping into new paths. ✨ Opportunities for personal growth, career shifts, or even new relationships "
-            "may appear — but you must take initiative.\n\n"
-            "💫 *Soul Insight:* Release the past. This year favors independence, courage, and embracing your unique vision. "
-            "Everything you start now will shape the years ahead."
+            "🌱 *Personal Year 1 – The Year of New Beginnings*\n\n"
+            "This year marks the start of a brand-new 9-year cycle for you. It is a time of self-discovery, independence, and bold action. "
+            "Life will feel like a blank canvas waiting for your vision. You may feel an inner push to step away from old patterns, start fresh projects, or redefine who you truly are. 💫\n\n"
+            "In love, this year can bring new connections or a shift in existing relationships as you prioritize your personal growth. "
+            "In career and life purpose, it’s a year to take initiative—plant the seeds that will grow over the next cycle.\n\n"
+            "💖 *Soul Lesson:* Learn to trust yourself and embrace your individuality. This year is about YOU stepping into your true power.\n"
         ),
         2: (
-            "🌸 *Personal Year 2 – A Year of Harmony & Patience*\n\n"
-            "This is a softer, more introspective year focused on relationships, emotional healing, and cooperation. 💞 "
-            "It’s a time to nurture connections, deepen trust, and allow things to unfold in divine timing. Life feels "
-            "gentler now, asking you to listen more than act.\n\n"
-            "💫 *Soul Insight:* This year strengthens your emotional wisdom. Be patient — what grows quietly now will bloom "
-            "in future years."
+            "🌸 *Personal Year 2 – The Year of Harmony & Patience*\n\n"
+            "This year softens the energy, inviting emotional healing, nurturing connections, and deepening relationships. "
+            "It’s a time of listening rather than pushing, allowing the universe to reveal things slowly and beautifully. "
+            "You’ll crave emotional closeness and may be drawn to partnerships or collaborations that bring balance. 💞\n\n"
+            "In love, this is a tender year of building trust and intimacy. In career, it’s about cooperation rather than competition. "
+            "Spiritually, you’ll feel more intuitive and sensitive, aligned with gentle guidance.\n\n"
+            "💖 *Soul Lesson:* Practice patience, trust divine timing, and strengthen your emotional wisdom.\n"
         ),
         3: (
-            "🎨 *Personal Year 3 – A Year of Joy & Self-Expression*\n\n"
-            "This is a vibrant, creative year filled with social connections, fun, and opportunities to express yourself. 🌈 "
-            "Your natural charm and creativity are amplified now, making it easier to meet new people and share your gifts.\n\n"
-            "💫 *Soul Insight:* Let go of fear and embrace your authentic voice. This year is about enjoying life and inspiring "
-            "others through your presence."
+            "🎨 *Personal Year 3 – The Year of Joy & Self-Expression*\n\n"
+            "This is a vibrant and social year where life feels lighter. Creativity flows more easily, and you’re meant to express your authentic self without fear. "
+            "Your energy is magnetic now, attracting new friendships, love, and opportunities. 🌈\n\n"
+            "In love, it’s a playful, romantic year with plenty of social connections. Career-wise, it’s perfect for creative projects, communication, and sharing your ideas. "
+            "Spiritually, joy itself becomes your teacher—reminding you to live in the present.\n\n"
+            "💖 *Soul Lesson:* Release self-doubt and embrace your inner light. When you express your truth, you inspire others.\n"
         ),
         4: (
-            "🏡 *Personal Year 4 – A Year of Building Foundations*\n\n"
-            "This is a year of stability, hard work, and creating structures that support your future. 🧱 It’s time to focus "
-            "on discipline, organization, and taking practical steps toward your long-term goals.\n\n"
-            "💫 *Soul Insight:* This year strengthens your roots. Be patient and consistent — what you build now will support "
-            "the next phase of your journey."
+            "🏡 *Personal Year 4 – The Year of Stability & Building Foundations*\n\n"
+            "This is a grounding year of structure, discipline, and responsibility. Life slows down to help you create strong roots—whether in career, finances, home, or health. "
+            "It’s not about quick wins, but about building something solid and lasting. 🧱\n\n"
+            "In love, this is a year of deeper commitment and creating emotional security. In career, it’s about hard work, organization, and long-term plans. "
+            "Spiritually, it teaches patience and the beauty of steady progress.\n\n"
+            "💖 *Soul Lesson:* Focus on consistency and building the stable future you desire.\n"
         ),
         5: (
-            "💃 *Personal Year 5 – A Year of Freedom & Change*\n\n"
-            "This year brings movement, transformation, and unexpected opportunities. ✈️ It’s a time to embrace change, take "
-            "risks, and break free from what no longer serves you. Life may feel faster and more adventurous.\n\n"
-            "💫 *Soul Insight:* Stay flexible. This year teaches you adaptability and opens doors to new experiences that will "
-            "reshape your path."
+            "💃 *Personal Year 5 – The Year of Freedom & Change*\n\n"
+            "This is a year of movement, transformation, and adventure. Expect the unexpected—life will bring new people, opportunities, and experiences that push you out of your comfort zone. "
+            "It’s a time to break free from routines that feel limiting and embrace the unknown. ✈️\n\n"
+            "In love, sparks fly with passion and excitement, but relationships may feel less stable if they lack true depth. In career, this is a year for flexibility and exploring different paths. "
+            "Spiritually, it reminds you to trust the flow of life.\n\n"
+            "💖 *Soul Lesson:* Let go of control and embrace the magic of change—it’s guiding you toward growth.\n"
         ),
         6: (
-            "💞 *Personal Year 6 – A Year of Love & Responsibility*\n\n"
-            "This is a heart-centered year focused on relationships, family, and emotional commitments. 🌿 You may feel called "
-            "to nurture, heal, or create more harmony in your personal life. Love and community are highlighted.\n\n"
-            "💫 *Soul Insight:* This year asks you to balance self-care with caring for others. Love is both your lesson and gift."
+            "💞 *Personal Year 6 – The Year of Love & Responsibility*\n\n"
+            "This is a heart-centered year where family, relationships, and home life take center stage. You may feel called to nurture, heal, or create harmony in your personal world. "
+            "Commitments deepen now—emotionally and spiritually. 🌿\n\n"
+            "In love, this is a year for romance, commitment, or even starting a family. In career, you may feel drawn to work that serves or supports others. "
+            "Spiritually, it’s about opening your heart fully and learning love without conditions.\n\n"
+            "💖 *Soul Lesson:* Find balance between caring for others and honoring your own needs.\n"
         ),
         7: (
-            "🔮 *Personal Year 7 – A Year of Inner Growth & Reflection*\n\n"
-            "This is a deeply spiritual year of introspection, learning, and soul-searching. 🌌 You may feel drawn to spend "
-            "more time alone, studying, meditating, or seeking deeper truths. Answers come from within.\n\n"
-            "💫 *Soul Insight:* Trust the quiet moments. This year prepares your spirit for profound future transformation."
+            "🔮 *Personal Year 7 – The Year of Reflection & Spiritual Growth*\n\n"
+            "This is a deeply introspective year. You’ll crave solitude, learning, and a deeper connection with your soul. "
+            "Life slows down externally so you can look within for answers. 🌌\n\n"
+            "In love, it’s a quieter year, focusing on emotional depth rather than outward romance. In career, it’s about research, analysis, or refining your skills. "
+            "Spiritually, this is a powerful year for awakening, intuition, and understanding your life purpose on a deeper level.\n\n"
+            "💖 *Soul Lesson:* Trust the wisdom within and embrace the stillness that reveals truth.\n"
         ),
         8: (
-            "💼 *Personal Year 8 – A Year of Power & Achievement*\n\n"
-            "This is a year of stepping into your power, manifesting abundance, and taking leadership. 💫 Career growth, "
-            "financial opportunities, and recognition are highlighted — but only if you align with integrity.\n\n"
-            "💫 *Soul Insight:* This year teaches you how to balance material success with spiritual wisdom."
+            "💼 *Personal Year 8 – The Year of Power & Achievement*\n\n"
+            "This is a year of stepping into your power. Career, finances, and personal influence are highlighted, bringing opportunities for success and recognition. "
+            "It’s a year to claim your worth and manifest abundance with integrity. 💫\n\n"
+            "In love, this year requires balance—power dynamics may surface but can lead to deeper trust if handled with care. In career, it’s about leadership, ambition, and tangible results. "
+            "Spiritually, it’s a lesson in balancing material success with higher purpose.\n\n"
+            "💖 *Soul Lesson:* Align ambition with soul values to create meaningful success.\n"
         ),
         9: (
-            "🌈 *Personal Year 9 – A Year of Completion & Letting Go*\n\n"
-            "This is a year of closure, reflection, and emotional release. 🌍 It’s time to finish old cycles, release what no "
-            "longer serves you, and prepare for a new 9-year chapter. Expect endings that make space for transformation.\n\n"
-            "💫 *Soul Insight:* This year asks for surrender and compassion. What you release now creates room for your next evolution."
+            "🌈 *Personal Year 9 – The Year of Completion & Release*\n\n"
+            "This is a year of closure, reflection, and letting go. You may feel endings in relationships, career paths, or old patterns that no longer serve your highest good. "
+            "It’s preparing you for a brand-new cycle next year. 🌍\n\n"
+            "In love, it’s a healing year, where forgiveness and release open the heart. In career, it may bring transitions or completion of long-held goals. "
+            "Spiritually, it teaches compassion, surrender, and trust in the greater plan.\n\n"
+            "💖 *Soul Lesson:* Release the past with love—what you let go creates space for your future.\n"
         ),
         11: (
-            "⚡ *Personal Year 11 – A Master Year of Spiritual Awakening*\n\n"
-            "This is a powerful year of heightened intuition, inspiration, and soul-level lessons. 🌠 You may feel more "
-            "sensitive, yet deeply connected to your higher purpose. Encounters now may feel fated or karmic.\n\n"
-            "💫 *Soul Insight:* Trust your inner guidance. This year aligns you with your higher calling."
+            "⚡ *Personal Year 11 – The Master Year of Spiritual Awakening*\n\n"
+            "This is a powerful and sensitive year of heightened intuition, deep spiritual insights, and karmic lessons. "
+            "You may feel more emotional and empathic as your soul aligns with a higher calling. 🌠\n\n"
+            "In love, soul-level connections may appear, revealing karmic or destined relationships. In career, inspiration and creativity flow strongly, but you must stay balanced to avoid overwhelm. "
+            "Spiritually, this is a year of enlightenment and aligning with divine purpose.\n\n"
+            "💖 *Soul Lesson:* Trust your intuition—it’s guiding you toward your true path.\n"
         ),
         22: (
-            "🏗 *Personal Year 22 – A Master Year of Building Dreams*\n\n"
-            "This is a rare year where you have the potential to manifest something truly monumental. 🌐 It’s about combining "
-            "spiritual vision with practical action to create lasting impact.\n\n"
-            "💫 *Soul Insight:* This year calls you to embrace your power as a creator and leave a meaningful legacy."
+            "🏗 *Personal Year 22 – The Master Builder Year*\n\n"
+            "This rare master year carries the potential to manifest something monumental. It combines spiritual insight with practical action, allowing you to create lasting impact for yourself and others. 🌐\n\n"
+            "In love, it’s a year to build strong, lasting partnerships. In career, you can achieve extraordinary success through discipline and vision. "
+            "Spiritually, it asks you to merge the mystical with the material.\n\n"
+            "💖 *Soul Lesson:* Dream big and act with integrity—your legacy begins here.\n"
         ),
         33: (
-            "🌟 *Personal Year 33 – A Master Year of Service & Love*\n\n"
-            "This is a deeply compassionate year focused on healing, teaching, and uplifting others. ✨ It’s about giving love "
-            "without conditions and embracing your highest spiritual purpose.\n\n"
-            "💫 *Soul Insight:* This year asks you to embody pure love as a guide and healer."
+            "🌟 *Personal Year 33 – The Master Year of Love & Service*\n\n"
+            "This is a profoundly spiritual year of compassion, healing, and guiding others through your wisdom. "
+            "It’s about embodying unconditional love and serving in ways that uplift humanity. ✨\n\n"
+            "In love, it deepens emotional bonds and brings healing connections. In career, it’s about service, teaching, or creating beauty that inspires others. "
+            "Spiritually, it’s a sacred year of aligning with divine love.\n\n"
+            "💖 *Soul Lesson:* Lead through love, compassion, and selfless service.\n"
         )
     }
+    return details.get(n, "✨ A mysterious yet powerful energy surrounds this year.")
 
-    year_message = year_texts.get(number, "✨ A mysterious year ahead awaits your discovery…")
+def personal_year_theme_short(n: int) -> str:
+    previews = {
+        1: "🌱 *New beginnings, fresh starts, and bold opportunities*",
+        2: "🌸 *Harmony, emotional healing, and deeper relationships*",
+        3: "🎨 *Joy, self-expression, creativity, and social expansion*",
+        4: "🏡 *Stability, discipline, and building strong foundations*",
+        5: "💃 *Freedom, change, adventure, and unexpected opportunities*",
+        6: "💞 *Love, family, responsibility, and deeper commitments*",
+        7: "🔮 *Reflection, soul-searching, and spiritual clarity*",
+        8: "💼 *Power, success, financial growth, and recognition*",
+        9: "🌈 *Completion, closure, emotional release, and transition*",
+        11: "⚡ *Spiritual awakening, heightened intuition, and divine purpose*",
+        22: "🏗 *Building dreams into reality, manifesting on a grand scale*",
+        33: "🌟 *Compassion, healing, teaching, and unconditional love*"
+    }
+    return previews.get(n, "✨ A mysterious energy guiding your journey")
 
+def get_personal_year_forecast(birthdate: str) -> str:
+    today = datetime.date.today()
+    current_year = today.year
+    
+    # Calculate this year + next 2 years
+    this_year_num = calculate_personal_year_number_for(birthdate, current_year)
+    next_year_num = calculate_personal_year_number_for(birthdate, current_year + 1)
+    future_year_num = calculate_personal_year_number_for(birthdate, current_year + 2)
+    
+    this_year_long = personal_year_theme_long(this_year_num)
+    next_year_short = personal_year_theme_short(next_year_num)
+    future_year_short = personal_year_theme_short(future_year_num)
+    
     return (
-        f"🌌 *Personal Year Forecast*\n\n"
-        f"📅 *Your Personal Year Number:* `{number}`\n\n"
-        f"{year_message}\n\n"
-        f"💫 *Yearly Guidance:* Align with this vibration and trust the timing of your soul’s journey. Each personal year is "
-        f"part of a bigger 9-year cycle that shapes your destiny.\n\n"
-        f"🌟 *As a Premium member, you can also explore your **Destiny Number, Karmic Debts, and Compatibility Reading** "
-        f"to see how this year connects with your larger soul path.*"
+        f"🌌 *Your Personal Year Forecast {current_year}*\n\n"
+        f"{this_year_long}\n"
+        f"💫 *How to thrive this year:* Align your choices with this vibration, and you’ll flow effortlessly with life’s rhythm.\n\n"
+        f"🔮 *Your Roadmap Ahead:*\n"
+        f"✅ *{current_year + 1} → Personal Year {next_year_num} – {next_year_short[2:]}*\n"
+        f"✅ *{current_year + 2} → Personal Year {future_year_num} – {future_year_short[2:]}*\n\n"
+        f"🌟 *As a Premium member, you can also explore your **Destiny Number, Compatibility Reading, and Karmic Debts** to see how these years connect to your bigger soul journey.*"
     )
