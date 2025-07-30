@@ -263,6 +263,20 @@ async def is_premium_user(user_id: int) -> bool:
     value = await redis.get(f"user:{user_id}:premium")
     return value == b"1"
 
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+def get_upgrade_markup() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="🔓 Unlock Premium Now",
+                    url="https://your-payment-link.com"  # ← REPLACE with your real payment URL
+                )
+            ]
+        ]
+    )
+
 
 # --- Register this router ---
 def register_common_handlers(dp):
