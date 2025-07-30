@@ -257,7 +257,7 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
 async def is_premium_user(user_id: int) -> bool:
     # Always allow YOU full access
-    if user_id in {619941697}:
+    if user_id in {619941690}:
         return True
 
     value = await redis.get(f"user:{user_id}:premium")
