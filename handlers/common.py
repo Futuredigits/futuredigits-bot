@@ -3,6 +3,7 @@ from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
+from bot import redis  # uses your existing Redis connection
 
 # ✅ Import all required states for menu routing
 from states import (
@@ -253,6 +254,14 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
             reply_markup=main_menu
         )
         await state.set_state(NameVibrationStates.waiting_for_full_name)
+
+async def is_premium_user(user_id: int) -> bool:
+    # Always allow YOU full access
+    if user_id in {619941697}:
+        return True
+
+    value = await redis.get(f"user:{user_id}:premium")
+    return value == b"1"
 
 
 # --- Register this router ---
