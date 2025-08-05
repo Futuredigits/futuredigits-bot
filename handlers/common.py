@@ -243,6 +243,32 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
     StateFilter("*")
 )
 async def unified_premium_menu_handler(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+
+    # 🔐 PREMIUM ACCESS CHECK
+    if not is_premium_user(user_id):
+        await state.clear()
+        await message.answer(
+            "🔒 *This tool is for Premium users only.*\n\n"
+            "You're about to unlock a deeper level of insight into your:\n"
+            "❤️ Love path • 💰 Money energy • 🔮 Soul purpose\n\n"
+            "✨ Premium Tools include:\n"
+            "• Passion Number\n"
+            "• Compatibility & Love Vibes\n"
+            "• Karmic Debt • Personal Year • Angel Numbers\n\n"
+            "💎 *Pricing:*\n"
+            "• $7/week\n"
+            "• $17/month\n"
+            "• $79 lifetime (best value!)\n\n"
+            "👉 [Click here to upgrade](https://your-payment-link.com)\n"
+            "Or tap *💎 Upgrade Now* in the menu below.",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=main_menu
+        )
+        return
+
+    # ✅ PREMIUM USER — proceed to requested tool
     choice = message.text.strip()
     await state.clear()
 
@@ -271,29 +297,19 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
         result = get_moon_energy_forecast()
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
 
-
     elif choice == "🗓 Daily Universal Vibe":
         from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
         result = get_daily_universal_vibe_forecast()
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
 
-
     elif choice == "🪬 Angel Number Decoder":
-        await message.answer(
-            angel_number_intro_premium,
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=main_menu
-        )
+        await message.answer(angel_number_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
         await state.set_state(AngelNumberStates.waiting_for_number)
 
-
     elif choice == "🌀 Name Vibration":
-        await message.answer(
-            name_vibration_intro_premium,
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=main_menu
-        )
+        await message.answer(name_vibration_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
         await state.set_state(NameVibrationStates.waiting_for_full_name)
+
 
 
 # --- Register this router ---
