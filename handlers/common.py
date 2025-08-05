@@ -91,11 +91,15 @@ premium_menu = ReplyKeyboardMarkup(
             KeyboardButton(text="🪬 Angel Number Decoder"),
             KeyboardButton(text="🌀 Name Vibration"),
         ],
-        [KeyboardButton(text="🔙 Back to Main Menu")],
+        [
+            KeyboardButton(text="💎 Upgrade Now"),
+            KeyboardButton(text="🔙 Back to Main Menu"),
+        ],
     ],
     resize_keyboard=True,
     input_field_placeholder="Select a premium tool...",
 )
+
 
 # --- /start Command ---
 @router.message(CommandStart(), StateFilter("*"))  # ✅ Always works
@@ -151,6 +155,11 @@ async def premium_handler(message: Message, state: FSMContext):
         parse_mode=ParseMode.MARKDOWN,
         disable_web_page_preview=True
     )
+
+@router.message(F.text == "💎 Upgrade Now", StateFilter("*"))
+async def premium_cta_button(message: Message, state: FSMContext):
+    # Just call the same handler as /premium
+    await premium_handler(message, state)
 
 
 # --- Premium menu ---
