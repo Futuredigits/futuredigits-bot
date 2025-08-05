@@ -5,7 +5,7 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 
 # ✅ Replace with your actual Telegram user ID
-OWNER_ID = 123456789
+OWNER_ID = 619941697
 
 # Dummy database of paid users (in-memory for now)
 PAID_USERS = set()
