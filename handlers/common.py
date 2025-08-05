@@ -172,13 +172,16 @@ async def show_premium_menu(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
         "💎 *Premium Tools Menu*\n\n"
-        "Unlock the hidden patterns of your love life, past lives, money energy, and more. 🔮\n\n"
+        "Unlock the hidden patterns of your *love life*, *past lives*, *soul purpose*, and *money energy*. 🔮\n\n"
         "✨ These exclusive tools offer deeper transformation and personal power.\n\n"
-        "🚀 Tap a tool below to begin — or [Upgrade Now](https://your-payment-link.com) to unlock everything instantly.",
+        "🎁 *You can try 1 Premium Tool for FREE!*\n"
+        "Just tap any tool below to unlock your first insight.\n\n"
+        "🚀 Want full access? [Upgrade Now](https://your-payment-link.com) to unlock everything instantly.",
         reply_markup=premium_menu,
         parse_mode=ParseMode.MARKDOWN,
         disable_web_page_preview=True,
     )
+
 
 
 @router.message(F.text == "🔙 Back to Main Menu", StateFilter("*"))
