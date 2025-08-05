@@ -130,11 +130,28 @@ async def help_handler(message: Message, state: FSMContext):
 async def premium_handler(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
-        "💎 *Futuredigits Premium*\n\n"
-        "Premium tools offer deeper readings, hidden number meanings, and exclusive interpretations.\n\n"
-        "We are preparing full premium access. Stay tuned and explore what awaits. 🌟",
+        "💎 *Welcome to Futuredigits Premium*\n\n"
+        "Unlock all advanced tools:\n"
+        "🧩 Passion Number\n"
+        "💑 Compatibility\n"
+        "❤️ Love Vibes\n"
+        "🕳 Karmic Debt\n"
+        "🌌 Personal Year Forecast\n"
+        "🌀 Name Energy & more...\n\n"
+        "✨ *Benefits of Premium:*\n"
+        "• Deeper forecasts (love, career, purpose)\n"
+        "• Future timing and energy maps\n"
+        "• Emotional insights, karmic patterns\n\n"
+        "🔓 *Pricing Options:*\n"
+        "• $7/week\n"
+        "• $17/month\n"
+        "• $79 lifetime (best value!)\n\n"
+        "👉 [Click here to upgrade](https://your-payment-link.com)\n"
+        "Then tap *Premium Tools* in the menu to explore.",
         parse_mode=ParseMode.MARKDOWN,
+        disable_web_page_preview=True
     )
+
 
 # --- Premium menu ---
 @router.message(F.text == "🔓 Premium Tools", StateFilter("*"))
