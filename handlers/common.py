@@ -10,6 +10,10 @@ OWNER_ID = 619941697
 # Dummy database of paid users (in-memory for now)
 PAID_USERS = set()
 
+# Users who already used their 1-time free premium trial
+USED_TRIAL = set()
+
+
 def is_premium_user(user_id: int) -> bool:
     return user_id == OWNER_ID or user_id in PAID_USERS
 
@@ -246,29 +250,32 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     user_id = message.from_user.id
 
     # 🔐 PREMIUM ACCESS CHECK
-    if not is_premium_user(user_id):
+    if is_premium_user(user_id):
+        pass
+
+    elif user_id in USED_TRIAL:
         await state.clear()
         await message.answer(
-            "🔒 *This tool is for Premium users only.*\n\n"
-            "You're about to unlock a deeper level of insight into your:\n"
-            "❤️ Love path • 💰 Money energy • 🔮 Soul purpose\n\n"
-            "✨ Premium Tools include:\n"
-            "• Passion Number\n"
-            "• Compatibility & Love Vibes\n"
-            "• Karmic Debt • Personal Year • Angel Numbers\n\n"
-            "💎 *Pricing:*\n"
-            "• $7/week\n"
-            "• $17/month\n"
-            "• $79 lifetime (best value!)\n\n"
+            "🔒 *This is a Premium tool.*\n\n"
+            "You've already used your 1 free premium tool trial. 💫\n\n"
+            "To unlock all tools:\n"
+            "💎 *$7/week* • *$17/month* • *$79 lifetime*\n\n"
             "👉 [Click here to upgrade](https://your-payment-link.com)\n"
-            "Or tap *💎 Upgrade Now* in the menu below.",
+            "Or tap *💎 Upgrade Now* below.",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=main_menu
         )
         return
 
-    # ✅ PREMIUM USER — proceed to requested tool
+    else:
+        USED_TRIAL.add(user_id)
+        await message.answer(
+            "🎁 *You've unlocked a Premium tool for free!*\n\n"
+            "Enjoy your reading — the next one will require an upgrade. 💎",
+            parse_mode=ParseMode.MARKDOWN
+        )
+
     choice = message.text.strip()
     await state.clear()
 
@@ -309,7 +316,6 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     elif choice == "🌀 Name Vibration":
         await message.answer(name_vibration_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
         await state.set_state(NameVibrationStates.waiting_for_full_name)
-
 
 
 # --- Register this router ---
