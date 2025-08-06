@@ -4,7 +4,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
-from localization import get_text, set_user_lang, get_user_lang
+from localization import set_user_lang, get_text, get_main_menu
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram import F
 
