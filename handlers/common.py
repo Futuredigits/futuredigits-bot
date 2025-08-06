@@ -227,6 +227,7 @@ async def show_main_menu(message: Message, state: FSMContext):
 )
 async def unified_main_menu_handler(message: Message, state: FSMContext):
     """Single handler for all main menu tool buttons"""
+    user_id = message.from_user.id
     choice = message.text.strip()
     await state.clear()  # ✅ cancel any previous FSM
 
