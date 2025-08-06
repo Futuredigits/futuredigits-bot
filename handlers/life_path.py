@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter  # ✅ Aiogram 3.x correct import
 
 from states import LifePathStates
 from tools.life_path import calculate_life_path_number, get_life_path_result
-from handlers.common import main_menu
+from handlers.common import get_main_menu
 
 
 router = Router(name="life_path")
