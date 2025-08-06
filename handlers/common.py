@@ -13,8 +13,6 @@ from localization import get_text
 # ✅ Replace with your actual Telegram user ID
 OWNER_ID = 619941697
 
-# Dummy database of paid users (in-memory for now)
-PAID_USERS = set()
 
 # Users who already used their 1-time free premium trial
 USED_TRIAL = set()
@@ -71,6 +69,28 @@ from descriptions import (
 )
 
 router = Router(name=__name__)  # ✅ Unique router name
+
+
+from redis.asyncio import from_url
+
+# Connect to your Redis DB (same as in bot.py)
+redis = from_url("rediss://default:ATl7AAIjcDEwYjdkZjhmYTczNjk0YzZmOWY4Zjg0ODE4NmU1YTcwN3AxMA@ideal-pegasus-14715.upstash.io:6379")
+
+PREMIUM_USERS_KEY = "premium_users"
+TRIAL_USERS_KEY = "trial_users"
+
+async def is_premium_user(user_id: int) -> bool:
+    return user_id == OWNER_ID or await redis.sismember(PREMIUM_USERS_KEY, user_id)
+
+async def add_premium_user(user_id: int):
+    await redis.sadd(PREMIUM_USERS_KEY, user_id)
+
+async def has_used_trial(user_id: int) -> bool:
+    return await redis.sismember(TRIAL_USERS_KEY, user_id)
+
+async def add_trial_user(user_id: int):
+    await redis.sadd(TRIAL_USERS_KEY, user_id)
+
 
 # ✅ Main menu keyboard
 def get_main_menu(user_id):
@@ -275,10 +295,17 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     user_id = message.from_user.id
 
     # 🔐 PREMIUM ACCESS CHECK
+<<<<<<< HEAD
     if is_premium_user(user_id):
         pass
 
     elif user_id in USED_TRIAL:
+=======
+    if await is_premium_user(user_id):
+        pass
+
+    elif await has_used_trial(user_id):
+>>>>>>> f7c1607054d453a9cde00367952721b3941baf28
         await state.clear()
         await message.answer(
             "🔒 *This is a Premium tool.*\n\n"
@@ -294,7 +321,11 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
         return
 
     else:
+<<<<<<< HEAD
         USED_TRIAL.add(user_id)
+=======
+        await add_trial_user(user_id)
+>>>>>>> f7c1607054d453a9cde00367952721b3941baf28
         await message.answer(
             "🎁 *You've unlocked a Premium tool for free!*\n\n"
             "Enjoy your reading — the next one will require an upgrade. 💎",
@@ -304,6 +335,7 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     choice = message.text.strip()
     await state.clear()
 
+<<<<<<< HEAD
     if choice == get_text("btn_passion", user_id):
         await message.answer(get_text("intro_passion", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
         await state.set_state(PassionNumberStates.waiting_for_full_name)
@@ -322,16 +354,41 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
     elif choice == get_text("btn_personal_year", user_id):
         await message.answer(get_text("intro_personal_year", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+=======
+    if choice == "🧩 Passion Number":
+        await message.answer(passion_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+        await state.set_state(PassionNumberStates.waiting_for_full_name)
+
+    elif choice == "🕳 Karmic Debt":
+        await message.answer(karmic_debt_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+        await state.set_state(KarmicDebtStates.waiting_for_birthdate)
+
+    elif choice == "💑 Compatibility":
+        await message.answer(compatibility_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+        await state.set_state(CompatibilityStates.waiting_for_two_names)
+
+    elif choice == "❤️ Love Vibes":
+        await message.answer(love_vibes_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+        await state.set_state(LoveVibesStates.waiting_for_full_name)
+
+    elif choice == "🌌 Personal Year Forecast":
+        await message.answer(personal_year_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+>>>>>>> f7c1607054d453a9cde00367952721b3941baf28
         await state.set_state(PersonalYearStates.waiting_for_birthdate)
 
     elif choice == get_text("btn_moon", user_id):
         from tools.premium_moon_energy import get_moon_energy_forecast
         result = get_moon_energy_forecast()
+<<<<<<< HEAD
         await message.answer(result, reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+=======
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+>>>>>>> f7c1607054d453a9cde00367952721b3941baf28
 
     elif choice == get_text("btn_daily", user_id):
         from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
         result = get_daily_universal_vibe_forecast()
+<<<<<<< HEAD
         await message.answer(result, reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
 
     elif choice == get_text("btn_angel", user_id):
@@ -340,8 +397,17 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
     elif choice == get_text("btn_name_vibration", user_id):
         await message.answer(get_text("intro_name_vibration", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
-        await state.set_state(NameVibrationStates.waiting_for_full_name)
+=======
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
 
+    elif choice == "🪬 Angel Number Decoder":
+        await message.answer(angel_number_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+        await state.set_state(AngelNumberStates.waiting_for_number)
+
+    elif choice == "🌀 Name Vibration":
+        await message.answer(name_vibration_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+>>>>>>> f7c1607054d453a9cde00367952721b3941baf28
+        await state.set_state(NameVibrationStates.waiting_for_full_name)
 
 
 # --- Register this router ---
