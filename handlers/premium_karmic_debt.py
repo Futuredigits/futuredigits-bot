@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 
 from states import KarmicDebtStates
 from tools.premium_karmic_debt import calculate_karmic_debt_numbers, get_karmic_debt_result
-from handlers.common import main_menu
+from handlers.common import get_main_menu
+
 
 router = Router(name="premium_karmic_debt")
 
@@ -16,7 +17,7 @@ async def handle_karmic_debt(message: Message, state: FSMContext):
         date_str = message.text.strip()
         karmic_numbers = calculate_karmic_debt_numbers(date_str)
         result = get_karmic_debt_result(karmic_numbers)
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=get_main_menu(user_id))
         await state.clear()
     except Exception:
         await message.answer(

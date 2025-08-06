@@ -1,8 +1,14 @@
 from aiogram import F, Router
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
+from localization import set_user_lang, get_text, get_main_menu
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram import F
+
+
 
 # ✅ Replace with your actual Telegram user ID
 OWNER_ID = 619941697
@@ -16,6 +22,14 @@ USED_TRIAL = set()
 
 def is_premium_user(user_id: int) -> bool:
     return user_id == OWNER_ID or user_id in PAID_USERS
+
+def get_language_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="🇷🇺 Русский", callback_data="lang_ru"),
+            InlineKeyboardButton(text="🇺🇸 English", callback_data="lang_en")
+        ]
+    ])
 
 
 # ✅ Import all required states for menu routing
@@ -59,67 +73,87 @@ from descriptions import (
 router = Router(name=__name__)  # ✅ Unique router name
 
 # ✅ Main menu keyboard
-main_menu = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(text="🔢 Life Path"),
-            KeyboardButton(text="💖 Soul Urge"),
-            KeyboardButton(text="🎭 Personality"),
+def get_main_menu(user_id):
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=get_text("btn_life_path", user_id)),
+                KeyboardButton(text=get_text("btn_soul_urge", user_id)),
+                KeyboardButton(text=get_text("btn_personality", user_id)),
+            ],
+            [
+                KeyboardButton(text=get_text("btn_birthday", user_id)),
+                KeyboardButton(text=get_text("btn_expression", user_id)),
+                KeyboardButton(text=get_text("btn_destiny", user_id)),
+            ],
+            [KeyboardButton(text=get_text("btn_premium", user_id))],
         ],
-        [
-            KeyboardButton(text="🎂 Birthday"),
-            KeyboardButton(text="🎯 Expression"),
-            KeyboardButton(text="🌟 Destiny"),
-        ],
-        [KeyboardButton(text="🔓 Premium Tools")],
-    ],
-    resize_keyboard=True,
-    input_field_placeholder="Choose a numerology tool...",
-)
+        resize_keyboard=True,
+        input_field_placeholder=get_text("menu_main_placeholder", user_id),
+    )
+
 
 # ✅ Premium menu keyboard
-premium_menu = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(text="🧩 Passion Number"),
-            KeyboardButton(text="🕳 Karmic Debt"),
-            KeyboardButton(text="💑 Compatibility"),
+def get_premium_menu(user_id):
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=get_text("btn_passion", user_id)),
+                KeyboardButton(text=get_text("btn_karmic", user_id)),
+                KeyboardButton(text=get_text("btn_compatibility", user_id)),
+            ],
+            [
+                KeyboardButton(text=get_text("btn_love", user_id)),
+                KeyboardButton(text=get_text("btn_personal_year", user_id)),
+                KeyboardButton(text=get_text("btn_moon", user_id)),
+            ],
+            [
+                KeyboardButton(text=get_text("btn_daily", user_id)),
+                KeyboardButton(text=get_text("btn_angel", user_id)),
+                KeyboardButton(text=get_text("btn_name_vibration", user_id)),
+            ],
+            [
+                KeyboardButton(text=get_text("btn_upgrade", user_id)),
+                KeyboardButton(text=get_text("btn_back", user_id)),
+            ],
         ],
-        [
-            KeyboardButton(text="❤️ Love Vibes"),
-            KeyboardButton(text="🌌 Personal Year Forecast"),
-            KeyboardButton(text="🌕 Moon Energy Today"),
-        ],
-        [
-            KeyboardButton(text="🗓 Daily Universal Vibe"),
-            KeyboardButton(text="🪬 Angel Number Decoder"),
-            KeyboardButton(text="🌀 Name Vibration"),
-        ],
-        [
-            KeyboardButton(text="💎 Upgrade Now"),
-            KeyboardButton(text="🔙 Back to Main Menu"),
-        ],
-    ],
-    resize_keyboard=True,
-    input_field_placeholder="Select a premium tool...",
-)
+        resize_keyboard=True,
+        input_field_placeholder=get_text("menu_premium_placeholder", user_id),
+    )
 
 
 # --- /start Command ---
-@router.message(CommandStart(), StateFilter("*"))  # ✅ Always works
+@router.message(CommandStart(), StateFilter("*"))
 async def start_handler(message: Message, state: FSMContext):
     await state.clear()
+
+    # If user has no language yet → ask to choose
+    user_id = message.from_user.id
+    if get_user_lang(user_id) not in ["en", "ru"]:
+        await message.answer(
+            get_text("choose_language", user_id),
+            reply_markup=get_language_keyboard()
+        )
+    else:
+        await message.answer(
+            get_text("start_message", user_id),
+            reply_markup=get_main_menu(user_id),
+            parse_mode=ParseMode.MARKDOWN
+        )
+
+@router.message(F.text.in_(["🇬🇧 English", "🇷🇺 Русский"]))
+async def handle_language_choice(message: Message):
+    user_id = message.from_user.id
+    lang = "en" if message.text == "🇬🇧 English" else "ru"
+    set_user_lang(user_id, lang)
+
+    await message.answer(get_text(f"lang_set_{lang}", user_id))
     await message.answer(
-        text=(
-            "👋 *Welcome to Futuredigits!*\n\n"
-            "We transform your birth date and name into deep numerological insights — calculated instantly.\n\n"
-            "Discover your *Life Path*, *Soul Urge*, *Personality*, *Destiny* and more. "
-            "Each tool gives you personalized meaning and clarity. 🌟\n\n"
-            "Tap below to begin your numerology journey 🔮"
-        ),
-        reply_markup=main_menu,
-        parse_mode=ParseMode.MARKDOWN,
+        get_text("start_message", user_id),
+        reply_markup=get_main_menu(user_id),
+        parse_mode=ParseMode.MARKDOWN
     )
+
 
 # --- /help Command ---
 @router.message(Command("help"), StateFilter("*"))
@@ -207,32 +241,34 @@ async def show_main_menu(message: Message, state: FSMContext):
 )
 async def unified_main_menu_handler(message: Message, state: FSMContext):
     """Single handler for all main menu tool buttons"""
+    user_id = message.from_user.id
     choice = message.text.strip()
     await state.clear()  # ✅ cancel any previous FSM
 
-    if choice == "🔢 Life Path":
-        await message.answer(life_path_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+    if choice == get_text("btn_life_path", user_id):
+        await message.answer(get_text("intro_life_path", user_id), reply_markup=get_main_menu(user_id), parse_mode=ParseMode.MARKDOWN)
         await state.set_state(LifePathStates.waiting_for_birthdate)
 
-    elif choice == "💖 Soul Urge":
-        await message.answer(soul_urge_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+    elif choice == get_text("btn_soul_urge", user_id):
+        await message.answer(get_text("intro_soul_urge", user_id), reply_markup=get_main_menu(user_id), parse_mode=ParseMode.MARKDOWN)
         await state.set_state(SoulUrgeStates.waiting_for_full_name)
 
-    elif choice == "🎭 Personality":
-        await message.answer(personality_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+    elif choice == get_text("btn_personality", user_id):
+        await message.answer(get_text("intro_personality", user_id), reply_markup=get_main_menu(user_id), parse_mode=ParseMode.MARKDOWN)
         await state.set_state(PersonalityStates.waiting_for_full_name)
 
-    elif choice == "🎂 Birthday":
-        await message.answer(birthday_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+    elif choice == get_text("btn_birthday", user_id):
+        await message.answer(get_text("intro_birthday", user_id), reply_markup=get_main_menu(user_id), parse_mode=ParseMode.MARKDOWN)
         await state.set_state(BirthdayStates.waiting_for_birthdate)
 
-    elif choice == "🎯 Expression":
-        await message.answer(expression_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+    elif choice == get_text("btn_expression", user_id):
+        await message.answer(get_text("intro_expression", user_id), reply_markup=get_main_menu(user_id), parse_mode=ParseMode.MARKDOWN)
         await state.set_state(ExpressionStates.waiting_for_full_name)
 
-    elif choice == "🌟 Destiny":
-        await message.answer(destiny_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+    elif choice == get_text("btn_destiny", user_id):
+        await message.answer(get_text("intro_destiny", user_id), reply_markup=get_main_menu(user_id), parse_mode=ParseMode.MARKDOWN)
         await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
+
 
 # ✅ Unified Premium Menu Handler (only intros for now)
 @router.message(
@@ -282,6 +318,7 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     choice = message.text.strip()
     await state.clear()
 
+<<<<<<< HEAD
     if choice == "🧩 Passion Number":
         await message.answer(passion_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(PassionNumberStates.waiting_for_full_name)
@@ -300,16 +337,41 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
     elif choice == "🌌 Personal Year Forecast":
         await message.answer(personal_year_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+=======
+    if choice == get_text("btn_passion", user_id):
+        await message.answer(get_text("intro_passion", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+        await state.set_state(PassionNumberStates.waiting_for_full_name)
+
+    elif choice == get_text("btn_karmic", user_id):
+        await message.answer(get_text("intro_karmic_debt", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+        await state.set_state(KarmicDebtStates.waiting_for_birthdate)
+
+    elif choice == get_text("btn_compatibility", user_id):
+        await message.answer(get_text("intro_compatibility", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+        await state.set_state(CompatibilityStates.waiting_for_two_names)
+
+    elif choice == get_text("btn_love", user_id):
+        await message.answer(get_text("intro_love_vibes", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+        await state.set_state(LoveVibesStates.waiting_for_full_name)
+
+    elif choice == get_text("btn_personal_year", user_id):
+        await message.answer(get_text("intro_personal_year", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+>>>>>>> 27a53bf4df1a0b5419a4cdca2522c72e3e2ae32a
         await state.set_state(PersonalYearStates.waiting_for_birthdate)
 
-    elif choice == "🌕 Moon Energy Today":
+    elif choice == get_text("btn_moon", user_id):
         from tools.premium_moon_energy import get_moon_energy_forecast
         result = get_moon_energy_forecast()
+<<<<<<< HEAD
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+=======
+        await message.answer(result, reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+>>>>>>> 27a53bf4df1a0b5419a4cdca2522c72e3e2ae32a
 
-    elif choice == "🗓 Daily Universal Vibe":
+    elif choice == get_text("btn_daily", user_id):
         from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
         result = get_daily_universal_vibe_forecast()
+<<<<<<< HEAD
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
 
     elif choice == "🪬 Angel Number Decoder":
@@ -318,6 +380,16 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
     elif choice == "🌀 Name Vibration":
         await message.answer(name_vibration_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+=======
+        await message.answer(result, reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+
+    elif choice == get_text("btn_angel", user_id):
+        await message.answer(get_text("intro_angel_number", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+        await state.set_state(AngelNumberStates.waiting_for_number)
+
+    elif choice == get_text("btn_name_vibration", user_id):
+        await message.answer(get_text("intro_name_vibration", user_id), reply_markup=get_premium_menu(user_id), parse_mode=ParseMode.MARKDOWN)
+>>>>>>> 27a53bf4df1a0b5419a4cdca2522c72e3e2ae32a
         await state.set_state(NameVibrationStates.waiting_for_full_name)
 
 
