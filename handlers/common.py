@@ -6,6 +6,7 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from localization import get_text, set_user_lang, get_user_lang
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram import F
 
 
 
@@ -139,6 +140,19 @@ async def start_handler(message: Message, state: FSMContext):
             reply_markup=get_main_menu(user_id),
             parse_mode=ParseMode.MARKDOWN
         )
+
+@router.message(F.text.in_(["🇬🇧 English", "🇷🇺 Русский"]))
+async def handle_language_choice(message: Message):
+    user_id = message.from_user.id
+    lang = "en" if message.text == "🇬🇧 English" else "ru"
+    set_user_lang(user_id, lang)
+
+    await message.answer(get_text(f"lang_set_{lang}", user_id))
+    await message.answer(
+        get_text("start_message", user_id),
+        reply_markup=get_main_menu(user_id),
+        parse_mode=ParseMode.MARKDOWN
+    )
 
 
 # --- /help Command ---
