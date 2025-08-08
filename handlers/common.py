@@ -5,10 +5,14 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 
 # ✅ Replace with your actual Telegram user ID
-OWNER_ID = 123456789
+OWNER_ID = 619941697
 
 # Dummy database of paid users (in-memory for now)
 PAID_USERS = set()
+
+# Users who already used their 1-time free premium trial
+USED_TRIAL = set()
+
 
 def is_premium_user(user_id: int) -> bool:
     return user_id == OWNER_ID or user_id in PAID_USERS
@@ -168,13 +172,16 @@ async def show_premium_menu(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
         "💎 *Premium Tools Menu*\n\n"
-        "Unlock the hidden patterns of your love life, past lives, money energy, and more. 🔮\n\n"
+        "Unlock the hidden patterns of your *love life*, *past lives*, *soul purpose*, and *money energy*. 🔮\n\n"
         "✨ These exclusive tools offer deeper transformation and personal power.\n\n"
-        "🚀 Tap a tool below to begin — or [Upgrade Now](https://your-payment-link.com) to unlock everything instantly.",
+        "🎁 *You can try 1 Premium Tool for FREE!*\n"
+        "Just tap any tool below to unlock your first insight.\n\n"
+        "🚀 Want full access? [Upgrade Now](https://your-payment-link.com) to unlock everything instantly.",
         reply_markup=premium_menu,
         parse_mode=ParseMode.MARKDOWN,
         disable_web_page_preview=True,
     )
+
 
 
 @router.message(F.text == "🔙 Back to Main Menu", StateFilter("*"))
@@ -246,70 +253,72 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     user_id = message.from_user.id
 
     # 🔐 PREMIUM ACCESS CHECK
-    if not is_premium_user(user_id):
+    if is_premium_user(user_id):
+        pass
+
+    elif user_id in USED_TRIAL:
         await state.clear()
         await message.answer(
-            "🔒 *This tool is for Premium users only.*\n\n"
-            "You're about to unlock a deeper level of insight into your:\n"
-            "❤️ Love path • 💰 Money energy • 🔮 Soul purpose\n\n"
-            "✨ Premium Tools include:\n"
-            "• Passion Number\n"
-            "• Compatibility & Love Vibes\n"
-            "• Karmic Debt • Personal Year • Angel Numbers\n\n"
-            "💎 *Pricing:*\n"
-            "• $7/week\n"
-            "• $17/month\n"
-            "• $79 lifetime (best value!)\n\n"
+            "🔒 *This is a Premium tool.*\n\n"
+            "You've already used your 1 free premium tool trial. 💫\n\n"
+            "To unlock all tools:\n"
+            "💎 *$7/week* • *$17/month* • *$79 lifetime*\n\n"
             "👉 [Click here to upgrade](https://your-payment-link.com)\n"
-            "Or tap *💎 Upgrade Now* in the menu below.",
+            "Or tap *💎 Upgrade Now* below.",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
-            reply_markup=main_menu
+            reply_markup=premium_menu
         )
         return
 
-    # ✅ PREMIUM USER — proceed to requested tool
+    else:
+        USED_TRIAL.add(user_id)
+        await message.answer(
+            "🎁 *You've unlocked a Premium tool for free!*\n\n"
+            "Enjoy your reading — the next one will require an upgrade. 💎",
+            parse_mode=ParseMode.MARKDOWN
+        )
+
     choice = message.text.strip()
     await state.clear()
 
     if choice == "🧩 Passion Number":
-        await message.answer(passion_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(passion_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(PassionNumberStates.waiting_for_full_name)
 
     elif choice == "🕳 Karmic Debt":
-        await message.answer(karmic_debt_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(karmic_debt_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(KarmicDebtStates.waiting_for_birthdate)
 
     elif choice == "💑 Compatibility":
-        await message.answer(compatibility_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(compatibility_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(CompatibilityStates.waiting_for_two_names)
 
     elif choice == "❤️ Love Vibes":
-        await message.answer(love_vibes_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(love_vibes_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(LoveVibesStates.waiting_for_full_name)
 
     elif choice == "🌌 Personal Year Forecast":
-        await message.answer(personal_year_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(personal_year_intro, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(PersonalYearStates.waiting_for_birthdate)
 
     elif choice == "🌕 Moon Energy Today":
         from tools.premium_moon_energy import get_moon_energy_forecast
         result = get_moon_energy_forecast()
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
 
     elif choice == "🗓 Daily Universal Vibe":
         from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
         result = get_daily_universal_vibe_forecast()
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
 
     elif choice == "🪬 Angel Number Decoder":
-        await message.answer(angel_number_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(angel_number_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(AngelNumberStates.waiting_for_number)
 
     elif choice == "🌀 Name Vibration":
-        await message.answer(name_vibration_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(name_vibration_intro_premium, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.set_state(NameVibrationStates.waiting_for_full_name)
-
 
 
 # --- Register this router ---
