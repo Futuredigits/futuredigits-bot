@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 from states import SoulUrgeStates
 from descriptions import soul_urge_intro
 from tools.soul_urge import calculate_soul_urge_number, get_soul_urge_result
-from handlers.common import main_menu
+from handlers.common import get_main_menu
+
 
 router = Router(name="soul_urge")
 
@@ -21,7 +22,7 @@ async def handle_name_for_soul_urge(message: Message, state: FSMContext):
         print(f"[DEBUG] Soul Urge number: {number}")  # Debug log
         
         result = get_soul_urge_result(number)
-        await message.answer(result, reply_markup=main_menu)
+        await message.answer(result, reply_markup=get_main_menu(user_id))
         await state.clear()
     
     except Exception as e:

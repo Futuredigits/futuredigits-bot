@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter
 
 from states import NameVibrationStates
 from tools.premium_name_vibration import get_name_vibration_meaning
-from handlers.common import main_menu
+from handlers.common import get_main_menu
 
 router = Router(name="premium_name_vibration")
 
@@ -15,7 +15,7 @@ async def handle_name_vibration(message: Message, state: FSMContext):
     try:
         full_name = message.text.strip()
         result = get_name_vibration_meaning(full_name)
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=get_main_menu(user_id))
         await state.clear()
     except Exception:
         await message.answer(
