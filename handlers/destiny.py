@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 from states import DestinyStates
 from descriptions import destiny_intro
 from tools.destiny import calculate_destiny_number, get_destiny_result
-from handlers.common import main_menu
+from handlers.common import build_main_menu
+from localization import _, get_locale
 import datetime
 
 router = Router(name="destiny")

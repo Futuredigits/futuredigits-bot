@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 
 from states import PassionNumberStates
 from tools.premium_passion import calculate_passion_number, get_passion_number_result
-from handlers.common import main_menu
+from handlers.common import build_main_menu
+from localization import _, get_locale
 
 router = Router(name="premium_passion")
 

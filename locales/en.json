@@ -5,6 +5,15 @@
     "start_message": "👋 *Welcome to Futuredigits!*\n\nWe transform your birth date and name into deep numerological insights — calculated instantly.\n\nDiscover your *Life Path*, *Soul Urge*, *Personality*, *Destiny* and more. Each tool gives you personalized meaning and clarity. 🌟\n\nTap below to begin your numerology journey 🔮",
     "menu_main_placeholder": "Choose a numerology tool...",
     "menu_premium_placeholder": "Select a premium tool...",
+    "help_text": "🛠 *How to Use Futuredigits*\n\nChoose any numerology tool from the menu. You’ll be asked for your birth date or name.\n\nEach result is generated instantly with deep, professional insight. Want more? Unlock *Premium Tools* for expanded guidance. 💎",
+    "premium_intro": "💎 *Welcome to Futuredigits Premium*\n\nUnlock advanced tools and deeper guidance:\n• Passion Number • Compatibility • Love Vibes • Karmic Debt • Personal Year • Name Vibration, and more.\n\n✨ *Benefits:*\nDeeper forecasts, timing windows, emotional insights, karmic patterns.\n\n🔓 *Pricing:*\n$7/week • $17/month • $79 lifetime (best value)\n\n👉 [Tap here to upgrade](https://your-payment-link.com)",
+    "premium_menu_intro": "💎 *Premium Tools Menu*\n\nThese readings reveal hidden patterns of love, destiny, and purpose. You also get *one Premium tool for free* as a trial.\n\nChoose a tool below to begin. ✨",
+    "back_to_main_text": "🏠 *Back to Main Menu*\n\nChoose a numerology tool below to get started:",
+    "premium_locked": "🔒 *This is a Premium tool.*\n\nYou’ve already used your 1 free Premium trial.\n\nTo unlock all tools:\n💎 *$7/week* • *$17/month* • *$79 lifetime*\n\n👉 [Upgrade here](https://your-payment-link.com) or tap *💎 Upgrade Now*.",
+    "premium_trial_granted": "🎁 *You’ve unlocked a Premium tool for free!*\nEnjoy your reading — the next one will require an upgrade. 💎",
+    "error_invalid_date": "❗ *Invalid date format.* Please use `DD.MM.YYYY`",
+    "error_invalid_name": "❗ *Invalid name.* Please enter your full name using letters only.",
+    "error_two_names": "❗ *Please enter two full names separated by a comma.*\nExample: `Emma Grace, John Carter`",
     "btn_life_path": "🔢 Life Path",
     "btn_soul_urge": "💖 Soul Urge",
     "btn_personality": "🎭 Personality",
@@ -54,4 +63,8 @@
         "22": "🏛 *Life Path 22 – The Master Builder*\n\nYou came here to manifest dreams into reality. With the soul of a visionary and the mind of a master architect, you’re capable of building something that transforms the world. 🌐\n\nChannel your power with discipline — and the impossible becomes real.",
         "33": "🌟 *Life Path 33 – The Master Teacher*\n\nYou are here to be a light in the dark. Compassionate, selfless, and wise beyond your years, your mission is to heal, teach, and uplift others. ✨\n\nThis path requires deep surrender and unconditional love. The world needs your soul."
     }
+}
+
+{
+  "error_invalid_date": "❗ *Invalid date format.*\nPlease enter like this: `04.07.1992`"
 }

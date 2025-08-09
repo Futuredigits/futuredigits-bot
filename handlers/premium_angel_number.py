@@ -6,7 +6,9 @@ from aiogram.filters import StateFilter
 
 from states import AngelNumberStates
 from tools.premium_angel_number import get_angel_number_meaning
-from handlers.common import premium_menu
+from handlers.common import build_premium_menu
+from localization import _, get_locale
+
 
 router = Router(name="premium_angel_number")
 

@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 
 from states import LoveVibesStates
 from tools.premium_love_vibes import calculate_love_vibes, get_love_vibes_result
-from handlers.common import premium_menu
+from handlers.common import build_premium_menu
+from localization import _, get_locale
 
 router = Router(name="premium_love_vibes")
 

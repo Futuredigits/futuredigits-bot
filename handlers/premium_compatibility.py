@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 
 from states import CompatibilityStates
 from tools.premium_compatibility import calculate_compatibility_score, get_compatibility_result
-from handlers.common import premium_menu
+from handlers.common import build_premium_menu
+from localization import _, get_locale
 
 router = Router(name="premium_compatibility")
 

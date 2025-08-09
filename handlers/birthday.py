@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 from states import BirthdayStates
 from descriptions import birthday_intro
 from tools.birthday import calculate_birthday_number, get_birthday_result
-from handlers.common import main_menu
+from handlers.common import build_main_menu
+from localization import _, get_locale
 
 router = Router(name="birthday")
 

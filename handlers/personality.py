@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 from states import PersonalityStates
 from descriptions import personality_intro
 from tools.personality import calculate_personality_number, get_personality_result
-from handlers.common import main_menu
+from handlers.common import build_main_menu
+from localization import _, get_locale
 
 router = Router(name="personality")
 

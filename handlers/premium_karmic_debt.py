@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 
 from states import KarmicDebtStates
 from tools.premium_karmic_debt import calculate_karmic_debt_numbers, get_karmic_debt_result
-from handlers.common import premium_menu
+from handlers.common import build_premium_menu
+from localization import _, get_locale
 
 
 router = Router(name="premium_karmic_debt")

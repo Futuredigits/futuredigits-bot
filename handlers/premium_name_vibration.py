@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 
 from states import NameVibrationStates
 from tools.premium_name_vibration import get_name_vibration_meaning
-from handlers.common import premium_menu
+from handlers.common import build_premium_menu
+from localization import _, get_locale
 
 router = Router(name="premium_name_vibration")
 

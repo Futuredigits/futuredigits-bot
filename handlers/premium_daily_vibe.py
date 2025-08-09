@@ -3,7 +3,8 @@ from aiogram.types import Message
 from aiogram.enums import ParseMode
 
 from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
-from handlers.common import premium_menu
+from handlers.common import build_premium_menu
+from localization import _, get_locale
 
 
 router = Router(name="premium_daily_vibe")

@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 from states import SoulUrgeStates
 from descriptions import soul_urge_intro
 from tools.soul_urge import calculate_soul_urge_number, get_soul_urge_result
-from handlers.common import main_menu
+from handlers.common import build_main_menu
+from localization import _, get_locale
 
 
 router = Router(name="soul_urge")

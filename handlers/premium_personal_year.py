@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 
 from states import PersonalYearStates
 from tools.premium_personal_year import get_personal_year_forecast
-from handlers.common import premium_menu
+from handlers.common import build_premium_menu
+from localization import _, get_locale
 
 router = Router(name="premium_personal_year")
 

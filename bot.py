@@ -9,6 +9,8 @@ from aiogram.types import Update
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 import asyncio
+from localization import load_locales
+load_locales()
 
 
 load_dotenv()

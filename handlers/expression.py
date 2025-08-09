@@ -6,7 +6,8 @@ from aiogram.filters import StateFilter
 from states import ExpressionStates
 from descriptions import expression_intro
 from tools.expression import calculate_expression_number, get_expression_result
-from handlers.common import main_menu
+from handlers.common import build_main_menu
+from localization import _, get_locale
 
 router = Router(name="expression")
 
