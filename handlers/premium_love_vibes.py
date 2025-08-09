@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter
 
 from states import LoveVibesStates
 from tools.premium_love_vibes import calculate_love_vibes, get_love_vibes_result
-from handlers.common import main_menu
+from handlers.common import premium_menu
 
 router = Router(name="premium_love_vibes")
 
@@ -16,7 +16,7 @@ async def handle_love_vibes(message: Message, state: FSMContext):
         full_name = message.text.strip()
         score, vibe_number = calculate_love_vibes(full_name)
         result = get_love_vibes_result(full_name, score, vibe_number)
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.clear()
 
     except Exception:

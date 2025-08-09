@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter
 
 from states import PersonalYearStates
 from tools.premium_personal_year import get_personal_year_forecast
-from handlers.common import main_menu
+from handlers.common import premium_menu
 
 router = Router(name="premium_personal_year")
 
@@ -15,7 +15,7 @@ async def handle_personal_year(message: Message, state: FSMContext):
     try:
         birthdate = message.text.strip()
         result = get_personal_year_forecast(birthdate)
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
         await state.clear()
     except Exception:
         await message.answer(
