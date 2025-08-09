@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter
 from states import DestinyStates
 from descriptions import destiny_intro
 from tools.destiny import calculate_destiny_number, get_destiny_result
-from handlers.common import get_main_menu
+from handlers.common import main_menu
 import datetime
 
 router = Router(name="destiny")
@@ -27,7 +27,7 @@ async def handle_destiny(message: Message, state: FSMContext):
         number = calculate_destiny_number(name, date_str)
         result = get_destiny_result(number)
 
-        await message.answer(result, reply_markup=get_main_menu(user_id))
+        await message.answer(result, reply_markup=main_menu)
         await state.clear()
 
     except Exception:

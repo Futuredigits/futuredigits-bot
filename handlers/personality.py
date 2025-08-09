@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter
 from states import PersonalityStates
 from descriptions import personality_intro
 from tools.personality import calculate_personality_number, get_personality_result
-from handlers.common import get_main_menu
+from handlers.common import main_menu
 
 router = Router(name="personality")
 
@@ -17,7 +17,7 @@ async def handle_name_for_personality(message: Message, state: FSMContext):
         name = message.text.strip()
         number = calculate_personality_number(name)
         result = get_personality_result(number)
-        await message.answer(result, reply_markup=get_main_menu(user_id))
+        await message.answer(result, reply_markup=main_menu)
         await state.clear()
     except Exception:
         await message.answer(

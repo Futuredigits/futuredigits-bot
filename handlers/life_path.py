@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter  # ✅ Aiogram 3.x correct import
 
 from states import LifePathStates
 from tools.life_path import calculate_life_path_number, get_life_path_result
-from handlers.common import get_main_menu
+from handlers.common import main_menu
 
 
 router = Router(name="life_path")
@@ -19,7 +19,7 @@ async def handle_birthdate_life_path(message: Message, state: FSMContext):
         date_str = message.text.strip()
         number = calculate_life_path_number(date_str)
         result = get_life_path_result(number, user_id)  # 👈 pass user_id
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=get_main_menu(user_id))
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
         await state.clear()
 
     except Exception:

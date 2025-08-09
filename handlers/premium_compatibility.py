@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter
 
 from states import CompatibilityStates
 from tools.premium_compatibility import calculate_compatibility_score, get_compatibility_result
-from handlers.common import get_main_menu
+from handlers.common import main_menu
 
 router = Router(name="premium_compatibility")
 
@@ -25,7 +25,7 @@ async def handle_compatibility(message: Message, state: FSMContext):
         score = calculate_compatibility_score(name1, name2)
         result = get_compatibility_result(score, name1, name2)
 
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=get_main_menu(user_id))
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=main_menu)
         await state.clear()
 
     except Exception:
