@@ -48,6 +48,7 @@
     "intro_angel_number": "🪬 *Angel Number Decoder – Messages from the Divine*\n\nWhen you repeatedly see specific numbers like 111, 222, or 1234, it’s not coincidence—it’s guidance from the universe. These *Angel Numbers* carry messages meant to align you with your higher path. ✨\n\nThis tool reveals the spiritual meaning of the number sequences you’ve been noticing, decoding what your guides want you to know right now.\n\nWhether it’s reassurance, a call to action, or a sign of transformation, you’ll gain clarity and comfort from the message.\n\n✍️ *Please enter the number sequence you’ve been seeing, e.g. `111`, `4444`, or `123`.*",
     "intro_name_vibration": "🌀 *Name Vibration Analyzer – The Energy of Names*\n\nEvery name carries a unique numerological vibration that shapes identity, personality, and destiny. Whether it’s your own name, a brand, or a business, this tool reveals the hidden energy it radiates. 🔮\n\nUnderstanding a name’s vibration helps you see how it influences perception, success, relationships, and spiritual alignment.\n\nCurious about a potential name change or the energy of your company? This reading unveils its deeper meaning.\n\n✍️ *Please enter the name you wish to analyze.*",
     "cta_try_more": "🔓 *Want deeper insight? Try Expression or Destiny in Premium Tools!*",
+    "error_invalid_date": "❗ *Invalid date format.*\nPlease enter like this: `04.07.1992`",
     "result_life_path": 
 {
         "1": "✨ *Life Path 1 – The Leader*\n\nYou were born with drive, ambition, and the desire to stand out. You are independent, courageous, and destined to forge your own path. People naturally look to you for guidance, and you're here to inspire confidence through bold action. 🔥\n\nStay grounded, and your leadership will leave a lasting legacy.",
@@ -65,6 +66,3 @@
     }
 }
 
-{
-  "error_invalid_date": "❗ *Invalid date format.*\nPlease enter like this: `04.07.1992`"
-}
