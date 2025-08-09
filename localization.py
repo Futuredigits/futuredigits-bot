@@ -1,44 +1,46 @@
-import os
-import json
 from typing import Dict, Any
+import os, json
 
 DEFAULT_LOCALE = "en"
 
-TRANSLATIONS: Dict[str, Dict[str, Any]] = {"en": {}, "ru": {}}
+TRANSLATIONS: Dict[str, Dict[str, str]] = {
+    "en": {},
+    "ru": {},
+}
+
 _user_locale: Dict[int, str] = {}
 
-def _load_translations() -> None:
-    base_dir = os.path.dirname(__file__)
-    locales_dir = os.path.join(base_dir, "locales")
-    for loc in ("en", "ru"):
-        path = os.path.join(locales_dir, f"{loc}.json")
-        try:
+def load_locales() -> None:
+    """Load locales/en.json and locales/ru.json into TRANSLATIONS."""
+    base = os.path.join(os.path.dirname(__file__), "locales")
+    for code in ("en", "ru"):
+        path = os.path.join(base, f"{code}.json")
+        if os.path.exists(path):
             with open(path, "r", encoding="utf-8") as f:
-                TRANSLATIONS[loc] = json.load(f)
-        except Exception:
-            
-            TRANSLATIONS[loc] = TRANSLATIONS.get(loc, {})
-
-
-_load_translations()
+                try:
+                    TRANSLATIONS[code] = json.load(f)
+                except Exception:
+                    
+                    TRANSLATIONS[code] = TRANSLATIONS.get(code, {}) or {}
 
 def set_locale(user_id: int, locale: str) -> None:
-    if locale not in TRANSLATIONS:
-        locale = DEFAULT_LOCALE
     _user_locale[user_id] = locale
 
 def get_locale(user_id: int) -> str:
     return _user_locale.get(user_id, DEFAULT_LOCALE)
 
-def get_text(key: str, locale: str | None = None, **kwargs: Any) -> Any:
-    """Return localized value (string or complex type) with EN fallback."""
+def get_text(key: str, locale: str = None, **kwargs: Any) -> str:
     loc = locale or DEFAULT_LOCALE
-    raw = (
-        TRANSLATIONS.get(loc, {}).get(key)
-        or TRANSLATIONS.get(DEFAULT_LOCALE, {}).get(key)
+    text = TRANSLATIONS.get(loc, {}).get(key) \
+        or TRANSLATIONS.get(DEFAULT_LOCALE, {}).get(key) \
         or key
-    )
-    if isinstance(raw, str):
-        return raw.format(**kwargs) if kwargs else raw
-    # For dicts/lists/etc — return as-is
-    return raw
+    return text.format(**kwargs) if kwargs else text
+
+
+_ = get_text
+
+
+__all__ = ["_", "get_text", "get_locale", "set_locale", "TRANSLATIONS", "DEFAULT_LOCALE", "load_locales"]
+
+
+load_locales()
