@@ -321,7 +321,11 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
         await state.set_state(NameVibrationStates.waiting_for_full_name)
 
 
-# --- Register this router ---
+def get_main_menu():
+    return main_menu
+
+
+
 def register_common_handlers(dp):
     if router not in dp.sub_routers:
         dp.include_router(router)
