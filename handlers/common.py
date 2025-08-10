@@ -140,7 +140,7 @@ async def start_handler(message: Message, state: FSMContext):
             InlineKeyboardButton(text="Русский 🇷🇺", callback_data="lang_ru"),
         ]]
     )
-    await message.answer(_("choose_language"), reply_markup=kb)
+    await message.answer(_("choose_language"), reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
 
 @router.callback_query(F.data == "lang_en")
 async def set_lang_en(callback: CallbackQuery):
