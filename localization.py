@@ -1,4 +1,3 @@
-# localization.py
 import json, os
 from typing import Dict, Any
 
