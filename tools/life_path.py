@@ -1,26 +1,21 @@
-def calculate_life_path_number(date_str: str) -> int:
-    try:
-        day, month, year = map(int, date_str.split('.'))
-    except ValueError:
-        raise ValueError("Invalid date format. Use DD.MM.YYYY.")
-    
-    digits = [int(d) for d in f"{day:02d}{month:02d}{year}"]
-    total = sum(digits)
+from localization import TRANSLATIONS, get_locale, _
 
-    def reduce_to_life_path(n):
-        if n in {11, 22, 33}:
-            return n
-        while n > 9:
-            n = sum(int(d) for d in str(n))
-        return n
+def get_life_path_result(num: int, user_id: int) -> str:
+    loc = get_locale(user_id) or "en"
 
-    return reduce_to_life_path(total)
+    # Pull localized result map (fallback to EN only if RU missing the map)
+    result_map = TRANSLATIONS.get(loc, {}).get("result_life_path") \
+                 or TRANSLATIONS["en"]["result_life_path"]
 
+    # Keys in JSON are strings
+    key = str(num)
+    text = result_map.get(key)
+    if not text:
+        # last‑ditch fallback to EN for this specific number
+        text = TRANSLATIONS["en"]["result_life_path"].get(key, "…")
 
-from localization import get_text
+    # Single, localized CTA (keep CTA OUT of the JSON result body)
+    cta = _("cta_try_more", locale=loc)
 
-def get_life_path_result(number: int, user_id: int) -> str:
-    result = get_text("result_life_path", user_id).get(str(number), "⚠️ Life Path result not found.")
-    cta = get_text("cta_try_more", user_id)
-    return f"{result}\n\n{cta}"
+    return f"{text}\n\n{cta}"
 
