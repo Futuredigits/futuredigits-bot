@@ -111,6 +111,14 @@ def build_premium_menu(locale: str) -> ReplyKeyboardMarkup:
         input_field_placeholder=label(locale, "menu_premium_placeholder"),
     )
 
+def build_lang_picker() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[[
+            InlineKeyboardButton(text="English 🇬🇧", callback_data="lang_en"),
+            InlineKeyboardButton(text="Русский 🇷🇺", callback_data="lang_ru"),
+        ]]
+    )
+
 # For routing: accept EN or RU captions
 def all_captions_for(key: str) -> set[str]:
     return {
@@ -180,21 +188,23 @@ async def help_handler(message: Message, state: FSMContext):
 async def about_handler(message: Message, state: FSMContext):
     await state.clear()
     loc = get_locale(message.from_user.id)
-    await message.answer(_("about_text", locale=loc), parse_mode=ParseMode.MARKDOWN)
+    await message.answer(
+        _("about_text", locale=loc),
+        parse_mode=ParseMode.MARKDOWN,
+        disable_web_page_preview=True,
+    )
+
 
 # --- /language
 @router.message(Command("language"), StateFilter("*"))
 async def language_handler(message: Message, state: FSMContext):
     await state.clear()
     loc = get_locale(message.from_user.id)
-    kb = InlineKeyboardMarkup(
-        inline_keyboard=[[  # same picker as /start
-            InlineKeyboardButton(text="English 🇬🇧", callback_data="lang_en"),
-            InlineKeyboardButton(text="Русский 🇷🇺", callback_data="lang_ru"),
-        ]]
+    await message.answer(
+        _("language_prompt", locale=loc),
+        reply_markup=build_lang_picker(),
+        parse_mode=ParseMode.MARKDOWN,
     )
-    # feel free to reuse "choose_language"; or keep a separate prompt key
-    await message.answer(_("language_prompt", locale=loc), reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
 
 
 # --- /premium CTA 
