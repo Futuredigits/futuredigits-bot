@@ -13,19 +13,13 @@ router = Router(name="birthday")
 
 @router.message(StateFilter(BirthdayStates.waiting_for_birthdate))
 async def handle_birthday(message: Message, state: FSMContext):
-    loc = get_locale(message.from_user.id)
     try:
+        loc = get_locale(message.from_user.id)
         date_str = message.text.strip()
         number = calculate_birthday_number(date_str)
-        result = get_birthday_result(number)
-        await message.answer(
-            result,
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=build_main_menu(loc)
-        )
+        result = get_birthday_result(number, user_id=message.from_user.id)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
         await state.clear()
     except Exception:
-        await message.answer(
-            _("err_invalid_date", locale=loc, example="04.07.1992"),
-            parse_mode=ParseMode.MARKDOWN
-        )
+        await message.answer(_("error_birthdate", locale=get_locale(message.from_user.id)), parse_mode=ParseMode.MARKDOWN)
+
