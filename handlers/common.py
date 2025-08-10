@@ -175,6 +175,28 @@ async def help_handler(message: Message, state: FSMContext):
     loc = get_locale(message.from_user.id)
     await message.answer(_("help_text", locale=loc), parse_mode=ParseMode.MARKDOWN)
 
+# --- /about
+@router.message(Command("about"), StateFilter("*"))
+async def about_handler(message: Message, state: FSMContext):
+    await state.clear()
+    loc = get_locale(message.from_user.id)
+    await message.answer(_("about_text", locale=loc), parse_mode=ParseMode.MARKDOWN)
+
+# --- /language
+@router.message(Command("language"), StateFilter("*"))
+async def language_handler(message: Message, state: FSMContext):
+    await state.clear()
+    loc = get_locale(message.from_user.id)
+    kb = InlineKeyboardMarkup(
+        inline_keyboard=[[  # same picker as /start
+            InlineKeyboardButton(text="English 🇬🇧", callback_data="lang_en"),
+            InlineKeyboardButton(text="Русский 🇷🇺", callback_data="lang_ru"),
+        ]]
+    )
+    # feel free to reuse "choose_language"; or keep a separate prompt key
+    await message.answer(_("language_prompt", locale=loc), reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
+
+
 # --- /premium CTA 
 @router.message(Command("premium"), StateFilter("*"))
 async def premium_handler(message: Message, state: FSMContext):
