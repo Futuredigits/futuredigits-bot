@@ -1,37 +1,108 @@
-def calculate_soul_urge_number(full_name: str) -> int:
-    vowels = "AEIOUY"
-    letter_values = {
-        'A':1, 'E':5, 'I':9, 'O':6, 'U':3, 'Y':7
-    }
-    name = full_name.upper()
-    total = sum(letter_values[char] for char in name if char in vowels)
+import re
+from localization import get_locale, TRANSLATIONS
 
-    def reduce(n):
+# Pythagorean mapping for A–Z
+PYTHAG_MAP = {
+    **{c: n for c, n in zip("AJS", [1,1,1])},
+    **{c: n for c, n in zip("BKT", [2,2,2])},
+    **{c: n for c, n in zip("CLU", [3,3,3])},
+    **{c: n for c, n in zip("DMV", [4,4,4])},
+    **{c: n for c, n in zip("ENW", [5,5,5])},
+    **{c: n for c, n in zip("FOX", [6,6,6])},
+    **{c: n for c, n in zip("GPY", [7,7,7])},
+    **{c: n for c, n in zip("HQZ", [8,8,8])},
+    **{c: n for c, n in zip("IR",  [9,9])},
+}
+
+# Vowels in EN and RU (for Soul Urge)
+VOWELS_EN = set("AEIOUY")
+VOWELS_RU = set("АЕЁИОУЫЭЮЯ")
+
+# Minimal transliteration RU->EN for numerology mapping
+RU_TO_LAT = {
+    "А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"I",
+    "К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F",
+    "Х":"H","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+}
+
+def _normalize_name(name: str) -> str:
+    # Keep letters + spaces/hyphens for validation; remove digits/symbols
+    name = re.sub(r"[^A-Za-zА-Яа-яЁё \-]", "", name)
+    name = re.sub(r"\s+", " ", name).strip()
+    return name
+
+def _to_latin_for_mapping(name: str, locale: str) -> str:
+    if locale == "ru":
+        out = []
+        for ch in name.upper():
+            if ch == " " or ch == "-":
+                out.append(ch)
+            else:
+                out.append(RU_TO_LAT.get(ch, ch))
+        return "".join(out)
+    return name.upper()
+
+def _sum_vowel_values(name_lat_upper: str, locale: str) -> int:
+    if locale == "ru":
+        # For vowel detection we need to check original RU characters
+        # So we’ll separately build a RU-uppercase version
+        pass
+    return sum(PYTHAG_MAP.get(ch, 0) for ch in name_lat_upper if ch in VOWELS_EN)
+
+def calculate_soul_urge_number(full_name: str, locale: str = "en") -> int:
+    """
+    Soul Urge (Heart's Desire): sum values of VOWELS only.
+    Supports EN directly and RU via transliteration for values,
+    while checking vowels by locale.
+    """
+    if not full_name or len(full_name) < 2:
+        raise ValueError("Invalid name")
+
+    locale = (locale or "en").lower()
+    clean = _normalize_name(full_name)
+    if not clean or re.fullmatch(r"[ \-]+", clean):
+        raise ValueError("Invalid name")
+
+    # Prepare two parallel forms:
+    ru_upper = clean.upper()
+    lat_upper = _to_latin_for_mapping(clean, locale)
+
+    total = 0
+    for i, ch in enumerate(ru_upper):
+        # pick matching latin chunk length 1 (simple mapping already expanded in RU_TO_LAT)
+        lat_ch = lat_upper[i] if i < len(lat_upper) else ""
+        if locale == "ru":
+            if ch in VOWELS_RU:
+                # map value via Latin char (use first char of translit chunk)
+                # If translit produced multiple chars (e.g., "YA"), take first letter’s value
+                letter_for_value = lat_upper[i]
+                total += PYTHAG_MAP.get(letter_for_value, 0)
+        else:
+            if ch in VOWELS_EN:
+                total += PYTHAG_MAP.get(ch, 0)
+
+    # master numbers 11, 22 are allowed; otherwise reduce to a single digit
+    def reduce_num(n: int) -> int:
         if n in {11, 22, 33}:
             return n
         while n > 9:
             n = sum(int(d) for d in str(n))
         return n
 
-    return reduce(total)
+    value = reduce_num(total)
+    if value == 0:
+        # If no vowels were found (rare edge case), fall back to reducing full name vowels as Y-only rule:
+        raise ValueError("Invalid name")
+    return value
 
-
-def get_soul_urge_result(number: int) -> str:
-    results = {
-        1: "🔥 *Soul Urge 1 – Independent Spirit*\n\nDeep within, you crave to lead, achieve, and forge your own path. You’re driven by inner strength, personal freedom, and a desire to stand out. Your soul shines when you're taking initiative and turning ideas into action. 💪\n\nStay bold — you were born to be original.",
-        2: "💗 *Soul Urge 2 – Peaceful Heart*\n\nAt your core, you long for harmony, connection, and emotional closeness. Your soul seeks balance in relationships and deep mutual understanding. Gentle, supportive, and intuitive — you’re the heart behind every peaceful solution. 🌸\n\nLet your kindness lead.",
-        3: "🎨 *Soul Urge 3 – Expressive Dreamer*\n\nYour inner world is filled with color, emotion, and imagination. You feel most alive when expressing joy through words, art, or movement. The desire to inspire and uplift others is part of your soul’s design. 🌈\n\nSpeak your truth — your light is contagious.",
-        4: "🏛 *Soul Urge 4 – Steady Builder*\n\nYour soul longs for structure, loyalty, and purposeful progress. Deep within, you desire to create something lasting — whether it's a home, a legacy, or a life built on truth and discipline. You thrive on responsibility and order. 🧱\n\nStay grounded — you bring strength to every space.",
-        5: "🌍 *Soul Urge 5 – Freedom Seeker*\n\nRestless and curious, your soul craves movement, excitement, and change. You are deeply motivated by personal freedom, new experiences, and living life without constraints. ✈️\n\nWhen you follow your own rhythm, you light up the world.",
-        6: "💞 *Soul Urge 6 – Compassionate Caregiver*\n\nYour deepest desire is to love, serve, and protect. Family, beauty, and harmony are sacred to you. You’re fulfilled when nurturing others and creating safe, loving spaces. 🌿\n\nYour soul is love in action — let it flow freely.",
-        7: "🔮 *Soul Urge 7 – Truth Seeker*\n\nYou feel called to uncover life’s mysteries. Your soul yearns for inner peace, solitude, and the deeper meaning behind everything. Thoughtful, spiritual, and introspective — you thrive when exploring the unseen. 🌌\n\nTrust your inner voice — it holds your answers.",
-        8: "💼 *Soul Urge 8 – Ambitious Heart*\n\nPower, achievement, and impact fuel your inner drive. Your soul craves mastery, influence, and the freedom that success brings. Business, leadership, and strategy come naturally to you. 💰\n\nEmbrace your ambition with purpose — it’s your gift.",
-        9: "🌈 *Soul Urge 9 – Healer of the Heart*\n\nYou are deeply compassionate, with a soul longing to uplift, heal, and inspire. You feel most fulfilled when helping others, expressing beauty, or standing for a cause. 🌍\n\nYour empathy is your superpower — lead with love.",
-        11: "⚡ *Soul Urge 11 – Sacred Messenger*\n\nYour soul is stirred by divine inspiration and higher purpose. You’re driven to awaken others through truth, art, or healing. Sensitivity is your strength — and spiritual connection is your core. 🌠\n\nYour light is meant to guide. ✨",
-        22: "🏗 *Soul Urge 22 – Master Visionary*\n\nYou dream of building something that truly matters. Your soul is called to create real-world change through discipline, vision, and service. When aligned, you become a powerful architect of destiny. 🌐\n\nBig purpose lives inside you.",
-        33: "🌟 *Soul Urge 33 – Heart of a Teacher*\n\nYour soul is here to love, uplift, and bring light to others. You’re drawn to healing, teaching, and selfless service. The more you surrender to compassion, the more powerful you become. ✨\n\nLead with love — it's your divine gift."
-    }
-
-
-    return results.get(number, "⚠️ An error occurred calculating your Soul Urge Number.") + "\n\n🔓 *Want deeper clarity? Try Personality or Expression in Premium Tools!*"
-
+def get_soul_urge_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
+    loc = locale or (get_locale(user_id) if user_id is not None else "en")
+    block = (TRANSLATIONS.get(loc, {}) or {}).get("result_soul_urge") or {}
+    text = block.get(str(number))
+    if not text:
+        en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_soul_urge") or {}
+        text = en_block.get(str(number), "✨ Your Soul Urge insight will appear here soon.")
+    cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+    if cta:
+        text += "\n\n" + cta
+    return text
