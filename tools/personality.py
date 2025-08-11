@@ -1,52 +1,93 @@
-def calculate_personality_number(name: str) -> int:
-    name = name.upper()
-    consonants = {
-        'B': 2, 'C': 3, 'D': 4, 'F': 6, 'G': 7, 'H': 8, 'J': 1, 'K': 2, 'L': 3,
-        'M': 4, 'N': 5, 'P': 7, 'Q': 8, 'R': 9, 'S': 1, 'T': 2, 'V': 4,
-        'W': 5, 'X': 6, 'Y': 7, 'Z': 8
-    }
+import re
+from localization import get_locale, TRANSLATIONS
 
-    total = sum(consonants.get(char, 0) for char in name if char in consonants)
-    
-    def reduce(n):
+PYTHAG_MAP = {
+    **{c: n for c, n in zip("AJS", [1,1,1])},
+    **{c: n for c, n in zip("BKT", [2,2,2])},
+    **{c: n for c, n in zip("CLU", [3,3,3])},
+    **{c: n for c, n in zip("DMV", [4,4,4])},
+    **{c: n for c, n in zip("ENW", [5,5,5])},
+    **{c: n for c, n in zip("FOX", [6,6,6])},
+    **{c: n for c, n in zip("GPY", [7,7,7])},
+    **{c: n for c, n in zip("HQZ", [8,8,8])},
+    **{c: n for c, n in zip("IR",  [9,9])},
+}
+
+VOWELS_EN = set("AEIOUY")
+VOWELS_RU = set("АЕЁИОУЫЭЮЯ")
+
+RU_TO_LAT = {
+    "А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"I",
+    "К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F",
+    "Х":"H","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+}
+
+def _normalize_name(name: str) -> str:
+    name = re.sub(r"[^A-Za-zА-Яа-яЁё \-]", "", name)
+    name = re.sub(r"\s+", " ", name).strip()
+    if not name or re.fullmatch(r"[ \-]+", name):
+        raise ValueError("Invalid name")
+    return name
+
+def _to_latin(name: str, locale: str) -> str:
+    if locale == "ru":
+        out = []
+        for ch in name.upper():
+            if ch in (" ", "-"):
+                out.append(ch)
+            else:
+                out.append(RU_TO_LAT.get(ch, ch))
+        return "".join(out)
+    return name.upper()
+
+def _is_vowel(ch_ru_upper: str, locale: str) -> bool:
+    return (ch_ru_upper in VOWELS_RU) if locale == "ru" else (ch_ru_upper in VOWELS_EN)
+
+def calculate_personality_number(full_name: str, locale: str = "en") -> int:
+    """
+    Personality number = sum of CONSONANTS' values (Pythagorean).
+    RU supported by vowel detection in RU and value mapping via transliteration.
+    """
+    locale = (locale or "en").lower()
+    clean = _normalize_name(full_name)
+    ru_upper = clean.upper()
+    lat_upper = _to_latin(clean, locale)
+
+    total = 0
+    # Walk through characters in parallel; for RU multi-letter translits, take the FIRST letter’s value
+    li = 0
+    for ch in ru_upper:
+        if ch in (" ", "-"):
+            li += 1
+            continue
+        # detect vowel in the RU/EN domain
+        if not _is_vowel(ch, locale):  # consonants only
+            # pick first Latin letter for value
+            lat_ch = lat_upper[li] if li < len(lat_upper) else ""
+            total += PYTHAG_MAP.get(lat_ch, 0)
+        # advance latin index at least by 1
+        li += 1
+
+    if total == 0:
+        raise ValueError("Invalid name")
+
+    def reduce_num(n: int) -> int:
         if n in {11, 22, 33}:
             return n
         while n > 9:
             n = sum(int(d) for d in str(n))
         return n
 
-    reduced = reduce(total)
-    print("✅ Reduced personality number:", reduced)  # ← Debug line
+    return reduce_num(total)
 
-    return reduced
-
-
-def get_personality_result(number: int) -> str:
-    results = {
-        1: "🔥 *Personality 1 – The Confident Leader*\n\nYou come across as bold, driven, and capable. People see you as someone who takes charge, stands tall, and leads with certainty. Your energy commands respect. 💪\n\nLead with integrity and others will follow.",
-        2: "🌸 *Personality 2 – The Gentle Peacemaker*\n\nYou appear warm, diplomatic, and soft-spoken. Others are drawn to your calm presence and your ability to make people feel safe and understood. 🤝\n\nYou’re the quiet strength behind every team.",
-        3: "🎭 *Personality 3 – The Charmer*\n\nYou radiate charm, playfulness, and creativity. People see you as expressive, fun, and emotionally engaging. You have a light that makes others smile. 🌈\n\nUse your presence to inspire joy.",
-        4: "🧱 *Personality 4 – The Reliable Rock*\n\nYou give off a grounded, stable, and dependable presence. People trust you. They see you as hardworking and responsible. Your energy is steady and strong. 🛠️\n\nYou bring order to chaos.",
-        5: "🌟 *Personality 5 – The Free Spirit*\n\nYou appear exciting, curious, and bold. People see you as dynamic and open to anything. You thrive on new experiences — and others feel your spark. ✈️\n\nStay wild, stay true.",
-        6: "💞 *Personality 6 – The Nurturer*\n\nYou’re seen as kind, responsible, and emotionally comforting. People feel protected and supported in your presence. Beauty, harmony, and service radiate from you. 🌿\n\nLead with love — it’s your superpower.",
-        7: "🧘 *Personality 7 – The Mysterious Thinker*\n\nYou come across as private, deep, and introspective. People may sense you’re intelligent or spiritual, but also distant. Your calm mystique draws curiosity. 🔮\n\nLet your wisdom speak softly.",
-        8: "💼 *Personality 8 – The Power Presence*\n\nYou project strength, authority, and ambition. Others often see you as confident and successful — someone who knows their value. 💰\n\nOwn your power with humility.",
-        9: "🌈 *Personality 9 – The Compassionate Soul*\n\nYou radiate empathy, warmth, and wisdom. People see you as generous, emotionally evolved, and connected to a bigger mission. 🌍\n\nYou make others feel seen and loved.",
-        11: "⚡ *Personality 11 – The Enlightened Presence*\n\nYou come across as inspiring, insightful, and spiritually elevated. Others may sense your inner light or intuitive strength, even if they can't explain it. 🌠\n\nYour presence uplifts by simply being.",
-        22: "🏛 *Personality 22 – The Master Builder Aura*\n\nYou carry the energy of leadership and long-term vision. People sense you’re capable of big things. You radiate trust, strength, and purpose. 🌐\n\nStand in your legacy.",
-        33: "🌟 *Personality 33 – The Radiant Healer*\n\nYou shine with compassion, wisdom, and spiritual beauty. People feel your loving presence, even from afar. You carry the vibration of peace. ✨\n\nYou are the light in dark places."
-    }
-
-    if number not in results:
-        return "⚠️ Personality Number could not be interpreted."
-
-    text = results.get(number, "⚠️ An error occurred while calculating your Personality Number.")
-    return text + "\n\n🔓 *Want deeper insight? Try Expression or Destiny in Premium Tools!*"
-
-
-
-
-
-
-
-
+def get_personality_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
+    loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
+    block = (TRANSLATIONS.get(loc, {}) or {}).get("result_personality") or {}
+    text = block.get(str(number))
+    if not text:
+        en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_personality") or {}
+        text = en_block.get(str(number), "🎭 Your Personality insight will appear here soon.")
+    cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+    if cta:
+        text += "\n\n" + cta
+    return text
