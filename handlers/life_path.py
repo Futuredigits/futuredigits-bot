@@ -17,14 +17,8 @@ async def handle_life_path(message: Message, state: FSMContext):
     try:
         date_str = message.text.strip()
         number = calculate_life_path_number(date_str)
-        # your get_life_path_result already uses user_id for locale-aware output
-        core = get_life_path_result(number, message.from_user.id)
-        cta = _("cta_try_more", locale=loc)
-        await message.answer(
-            f"{core}\n\n{cta}",
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=build_main_menu(loc),
-        )
+        result = get_life_path_result(number, user_id=message.from_user.id)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
         await state.clear()
     except Exception:
         await message.answer(_("error_invalid_date", locale=loc), parse_mode=ParseMode.MARKDOWN)
