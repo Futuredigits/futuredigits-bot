@@ -1,6 +1,7 @@
 import re
 from collections import Counter
 from localization import get_locale, TRANSLATIONS
+from handlers.common import is_premium_user
 
 PYTHAG_MAP = {
     **{c: n for c, n in zip("AJS", [1,1,1])},
@@ -65,7 +66,11 @@ def get_passion_number_result(number: int, user_id: int | None = None, locale: s
     if not text:
         en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_passion_number") or {}
         text = en_block.get(str(number), "🧩 Your Passion Number insight will appear here soon.")
-    cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
-    if cta:
-        text += "\n\n" + cta
+
+    # Show upsell only if NOT premium
+    if user_id is not None and not is_premium_user(user_id):
+        cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+        if cta:
+            text += "\n\n" + cta
+
     return text
