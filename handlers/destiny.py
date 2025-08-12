@@ -1,38 +1,24 @@
-from aiogram import F, Router
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
 from aiogram.filters import StateFilter
+
 from states import DestinyStates
-from descriptions import destiny_intro
-from tools.destiny import calculate_destiny_number, get_destiny_result
 from handlers.common import build_main_menu
 from localization import _, get_locale
-import datetime
+from tools.destiny import parse_name_and_birthdate, calculate_destiny_number, get_destiny_result
 
 router = Router(name="destiny")
 
-
 @router.message(StateFilter(DestinyStates.waiting_for_birthdate_and_name))
 async def handle_destiny(message: Message, state: FSMContext):
+    loc = get_locale(message.from_user.id)
     try:
-        raw = message.text.strip()
-        *name_parts, date_str = raw.split()
-
-        if not name_parts:
-            raise ValueError("Missing name.")
-
-        datetime.datetime.strptime(date_str, "%d.%m.%Y")
-
-        name = " ".join(name_parts)
-        number = calculate_destiny_number(name, date_str)
-        result = get_destiny_result(number)
-
-        await message.answer(result, reply_markup=main_menu)
+        full_name, date_str = parse_name_and_birthdate(message.text.strip())
+        number = calculate_destiny_number(full_name, date_str, locale=loc)
+        result = get_destiny_result(number, user_id=message.from_user.id)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
         await state.clear()
-
     except Exception:
-        await message.answer(
-            "❗ *Invalid format.* Please send your full name followed by your birthdate:\n`Emma Grace 21.08.1992`",
-            parse_mode=ParseMode.MARKDOWN
-        )
+        await message.answer(_("error_invalid_date", locale=loc), parse_mode=ParseMode.MARKDOWN)

@@ -1,45 +1,79 @@
-def calculate_expression_number(name: str) -> int:
-    name = name.upper()
-    letters = {
-        'A': 1, 'J': 1, 'S': 1,
-        'B': 2, 'K': 2, 'T': 2,
-        'C': 3, 'L': 3, 'U': 3,
-        'D': 4, 'M': 4, 'V': 4,
-        'E': 5, 'N': 5, 'W': 5,
-        'F': 6, 'O': 6, 'X': 6,
-        'G': 7, 'P': 7, 'Y': 7,
-        'H': 8, 'Q': 8, 'Z': 8,
-        'I': 9, 'R': 9
-    }
+import re
+from localization import get_locale, TRANSLATIONS
 
-    total = sum(letters.get(ch, 0) for ch in name if ch.isalpha())
+PYTHAG_MAP = {
+    **{c: n for c, n in zip("AJS", [1,1,1])},
+    **{c: n for c, n in zip("BKT", [2,2,2])},
+    **{c: n for c, n in zip("CLU", [3,3,3])},
+    **{c: n for c, n in zip("DMV", [4,4,4])},
+    **{c: n for c, n in zip("ENW", [5,5,5])},
+    **{c: n for c, n in zip("FOX", [6,6,6])},
+    **{c: n for c, n in zip("GPY", [7,7,7])},
+    **{c: n for c, n in zip("HQZ", [8,8,8])},
+    **{c: n for c, n in zip("IR",  [9,9])},
+}
 
-    def reduce(n):
-        if n in {11, 22, 33}:
-            return n
-        while n > 9:
-            n = sum(int(d) for d in str(n))
+VOWELS_RU = set("АЕЁИОУЫЭЮЯ")
+
+RU_TO_LAT = {
+    "А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"I",
+    "К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F",
+    "Х":"H","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+}
+
+def _normalize_name(name: str) -> str:
+    name = re.sub(r"[^A-Za-zА-Яа-яЁё \-]", "", name)
+    name = re.sub(r"\s+", " ", name).strip()
+    if not name or re.fullmatch(r"[ \-]+", name):
+        raise ValueError("Invalid name")
+    return name
+
+def _to_latin(name: str, locale: str) -> str:
+    if (locale or "en").lower() == "ru":
+        out = []
+        for ch in name.upper():
+            if ch in (" ", "-"):
+                out.append(ch)
+            else:
+                out.append(RU_TO_LAT.get(ch, ch))
+        return "".join(out)
+    return name.upper()
+
+def _reduce(n: int) -> int:
+    if n in {11, 22, 33}:
         return n
+    while n > 9:
+        n = sum(int(d) for d in str(n))
+    return n
 
-    return reduce(total)
+def calculate_expression_number(full_name: str, locale: str = "en") -> int:
+    """
+    Expression (aka Destiny) = sum of ALL letters' values (Pythagorean), reduce with master 11/22/33 kept.
+    RU supported by transliteration into Latin for value mapping.
+    """
+    loc = (locale or "en").lower()
+    clean = _normalize_name(full_name)
+    lat = _to_latin(clean, loc)
+    total = 0
+    # Count only Latin A–Z from translit; skip spaces/hyphens and multi-letter chunks naturally add multiple values
+    i = 0
+    while i < len(lat):
+        ch = lat[i]
+        if ch.isalpha():
+            total += PYTHAG_MAP.get(ch, 0)
+        i += 1
+    if total == 0:
+        raise ValueError("Invalid name")
+    return _reduce(total)
 
-
-def get_expression_result(number: int) -> str:
-    results = {
-        1: "🔥 *Expression 1 – The Trailblazer*\n\nYou were born to lead, initiate, and stand on your own. With natural confidence and originality, you have the strength to overcome obstacles and break new ground. You may resist authority — because you were born to be it. You thrive when taking bold action aligned with your vision.",
-        2: "🌸 *Expression 2 – The Peacemaker*\n\nYour soul speaks the language of sensitivity, grace, and collaboration. You’re not here to dominate — you’re here to unify. Your gifts lie in intuition, diplomacy, and creating emotional safety. People feel calmer around you. Harmony is your calling, and love is your true power.",
-        3: "🎭 *Expression 3 – The Creative Voice*\n\nYou’re blessed with expressive charm, humor, and a vivid imagination. Communication is your gift — whether through words, art, or performance. You’re here to uplift and inspire through joy. When you trust your unique voice, you become a beacon of light to others.",
-        4: "🏗 *Expression 4 – The Foundation Builder*\n\nYour talents lie in structure, practicality, and discipline. You are the one who turns dreams into tangible form. Others rely on your consistency and clear thinking. You thrive in systems, plans, and step-by-step growth. Your legacy is built through hard work and honesty.",
-        5: "✈️ *Expression 5 – The Adventurer*\n\nFreedom, variety, and exploration are embedded in your soul. You’re quick-thinking, adaptable, and born to experience life in its full spectrum. Routine is your prison — movement is your medicine. You express best when life is flowing and new stories are unfolding.",
-        6: "💞 *Expression 6 – The Compassionate Healer*\n\nYou are called to serve, protect, and create beauty. With a strong sense of responsibility and a loving heart, you attract others who need your care. You thrive in roles of service, family, healing, and artistry. Love, loyalty, and harmony are the essence of your gift.",
-        7: "🔮 *Expression 7 – The Inner Sage*\n\nYour nature is analytical, spiritual, and deeply intuitive. You are here to ask the big questions and search for higher truths. Often introspective and private, you find strength in solitude. Wisdom is your true expression — share it when ready.",
-        8: "💼 *Expression 8 – The Manifestor of Power*\n\nYou possess the inner drive, ambition, and strategic mind to achieve great things. Business, influence, and leadership are natural expressions of your purpose. Money is a tool, not a master. When you lead with integrity, success becomes service.",
-        9: "🌈 *Expression 9 – The Inspired Humanitarian*\n\nYou carry the soul of an artist, healer, and visionary. Compassion, beauty, and global consciousness flow through your energy. You’re here to serve and elevate humanity through wisdom, art, and emotional depth. Release the past — your heart is your compass.",
-        11: "⚡ *Expression 11 – The Spiritual Illuminator*\n\nYou are here to awaken others. Your gifts lie in insight, inspiration, and intuitive brilliance. You may walk a path of extremes — but you were born to rise above. When you embrace your light, you become a channel for divine truth.",
-        22: "🏛 *Expression 22 – The Master Architect*\n\nYou were born with extraordinary potential. Practical and visionary, you have the ability to create lasting systems that uplift others. This number carries both burden and blessing — but when you focus your energy, you can shape the world.",    
-        33: "🌟 *Expression 33 – The Divine Teacher*\n\nYours is the highest path of service and unconditional love. You are here to nurture, heal, and uplift through wisdom, compassion, and creativity. When you surrender ego and embrace selfless purpose, your presence becomes transformative."
-    }
-
-
-    text = results.get(number, "⚠️ An error occurred while calculating your Expression Number.")
-    return text + "\n\n🔓 *Want deeper insight? Try Expression or Destiny in Premium Tools!*"
+def get_expression_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
+    loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
+    block = (TRANSLATIONS.get(loc, {}) or {}).get("result_expression") or {}
+    text = block.get(str(number))
+    if not text:
+        en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_expression") or {}
+        text = en_block.get(str(number), "🎯 Your Expression insight will appear here soon.")
+    cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+    if cta:
+        text += "\n\n" + cta
+    return text
