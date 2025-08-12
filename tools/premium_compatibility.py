@@ -1,5 +1,36 @@
+import re
 from localization import get_locale, TRANSLATIONS
 from handlers.common import is_premium_user
+
+PYTHAG_MAP = {
+    **{c: n for c, n in zip("AJS", [1,1,1])},
+    **{c: n for c, n in zip("BKT", [2,2,2])},
+    **{c: n for c, n in zip("CLU", [3,3,3])},
+    **{c: n for c, n in zip("DMV", [4,4,4])},
+    **{c: n for c, n in zip("ENW", [5,5,5])},
+    **{c: n for c, n in zip("FOX", [6,6,6])},
+    **{c: n for c, n in zip("GPY", [7,7,7])},
+    **{c: n for c, n in zip("HQZ", [8,8,8])},
+    **{c: n for c, n in zip("IR",  [9,9])},
+}
+
+RU_TO_LAT = {
+    "А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"I",
+    "К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F",
+    "Х":"H","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+}
+
+def _normalize(s: str) -> str:
+    s = re.sub(r"[^A-Za-zА-Яа-яЁё \-]", "", s or "")
+    s = re.sub(r"\s+", " ", s).strip()
+    if not s:
+        raise ValueError("Invalid name")
+    return s
+
+def _to_latin(name: str, locale: str) -> str:
+    if (locale or "en").lower() == "ru":
+        return "".join(RU_TO_LAT.get(ch, ch) for ch in name.upper())
+    return name.upper()
 
 def _reduce(n: int) -> int:
     if n in {11, 22, 33}:
@@ -8,19 +39,23 @@ def _reduce(n: int) -> int:
         n = sum(int(d) for d in str(n))
     return n
 
-def _life_path(date_str: str) -> int:
-    day, month, year = [int(x) for x in date_str.split(".")]
-    total = sum(int(d) for d in f"{day:02d}{month:02d}{year}")
+def _name_number(full_name: str, locale: str) -> int:
+    clean = _normalize(full_name)
+    lat = _to_latin(clean, locale)
+    total = sum(PYTHAG_MAP.get(ch, 0) for ch in lat if ch.isalpha())
+    if total == 0:
+        raise ValueError("Invalid name")
     return _reduce(total)
 
-def calculate_compatibility(date1: str, date2: str) -> int:
+def calculate_compatibility(name1: str, name2: str, locale: str = "en") -> int:
     """
-    Compatibility = reduced sum of both Life Path Numbers (keeping master numbers).
+    Compatibility Number = reduced sum of both NAME numbers (Expression-style),
+    preserving master numbers 11/22/33.
     """
-    lp1 = _life_path(date1)
-    lp2 = _life_path(date2)
-    total = lp1 + lp2
-    return _reduce(total)
+    loc = (locale or "en").lower()
+    n1 = _name_number(name1, loc)
+    n2 = _name_number(name2, loc)
+    return _reduce(n1 + n2)
 
 def get_compatibility_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
     loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
@@ -30,7 +65,7 @@ def get_compatibility_result(number: int, user_id: int | None = None, locale: st
         en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_compatibility") or {}
         text = en_block.get(str(number), "❤️ Your compatibility reading will appear here soon.")
 
-    # CTA logic — upsell for non-premium, engagement for premium
+    # CTA logic: upsell for non‑premium, engagement for premium
     if user_id is not None:
         if not is_premium_user(user_id):
             cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
@@ -40,5 +75,4 @@ def get_compatibility_result(number: int, user_id: int | None = None, locale: st
             engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
             if engagement:
                 text += "\n\n" + engagement
-
     return text
