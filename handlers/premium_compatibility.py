@@ -21,8 +21,9 @@ async def handle_compatibility(message: Message, state: FSMContext):
         name1, name2 = [s.strip() for s in raw.split(",", 1)]
         if not name1 or not name2:
             raise ValueError("need two names")
-        number = calculate_compatibility(name1, name2, locale=loc)
-        result = get_compatibility_result(number, user_id=message.from_user.id)
+        compat, score, n1, n2 = calculate_compatibility(name1, name2, locale=loc)
+        result = get_compatibility_result(compat, score, user_id=message.from_user.id, locale=loc)
+
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
         await state.clear()
     except Exception:

@@ -47,17 +47,43 @@ def _name_number(full_name: str, locale: str) -> int:
         raise ValueError("Invalid name")
     return _reduce(total)
 
-def calculate_compatibility(name1: str, name2: str, locale: str = "en") -> int:
+def _compatibility_score(n1: int, n2: int, compat: int) -> int:
+    BASE = {1:80,2:90,3:84,4:72,5:82,6:88,7:74,8:76,9:86,11:85,22:78,33:87}
+    score = BASE.get(compat, 80)
+
+    if n1 == n2:
+        score += 3
+    diff = abs(n1 - n2)
+    if diff == 1:
+        score += 2
+    elif diff >= 4:
+        score -= 3
+
+    if n1 in {11,22,33} and n2 in {11,22,33}:
+        score += 2
+
+    if compat in {11,33}:
+        score += 1
+    elif compat == 22:
+        score += 0
+
+    score = max(55, min(97, score))
+    return int(round(score))
+
+
+def calculate_compatibility(name1: str, name2: str, locale: str = "en") -> tuple[int, int, int, int]:
     """
-    Compatibility Number = reduced sum of both NAME numbers (Expression-style),
-    preserving master numbers 11/22/33.
+    Returns (compatibility_number, score_percent, n1, n2)
     """
     loc = (locale or "en").lower()
     n1 = _name_number(name1, loc)
     n2 = _name_number(name2, loc)
-    return _reduce(n1 + n2)
+    compat = _reduce(n1 + n2)
+    score = _compatibility_score(n1, n2, compat)
+    return compat, score, n1, n2
 
-def get_compatibility_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
+
+def get_compatibility_result(number: int, score: int | None, user_id: int | None = None, locale: str | None = None) -> str:
     loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
     block = (TRANSLATIONS.get(loc, {}) or {}).get("result_compatibility") or {}
     text = block.get(str(number))
@@ -65,14 +91,23 @@ def get_compatibility_result(number: int, user_id: int | None = None, locale: st
         en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_compatibility") or {}
         text = en_block.get(str(number), "❤️ Your compatibility reading will appear here soon.")
 
-    # CTA logic: upsell for non‑premium, engagement for premium
-    if user_id is not None:
-        if not is_premium_user(user_id):
-            cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
-            if cta:
-                text += "\n\n" + cta
-        else:
-            engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
-            if engagement:
-                text += "\n\n" + engagement
+    # Always show score (Premium-only tool)
+    label = (TRANSLATIONS.get(loc, {}) or {}).get("compat_score_prefix", "")
+    if label and score is not None:
+        text = f"{label} {score}%\n\n" + text
+    elif score is not None:
+        text = f"{score}%\n\n" + text
+
+    # CTA: Premium gets engagement, trial gets upsell
+    from handlers.common import is_premium_user
+    if user_id is not None and is_premium_user(user_id):
+        engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
+        if engagement:
+            text += "\n\n" + engagement
+    else:
+        cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+        if cta:
+            text += "\n\n" + cta
+
     return text
+
