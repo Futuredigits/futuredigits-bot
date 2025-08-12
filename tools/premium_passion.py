@@ -59,6 +59,8 @@ def calculate_passion_number(full_name: str, locale: str = "en") -> int:
         return _reduce(sum(top_numbers))
     return top_numbers[0]
 
+from handlers.common import is_premium_user
+
 def get_passion_number_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
     loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
     block = (TRANSLATIONS.get(loc, {}) or {}).get("result_passion_number") or {}
@@ -67,10 +69,17 @@ def get_passion_number_result(number: int, user_id: int | None = None, locale: s
         en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_passion_number") or {}
         text = en_block.get(str(number), "🧩 Your Passion Number insight will appear here soon.")
 
-    # Show upsell only if NOT premium
-    if user_id is not None and not is_premium_user(user_id):
-        cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
-        if cta:
-            text += "\n\n" + cta
+    if user_id is not None:
+        if not is_premium_user(user_id):
+            # Non-premium → upsell CTA
+            cta = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+            if cta:
+                text += "\n\n" + cta
+        else:
+            # Premium → engagement CTA
+            engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
+            if engagement:
+                text += "\n\n" + engagement
 
     return text
+
