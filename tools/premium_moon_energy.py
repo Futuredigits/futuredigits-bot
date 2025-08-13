@@ -36,6 +36,12 @@ def _moon_phase_index(dt: datetime | None = None) -> int:
 def get_today_moon_phase_key() -> str:
     return PHASE_KEYS[_moon_phase_index()]
 
+def get_moon_energy_forecast(user_id: int | None = None, locale: str | None = None, phase_key: str | None = None) -> str:
+    """
+    Back-compat for common.unified_premium_menu_handler
+    """
+    return get_moon_energy_result(phase_key=phase_key, user_id=user_id, locale=locale)
+
 def get_moon_energy_result(phase_key: str | None = None, user_id: int | None = None, locale: str | None = None) -> str:
     key = phase_key or get_today_moon_phase_key()
     loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
