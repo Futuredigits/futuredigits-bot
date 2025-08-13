@@ -33,7 +33,7 @@
     "btn_moon": "🌕 Moon Energy Today",
     "btn_daily": "🗓 Daily Universal Vibe",
     "btn_angel": "🪬 Angel Number Decoder",
-    "btn_name_vibration": "🌀 Name Vibration",
+    "btn_name_vibration": "🌀 Name Vibration",  
     "compat_score_prefix": "💞 Compatibility Score:",
     "intro_life_path": "🔢 *Life Path Number*\n\nYour Life Path Number is one of the most important numbers in numerology. It reveals your natural strengths, personality blueprint, and the path you are meant to walk in life. 🌟\n\nIt's calculated by reducing your full birthdate to a single digit or master number (11, 22, 33).\n\nPlease enter your birthdate in the format: `DD.MM.YYYY` 📅",
     "intro_soul_urge": "💖 *Soul Urge Number*\n\nThis number reveals the secret longings of your heart — your inner motivations, passions, and emotional drive. It uncovers what your soul truly craves beneath the surface. 🌟\n\nPlease enter your full name to discover your Soul Urge Number. ✍️",
@@ -237,6 +237,29 @@
          "core_7": "🌌 **The Seeker’s Path**. Seven is introspection and wisdom. This vibration calls you to slow down, study, and trust the quiet voice within.",
          "core_8": "💎 **The Power Path**. Eight is mastery, ambition, and flow between the material and spiritual. Align effort with value and claim your place.",
          "core_9": "🌙 **The Healer’s Path**. Nine carries compassion, endings, and higher perspective. Offer closure, forgive where needed, and prepare for renewal."
+      },
+
+      "result_moon_energy": {
+        "new_moon": "A blank page opens before you. The New Moon whispers: plant intentions, not demands. Name one desire that feels true in your chest—small enough to hold, strong enough to grow. Keep your energy inward; say no with kindness; clear space. Tiny decisions today become constellations later. Trust the quiet.",
+        "waxing_crescent": "A flicker becomes a flame. Move gently but consistently—one message sent, one task started, one promise kept. The Waxing Crescent invites faith-in-action: not perfection, momentum. Water your seed with attention, not urgency. Celebrate each inch of progress; momentum is a love letter to your future self.",
+        "first_quarter": "The Moon squares the sky and asks for courage. Friction isn’t failure—it’s your spirit strengthening its stance. Make the call. Set the boundary. Choose the path that respects your energy. The First Quarter rewards aligned action: commit, adjust, and step through the necessary discomfort.",
+        "waxing_gibbous": "So much is coming together behind the scenes. Refine, polish, and prepare—this is rehearsal energy. Ask: what one adjustment amplifies everything? The Waxing Gibbous invites devotion over doubt. Tend to the details with care and let anticipation be fuel, not pressure.",
+        "full_moon": "Illumination arrives. Feelings peak; truths surface; cycles ripen. Let your heart speak clearly—to yourself first. Release what’s heavy, honor what’s real, and witness your own growth. The Full Moon asks for gratitude and honest release: write it down, breathe it out, cleanse your space. You are allowed to glow.",
+        "waning_gibbous": "After the spotlight, integration. Wisdom settles when you listen. Share what you learned, teach one person, or journal the insight while it’s warm. The Waning Gibbous favors generosity of knowledge and gentle recalibration. What will you keep? What is complete? Let the answers be simple.",
+        "last_quarter": "The Moon draws a firm line—edit, simplify, complete. What once fit may now feel tight. Cut the extra, close the loop, and reclaim your time. The Last Quarter is a pruning blessing: remove with love so vitality can return to what truly matters.",
+        "waning_crescent": "Softer, slower, quieter. Rest is not a pause in the journey—it is the path. The Waning Crescent invites surrender: forgive yourself, release comparison, sleep more, scroll less. Dream your next beginning without rushing to define it. Your spirit is resetting. Let it."
+      },
+
+      "moon_phase_prefix": "🌙 Moon phase:",
+      "moon_phase_names": {
+         "new_moon": "New Moon",
+         "waxing_crescent": "Waxing Crescent",
+         "first_quarter": "First Quarter",
+         "waxing_gibbous": "Waxing Gibbous",
+         "full_moon": "Full Moon",
+         "waning_gibbous": "Waning Gibbous",
+         "last_quarter": "Last Quarter",
+         "waning_crescent": "Waning Crescent"
       }
 
 }
