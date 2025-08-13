@@ -5,22 +5,20 @@ from aiogram.enums import ParseMode
 from aiogram.filters import StateFilter
 
 from states import AngelNumberStates
-from tools.premium_angel_number import get_angel_number_meaning
 from handlers.common import build_premium_menu
 from localization import _, get_locale
-
+from tools.premium_angel_number import get_angel_number_result
 
 router = Router(name="premium_angel_number")
 
-@router.message(StateFilter(AngelNumberStates.waiting_for_number))
+@router.message(StateFilter(AngelNumberStates.waiting_for_sequence))
 async def handle_angel_number(message: Message, state: FSMContext):
+    loc = get_locale(message.from_user.id)
     try:
-        number = message.text.strip()
-        result = get_angel_number_meaning(number)
-        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=premium_menu)
+        seq = (message.text or "").strip()
+        result = get_angel_number_result(seq, user_id=message.from_user.id, locale=loc)
+        await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
         await state.clear()
     except Exception:
-        await message.answer(
-            "❗ *Invalid input.* Please enter a valid angel number, like `111` or `777`.",
-            parse_mode=ParseMode.MARKDOWN
-        )
+        # Same UX approach as your reference: gentle reprompt via i18n.
+        await message.answer(_("angel_number_reprompt", locale=loc), parse_mode=ParseMode.MARKDOWN)
