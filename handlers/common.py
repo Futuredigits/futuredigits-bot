@@ -342,7 +342,7 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
     elif choice_key == "btn_daily":
         from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
-        result = get_daily_universal_vibe_forecast()
+        result = get_daily_universal_vibe_forecast(user_id=user_id, locale=loc)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
 
     elif choice_key == "btn_angel":
