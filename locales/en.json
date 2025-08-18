@@ -250,17 +250,28 @@
         "waning_crescent": "Softer, slower, quieter. Rest is not a pause in the journey—it is the path. The Waning Crescent invites surrender: forgive yourself, release comparison, sleep more, scroll less. Dream your next beginning without rushing to define it. Your spirit is resetting. Let it."
       },
 
-      "moon_phase_prefix": "🌙 Moon phase:",
+      "moon_phase_prefix": "Moon phase:",
       "moon_phase_names": {
-         "new_moon": "🌑 *New Moon",
-         "waxing_crescent": "🌒 *Waxing Crescent",
-         "first_quarter": "🌓 *First Quarter",
-         "waxing_gibbous": "🌔 *Waxing Gibbous",
-         "full_moon": "🌕 *Full Moon",
-         "waning_gibbous": "🌖 *Waning Gibbous",
-         "last_quarter": "🌗 *Last Quarter",
-         "waning_crescent": "🌘 *Waning Crescent"
+        "new_moon": "New Moon",
+        "waxing_crescent": "Waxing Crescent",
+        "first_quarter": "First Quarter",
+        "waxing_gibbous": "Waxing Gibbous",
+        "full_moon": "Full Moon",
+        "waning_gibbous": "Waning Gibbous",
+        "last_quarter": "Last Quarter",
+        "waning_crescent": "Waning Crescent"
       },
+      "moon_phase_emojis": {
+        "new_moon": "🌑",
+        "waxing_crescent": "🌒",
+        "first_quarter": "🌓",
+        "waxing_gibbous": "🌔",
+        "full_moon": "🌕",
+        "waning_gibbous": "🌖",
+        "last_quarter": "🌗",
+        "waning_crescent": "🌘"
+      },
+
 
       "result_name_vibration": {
          "1": "🔥 *Your name carries the frequency of initiative and self-definition. It asks you to become the author of your life, not its editor. When you speak clearly, choose bravely, and act decisively, doors recognize your knock. The shadow of 1 is isolation or stubborn pride; the medicine is humble leadership and clean beginnings. Build trust with yourself by keeping small promises. Each true yes is a lighthouse.*",

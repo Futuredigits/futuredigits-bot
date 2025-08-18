@@ -42,21 +42,21 @@ def get_moon_energy_forecast(user_id: int | None = None, locale: str | None = No
     """
     return get_moon_energy_result(phase_key=phase_key, user_id=user_id, locale=locale)
 
+# tools/premium_moon_energy.py (essential parts)
+
 def get_moon_energy_result(phase_key: str | None = None, user_id: int | None = None, locale: str | None = None) -> str:
     key = phase_key or get_today_moon_phase_key()
     loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
 
     block = (TRANSLATIONS.get(loc, {}) or {}).get("result_moon_energy") or {}
-    text = block.get(key)
-    if not text:
-        en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_moon_energy") or {}
-        text = en_block.get(key, "🌙 Your Moon Energy reading will appear here soon.")
+    text = block.get(key) or (TRANSLATIONS.get("en", {}).get("result_moon_energy") or {}).get(key, "🌙 Your Moon Energy reading will appear here soon.")
 
-    # Intro (localized, deep, emotional)
+    # Intro
     intro = (TRANSLATIONS.get(loc, {}) or {}).get("intro_moon_energy", "")
     if intro:
         text = intro + "\n\n" + text
 
+    # Label + emoji
     label = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_prefix", "")
     names = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_names") or {}
     emojis = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_emojis") or {}
@@ -67,7 +67,7 @@ def get_moon_energy_result(phase_key: str | None = None, user_id: int | None = N
             prefix = f"{phase_emoji} " if phase_emoji else ""
             text = f"{prefix}{label} {phase_name}\n\n{text}"
 
-
+    # CTA
     if user_id is not None:
         if is_premium_user(user_id):
             engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
@@ -79,4 +79,7 @@ def get_moon_energy_result(phase_key: str | None = None, user_id: int | None = N
                 text += "\n\n" + upsell
 
     return text
+
+
+
 
