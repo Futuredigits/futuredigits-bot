@@ -59,10 +59,14 @@ def get_moon_energy_result(phase_key: str | None = None, user_id: int | None = N
 
     label = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_prefix", "")
     names = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_names") or {}
+    emojis = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_emojis") or {}
     if label and names:
         phase_name = names.get(key, "")
+        phase_emoji = emojis.get(key, "")
         if phase_name:
-            text = f"{label} {phase_name}\n\n{text}"
+            prefix = f"{phase_emoji} " if phase_emoji else ""
+            text = f"{prefix}{label} {phase_name}\n\n{text}"
+
 
     if user_id is not None:
         if is_premium_user(user_id):

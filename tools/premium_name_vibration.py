@@ -54,10 +54,6 @@ def calculate_name_vibration(full_name: str, locale: str = "en") -> int:
     return _reduce_keep_masters(total)
 
 def get_name_vibration_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
-    """
-    Fetch localized deep reading for the name's core vibration.
-    Adds a prefix label if provided in translations, then premium-aware CTA.
-    """
     loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
     block = (TRANSLATIONS.get(loc, {}) or {}).get("result_name_vibration") or {}
 
@@ -66,12 +62,22 @@ def get_name_vibration_result(number: int, user_id: int | None = None, locale: s
         en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_name_vibration") or {}
         text = en_block.get(str(number), "🔮 Your Name Vibration reading will appear here soon.")
 
-    # Optional label "Name Vibration: X"
-    label = (TRANSLATIONS.get(loc, {}) or {}).get("name_vibration_prefix", "")
-    if label:
-        text = f"{label} {number}\n\n{text}"
+    # NEW: number icon (from locales)
+    icons = (TRANSLATIONS.get(loc, {}) or {}).get("name_vibration_icons", {})
+    icon = icons.get(str(number), "")
 
-    # Premium-aware CTA (consistent with other premium tools)
+    # Header label
+    label = (TRANSLATIONS.get(loc, {}) or {}).get("name_vibration_prefix", "")
+    header = ""
+    if label and number:
+        header = f"{icon + ' ' if icon else ''}{label} {number}"
+    elif icon:
+        header = icon
+
+    if header:
+        text = f"{header}\n\n{text}"
+
+    # Premium-aware CTA
     if user_id is not None:
         if is_premium_user(user_id):
             engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
@@ -83,3 +89,4 @@ def get_name_vibration_result(number: int, user_id: int | None = None, locale: s
                 text += "\n\n" + upsell
 
     return text
+
