@@ -252,14 +252,14 @@
 
       "moon_phase_prefix": "🌙 Moon phase:",
       "moon_phase_names": {
-         "new_moon": "New Moon",
-         "waxing_crescent": "Waxing Crescent",
-         "first_quarter": "First Quarter",
-         "waxing_gibbous": "Waxing Gibbous",
-         "full_moon": "Full Moon",
-         "waning_gibbous": "Waning Gibbous",
-         "last_quarter": "Last Quarter",
-         "waning_crescent": "Waning Crescent"
+         "new_moon": "🌑 *New Moon",
+         "waxing_crescent": "🌒 *Waxing Crescent",
+         "first_quarter": "🌓 *First Quarter",
+         "waxing_gibbous": "🌔 *Waxing Gibbous",
+         "full_moon": "🌕 *Full Moon",
+         "waning_gibbous": "🌖 *Waning Gibbous",
+         "last_quarter": "🌗 *Last Quarter",
+         "waning_crescent": "🌘 *Waning Crescent"
       },
 
       "result_name_vibration": {
