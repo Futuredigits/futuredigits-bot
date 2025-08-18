@@ -1,63 +1,85 @@
-from tools.expression import calculate_expression_number
+import re
+from localization import get_locale, TRANSLATIONS
+from handlers.common import is_premium_user
 
-def get_name_vibration_meaning(full_name: str) -> str:
-    # Calculate Expression Number from name
-    number = calculate_expression_number(full_name)
+# Pythagorean mapping
+PYTHAG_MAP = {
+    **{c: n for c, n in zip("AJS", [1,1,1])},
+    **{c: n for c, n in zip("BKT", [2,2,2])},
+    **{c: n for c, n in zip("CLU", [3,3,3])},
+    **{c: n for c, n in zip("DMV", [4,4,4])},
+    **{c: n for c, n in zip("ENW", [5,5,5])},
+    **{c: n for c, n in zip("FOX", [6,6,6])},
+    **{c: n for c, n in zip("GPY", [7,7,7])},
+    **{c: n for c, n in zip("HQZ", [8,8,8])},
+    **{c: n for c, n in zip("IR",  [9,9])},
+}
 
-    meanings = {
-        1: "🔥 *Vibration 1 – The Independent Leader*\n\nYour name carries the energy of originality and confidence. "
-           "It reflects a soul that came here to lead, create, and forge new paths. You inspire others through your strength and courage. "
-           "You’re meant to stand out and embrace your individuality.\n\n💫 *Message:* Trust your instincts—your name vibration pushes you toward greatness.",
+# Basic RU→LAT transliteration (consistent with other tools)
+RU_TO_LAT = {
+    "А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"I",
+    "К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F",
+    "Х":"H","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+}
 
-        2: "🌸 *Vibration 2 – The Harmonizer*\n\nYour name carries the soft, loving energy of cooperation and diplomacy. "
-           "You are naturally intuitive, empathetic, and sensitive to the emotions of others. "
-           "Your soul came here to build bridges and create harmony.\n\n💫 *Message:* Your vibration thrives when you nurture connections and trust divine timing.",
+def _normalize_name(name: str) -> str:
+    name = re.sub(r"[^A-Za-zА-Яа-яЁё]", "", name or "")
+    if not name:
+        raise ValueError("Invalid name")
+    return name.upper()
 
-        3: "🎨 *Vibration 3 – The Creative Communicator*\n\nYour name radiates creativity, charm, and self-expression. "
-           "You bring lightness, joy, and inspiration wherever you go. "
-           "This vibration is deeply connected to art, words, and emotional expression.\n\n💫 *Message:* Speak your truth—your voice is your gift to the world.",
+def _to_latin(name: str, locale: str) -> str:
+    return "".join(RU_TO_LAT.get(ch, ch) for ch in name) if (locale or "en").lower() == "ru" else name
 
-        4: "🏡 *Vibration 4 – The Builder*\n\nYour name carries a stable, grounded energy. "
-           "You are dependable, disciplined, and here to create lasting foundations—whether in family, career, or community. "
-           "This vibration values honesty, loyalty, and structure.\n\n💫 *Message:* Your soul thrives when you build something meaningful step by step.",
+def _reduce_keep_masters(n: int) -> int:
+    if n in {11, 22, 33}:
+        return n
+    while n > 9:
+        n = sum(int(d) for d in str(n))
+        if n in {11, 22, 33}:
+            return n
+    return n
 
-        5: "💃 *Vibration 5 – The Free Spirit*\n\nYour name vibrates with freedom, adventure, and adaptability. "
-           "You are a seeker of experiences and change. Life under this vibration is never stagnant—it’s full of lessons, surprises, and growth.\n\n💫 *Message:* Embrace flexibility—your soul learns through exploration and new horizons.",
+def calculate_name_vibration(full_name: str, locale: str = "en") -> int:
+    """
+    Primary 'Name Vibration' = Expression Number of the full birth name
+    (Pythagorean sum of all letters, reduced with master awareness).
+    """
+    loc = (locale or "en").lower()
+    clean = _normalize_name(full_name)
+    lat = _to_latin(clean, loc)
+    total = sum(PYTHAG_MAP.get(ch, 0) for ch in lat if ch.isalpha())
+    if total == 0:
+        raise ValueError("Invalid name")
+    return _reduce_keep_masters(total)
 
-        6: "💞 *Vibration 6 – The Nurturer*\n\nYour name carries the loving, healing energy of service and care. "
-           "You are drawn to creating harmony in relationships, family, and community. "
-           "This vibration is deeply connected to responsibility and compassion.\n\n💫 *Message:* Your purpose flows through love, beauty, and emotional balance.",
+def get_name_vibration_result(number: int, user_id: int | None = None, locale: str | None = None) -> str:
+    """
+    Fetch localized deep reading for the name's core vibration.
+    Adds a prefix label if provided in translations, then premium-aware CTA.
+    """
+    loc = (locale or (get_locale(user_id) if user_id is not None else "en")).lower()
+    block = (TRANSLATIONS.get(loc, {}) or {}).get("result_name_vibration") or {}
 
-        7: "🔮 *Vibration 7 – The Spiritual Seeker*\n\nYour name resonates with wisdom, introspection, and deep intuition. "
-           "You are naturally drawn to learning, reflection, and uncovering life’s hidden truths. "
-           "This vibration connects you strongly with your inner world.\n\n💫 *Message:* Trust the quiet moments—your soul speaks through stillness.",
+    text = block.get(str(number))
+    if not text:
+        en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_name_vibration") or {}
+        text = en_block.get(str(number), "🔮 Your Name Vibration reading will appear here soon.")
 
-        8: "💼 *Vibration 8 – The Manifestor of Power*\n\nYour name vibrates with ambition, success, and material mastery. "
-           "You are here to create abundance and influence while balancing integrity with achievement. "
-           "This vibration carries lessons in leadership and responsibility.\n\n💫 *Message:* Step into your power—your soul is ready to create lasting impact.",
+    # Optional label "Name Vibration: X"
+    label = (TRANSLATIONS.get(loc, {}) or {}).get("name_vibration_prefix", "")
+    if label:
+        text = f"{label} {number}\n\n{text}"
 
-        9: "🌈 *Vibration 9 – The Humanitarian*\n\nYour name carries the energy of compassion, wisdom, and emotional depth. "
-           "You are here to serve, heal, and inspire others with your heart-centered presence. "
-           "This vibration is deeply spiritual and artistic.\n\n💫 *Message:* Your soul shines brightest when you give selflessly and trust the flow of love.",
+    # Premium-aware CTA (consistent with other premium tools)
+    if user_id is not None:
+        if is_premium_user(user_id):
+            engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
+            if engagement:
+                text += "\n\n" + engagement
+        else:
+            upsell = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+            if upsell:
+                text += "\n\n" + upsell
 
-        11: "⚡ *Master Vibration 11 – The Spiritual Messenger*\n\nYour name holds a powerful, intuitive vibration. "
-             "It reflects a soul that came to awaken and inspire others. "
-             "You carry heightened sensitivity, insight, and a divine connection to higher truths.\n\n💫 *Message:* Your presence alone uplifts others—trust your light and share it bravely.",
-
-        22: "🏗 *Master Vibration 22 – The Master Builder*\n\nYour name carries a rare, powerful vibration capable of manifesting big visions. "
-             "You are here to combine spiritual wisdom with practical action to create something meaningful for the world.\n\n💫 *Message:* Dream boldly—your soul can turn visions into reality.",
-
-        33: "🌟 *Master Vibration 33 – The Teacher of Love*\n\nYour name vibrates with unconditional love, healing, and compassion. "
-             "You are a guiding light meant to nurture and uplift others through your wisdom and presence.\n\n💫 *Message:* You are here to be love in action—your soul is a channel for divine healing."
-    }
-
-    meaning = meanings.get(number, "✨ Your name carries a unique, mysterious vibration guiding you toward your soul’s higher purpose.")
-
-    return (
-        f"🔤 *Name Vibration Decoder*\n\n"
-        f"✨ *Your Name:* {full_name}\n"
-        f"📊 *Vibration Number:* {number}\n\n"
-        f"{meaning}\n\n"
-        f"🌟 *As a Premium member, you can also explore your **Angel Numbers, Personal Year Forecast, and Moon Energy** "
-        f"to see how your name vibration aligns with your soul journey.*"
-    )
+    return text
