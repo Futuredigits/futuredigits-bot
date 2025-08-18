@@ -286,6 +286,31 @@
          "11": "⚡ *Your name holds a master vibration of illumination. You are a transmitter of meaning — intuitive, receptive, electric. Flashes of insight and déjà vu are part of your weather. Ground your light through simple routines, honest relationships, and a body you listen to. When you trust your channel, your presence becomes permission for others to awaken.*",
          "22": "🏗️ *Your name carries the master builder’s blueprint. Vision plus architecture — that’s your signature. You translate the invisible into systems, communities, and durable change. Beware burnout or control; partner with capable allies and let time be your quiet ally. When devotion meets structure, miracles become logistics.*",
          "33": "💖 *Your name rings with the master teacher’s heart. Compassion in action, artistry in service, love made practical. You are here to demonstrate what gentleness can do. Guard your energy with clear boundaries, and teach from lived experience, not self-erasure. When your joy leads the lesson, healing multiplies.*"
+      },
+
+      "daily_vibe_prefix": "Universal Day:",
+      "daily_vibe_emojis": {
+         "1": "⚡",
+         "2": "🤝",
+         "3": "🎉",
+         "4": "🧱",
+         "5": "🧭",
+         "6": "🏡",
+         "7": "🔮",
+         "8": "💼",
+         "9": "🕊️"
+      },
+
+      "result_daily_vibe": {
+         "1": "Begin. Keep it simple and clean. Choose one priority and give it your full attention. Today rewards initiative, clarity, and honest self-leadership. Say a brave yes, or a liberating no. Momentum over perfection.",
+         "2": "Partner and attune. Listen twice before you speak once. Diplomacy opens doors that force could never unlock. Nurture one relationship, mend one bridge, and let kindness be your quiet superpower.",
+         "3": "Express. Share the idea, write the post, make the call that warms the room. Play fuels progress today. Don’t overthink — shape your joy into something others can feel, and watch energy multiply.",
+         "4": "Stabilize. Build a small, durable structure: a schedule, a checklist, a boundary. Consistency is the medicine. Remove one distraction and do the next right thing — bricks become a foundation.",
+         "5": "Move. Try a new route, new question, new approach. Flexible minds find lucky breaks. Say yes to an experiment but give it a purpose. Curiosity with intention becomes change that sticks.",
+         "6": "Care. Tend to home, health, and the humans who matter. Bring beauty to duty and compassion to conversations. If you feel stretched thin, simplify and include yourself in the circle of care.",
+         "7": "Reflect. Make space for study, silence, or spiritual practice. Insight arrives in stillness. Protect your focus; let your intuition edit. One sincere question can reveal the whole pattern.",
+         "8": "Own your power. Lead with integrity and steward your resources wisely — time, money, attention. Set a clear target and take the measurable step. When ambition serves meaning, results follow.",
+         "9": "Release and bless. Finish something with grace, forgive what you’ve been carrying, and offer what you’ve learned. Art and empathy travel far today. Endings make room for the beautiful next."
       }
 
 }
