@@ -353,7 +353,15 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
         await message.answer(_("intro_name_vibration", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
         await state.set_state(NameVibrationStates.waiting_for_full_name)
 
-def get_moon_energy_forecast(user_id: int | None = None, locale: str | None = None, phase_key: str | None = None) -> str:
+def get_daily_universal_vibe_forecast(user_id: int | None = None, locale: str | None = None) -> str:
+    ud = _universal_day()
+    return get_daily_universal_vibe_result(ud, user_id=user_id, locale=locale)
+
+def get_moon_energy_forecast(
+    user_id: int | None = None,
+    locale: str | None = None,
+    phase_key: str | None = None
+) -> str:
     return get_moon_energy_result(phase_key=phase_key, user_id=user_id, locale=locale)
 
 # --- Exports 

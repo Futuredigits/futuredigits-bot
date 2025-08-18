@@ -44,11 +44,10 @@ def get_moon_energy_result(
     locale: str | None = None
 ) -> str:
     """
-    Build today's Moon Energy reading:
-      - Intro (intro_moon_energy)
-      - 'Moon phase: <Name>' with emoji
-      - Deep phase text (result_moon_energy[phase])
-      - Premium-aware CTA appended per user
+    Build today's Moon Energy message with a clean layout:
+      - Header: "<emoji> <moon_phase_prefix> <Phase Name>"
+      - Body:   result_moon_energy[phase] (no intro)
+      - CTA:    premium-aware (appended per-user)
     Core text is cached per day/locale/phase; CTA is not cached.
     """
     key = phase_key or get_today_moon_phase_key()
@@ -59,43 +58,45 @@ def get_moon_energy_result(
 
     core_text = _CORE_CACHE.get(cache_key)
     if core_text is None:
-        # Phase result
+        # --- Body (no intro injection) ---
         block = (TRANSLATIONS.get(loc, {}) or {}).get("result_moon_energy") or {}
-        text = block.get(key)
-        if not text:
+        body = block.get(key)
+        if not body:
             en_block = (TRANSLATIONS.get("en", {}) or {}).get("result_moon_energy") or {}
-            text = en_block.get(key, "🌙 Your Moon Energy reading will appear here soon.")
+            body = en_block.get(key, "🌙 Your Moon Energy reading will appear here soon.")
 
-        # Intro
-        intro = (TRANSLATIONS.get(loc, {}) or {}).get("intro_moon_energy", "")
-        if intro:
-            text = intro + "\n\n" + text
-
-        # Label + emoji
+        # --- Header (emoji + label + phase name) ---
         label = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_prefix", "")
         names = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_names") or {}
         emojis = (TRANSLATIONS.get(loc, {}) or {}).get("moon_phase_emojis") or {}
-        if label and names:
-            phase_name = names.get(key, "")
-            phase_emoji = emojis.get(key, "")
-            if phase_name:
-                prefix = f"{phase_emoji} " if phase_emoji else ""
-                text = f"{prefix}{label} {phase_name}\n\n{text}"
+        phase_name = names.get(key, "")
+        phase_emoji = emojis.get(key, "")
 
-        core_text = text
+        header_parts = []
+        if phase_emoji:
+            header_parts.append(phase_emoji)
+        if label:
+            header_parts.append(label)
+        if phase_name:
+            header_parts.append(phase_name)
+        header = " ".join(p for p in header_parts if p).strip()
+
+        # --- Prevent duplicate emoji at the end of the body ---
+        if phase_emoji and body.rstrip().endswith(phase_emoji):
+            body = body.rstrip()[:-len(phase_emoji)].rstrip()
+
+        core_text = f"{header}\n\n{body}"
         _CORE_CACHE[cache_key] = core_text
 
-    # Append CTA per-user (not cached)
+    # --- CTA (not cached) ---
     result = core_text
     if user_id is not None:
         if is_premium_user(user_id):
-            engagement = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
-            if engagement:
-                result += "\n\n" + engagement
+            tail = (TRANSLATIONS.get(loc, {}) or {}).get("cta_explore_more", "")
         else:
-            upsell = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
-            if upsell:
-                result += "\n\n" + upsell
+            tail = (TRANSLATIONS.get(loc, {}) or {}).get("cta_try_more", "")
+        if tail:
+            result += "\n\n" + tail
 
     return result
 
