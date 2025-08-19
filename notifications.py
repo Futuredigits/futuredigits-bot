@@ -7,7 +7,8 @@ from db import redis
 from localization import get_locale, _  
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone as dt_timezone  
+from pytz import timezone as tz  
 
 
 from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
@@ -20,7 +21,8 @@ LAST_ACTIVE_HASH = "subs:last_active"  # hash: { user_id: last_active_iso }
 
 async def add_subscriber(user_id: int):
     await redis.sadd(SUBS_KEY, user_id)
-    await redis.hset(LAST_ACTIVE_HASH, user_id, datetime.now(timezone.utc).isoformat())
+    await redis.hset(LAST_ACTIVE_HASH, user_id, datetime.now(dt_timezone.utc).isoformat())
+
 
 async def iter_subscribers() -> Iterable[int]:
     ids = await redis.smembers(SUBS_KEY)
@@ -125,7 +127,7 @@ def init_notifications(bot: Bot):
     if _scheduler:
         return _scheduler
 
-    _scheduler = AsyncIOScheduler(timezone=timezone("Europe/Vilnius"))
+    _scheduler = AsyncIOScheduler(timezone=tz("Europe/Vilnius"))
 
     # 08:00 daily vibe (all users)
     _scheduler.add_job(
