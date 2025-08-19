@@ -40,7 +40,7 @@ from handlers.premium_moon_energy import router as moon_energy_router
 from handlers.premium_daily_vibe import router as daily_vibe_router
 from handlers.premium_angel_number import router as angel_number_router
 from handlers.premium_name_vibration import router as name_vibration_router
-
+from handlers.admin import admin_router
 
 dp.include_router(life_path_router)
 dp.include_router(soul_urge_router)
@@ -57,6 +57,7 @@ dp.include_router(moon_energy_router)
 dp.include_router(daily_vibe_router)
 dp.include_router(angel_number_router)
 dp.include_router(name_vibration_router)
+dp.include_router(admin_router)
 
 
 app = FastAPI()
