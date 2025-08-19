@@ -123,10 +123,12 @@ async def find_inactive(days: int) -> list[int]:
 # --- Broadcasters
 async def broadcast(bot, kind: str):
     try:
-        ids = await redis.smembers(SUBS_KEY)  # could be bytes/str
-        if not ids:
-            print("[broadcast] no subscribers in subs:all")
-            return
+        ids = await redis.smembers(SUBS_KEY)
+        total = len(ids) if ids else 0
+        if total == 0:
+            print(f"[broadcast] kind={kind} no subscribers")
+            return 0, 0
+
         sent = 0
         for raw in ids:
             uid = _to_int(raw)
@@ -139,9 +141,13 @@ async def broadcast(bot, kind: str):
                 sent += 1
             except Exception as e:
                 print(f"[broadcast] send failed for {uid}: {e}")
-        print(f"[broadcast] kind={kind} sent={sent} total={len(ids)}")
+
+        print(f"[broadcast] kind={kind} sent={sent} total={total}")
+        return sent, total
     except Exception as e:
         print(f"[broadcast] fatal error: {e}")
+        return 0, 0
+
 
 
 async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):

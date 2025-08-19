@@ -39,13 +39,23 @@ async def testme(message: Message, command: CommandObject):
 
 @admin_router.message(Command("testnotif"))
 async def test_notifications(message: Message, command: CommandObject):
-    # owner-only broadcast to all subscribers
     if OWNER_ID not in (0, message.from_user.id):
         await message.answer("Not allowed.")
         return
+
     kind = (command.args or "daily").strip().lower()
     if kind not in {"daily", "moon", "love", "weekly", "winback"}:
         await message.answer("Usage: /testnotif [daily|moon|love|weekly|winback]")
         return
-    await message.answer(f"Sending test broadcast: {kind}")
-    await broadcast(message.bot, kind)
+
+    sent, total = await broadcast(message.bot, kind)
+    await message.answer(f"Broadcast '{kind}': sent {sent}/{total} ✅")
+
+@admin_router.message(Command("listsubs"))
+async def list_subs(message: Message):
+    from db import redis
+    ids = await redis.smembers("subs:all")
+    clean = sorted(_to_int(i) for i in ids if _to_int(i))
+    await message.answer(f"Subscribers: {clean}")
+
+
