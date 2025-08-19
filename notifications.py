@@ -4,6 +4,7 @@ from apscheduler.triggers.cron import CronTrigger
 from pytz import timezone
 
 from db import redis
+from aiogram.enums import ParseMode
 from localization import get_locale, _  
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -62,6 +63,27 @@ def _is_premium(user_id: int) -> bool:
         # fallback (treat as free) if something goes wrong
         return False
 
+def _to_int(user_id_raw):
+    try:
+        if isinstance(user_id_raw, int):
+            return user_id_raw
+        if isinstance(user_id_raw, bytes):
+            return int(user_id_raw.decode())
+        return int(user_id_raw)
+    except Exception:
+        return None
+
+
+
+async def send_to_user(bot, user_id: int, kind: str):
+    try:
+        loc = get_locale(user_id)
+        text, kb = await compose_message(user_id, kind, loc)
+        await bot.send_message(chat_id=user_id, text=text, reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
+    except Exception as e:
+        print(f"[send_to_user] failed for {user_id}: {e}")
+
+
 
 
 async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, InlineKeyboardMarkup]:
@@ -99,15 +121,28 @@ async def find_inactive(days: int) -> list[int]:
 
 
 # --- Broadcasters
-async def broadcast(bot: Bot, kind: str):
-    async for uid in iter_subscribers():
-        loc = get_locale(uid)
-        text, kb = await compose_message(uid, kind, loc)
-        try:
-            await bot.send_message(uid, text, reply_markup=kb)
-        except Exception:
-            # ignore users who blocked the bot or other send errors
-            continue
+async def broadcast(bot, kind: str):
+    try:
+        ids = await redis.smembers(SUBS_KEY)  # could be bytes/str
+        if not ids:
+            print("[broadcast] no subscribers in subs:all")
+            return
+        sent = 0
+        for raw in ids:
+            uid = _to_int(raw)
+            if not uid:
+                continue
+            try:
+                loc = get_locale(uid)
+                text, kb = await compose_message(uid, kind, loc)
+                await bot.send_message(chat_id=uid, text=text, reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
+                sent += 1
+            except Exception as e:
+                print(f"[broadcast] send failed for {uid}: {e}")
+        print(f"[broadcast] kind={kind} sent={sent} total={len(ids)}")
+    except Exception as e:
+        print(f"[broadcast] fatal error: {e}")
+
 
 async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
     for uid in user_ids:

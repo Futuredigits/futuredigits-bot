@@ -3,11 +3,11 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command, CommandObject
 from notifications import broadcast
+from db import redis
 
 admin_router = Router(name="admin")
 
-# Read from the ENV VAR named OWNER_ID (set this in Render)
-OWNER_ID = int(os.getenv("OWNER_ID", "0"))
+OWNER_ID = int(os.getenv("OWNER_ID", "0"))  # set in Render
 
 @admin_router.message(Command("ping"))
 async def ping(message: Message):
@@ -17,18 +17,35 @@ async def ping(message: Message):
 async def whoami(message: Message):
     await message.answer(f"Your Telegram user id: {message.from_user.id}\nOWNER_ID env: {OWNER_ID}")
 
+@admin_router.message(Command("subscribe_me"))
+async def subscribe_me(message: Message):
+    # subscribe the caller so broadcasts can reach them
+    from notifications import add_subscriber
+    await add_subscriber(message.from_user.id)
+    await message.answer("Subscribed to notifications ✅")
+
+@admin_router.message(Command("subcount"))
+async def subcount(message: Message):
+    n = await redis.scard("subs:all")
+    await message.answer(f"subs:all size = {n}")
+
+@admin_router.message(Command("testme"))
+async def testme(message: Message, command: CommandObject):
+    # send a single notification to yourself (no Redis needed)
+    kind = (command.args or "daily").strip().lower()
+    from notifications import send_to_user
+    await send_to_user(message.bot, message.from_user.id, kind)
+    await message.answer(f"Sent to you: {kind} ✅")
+
 @admin_router.message(Command("testnotif"))
 async def test_notifications(message: Message, command: CommandObject):
-    # Allow only the owner (or allow if OWNER_ID not set yet == 0)
+    # owner-only broadcast to all subscribers
     if OWNER_ID not in (0, message.from_user.id):
         await message.answer("Not allowed.")
         return
-
-    # /testnotif [daily|moon|love|weekly|winback]
     kind = (command.args or "daily").strip().lower()
     if kind not in {"daily", "moon", "love", "weekly", "winback"}:
         await message.answer("Usage: /testnotif [daily|moon|love|weekly|winback]")
         return
-
     await message.answer(f"Sending test broadcast: {kind}")
     await broadcast(message.bot, kind)
