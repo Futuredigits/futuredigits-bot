@@ -2,8 +2,8 @@ import os
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
+from db import redis
 from aiogram.fsm.storage.redis import RedisStorage
-from redis.asyncio import from_url
 from fastapi import FastAPI, Request
 from aiogram.types import Update
 from fastapi.responses import JSONResponse
@@ -11,14 +11,13 @@ from dotenv import load_dotenv
 import asyncio
 from localization import load_locales
 load_locales()
-
+from notifications import init_notifications
 
 load_dotenv()
 
 
 TOKEN = os.getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN, parse_mode="Markdown")
-redis = from_url("rediss://default:ATl7AAIjcDEwYjdkZjhmYTczNjk0YzZmOWY4Zjg0ODE4NmU1YTcwN3AxMA@ideal-pegasus-14715.upstash.io:6379")
 storage = RedisStorage(redis)
 dp = Dispatcher(storage=storage)
 
@@ -74,8 +73,9 @@ async def on_startup():
         print("❌ Failed to set webhook")
         import traceback
         traceback.print_exc()
+     
+    init_notifications(bot)
 
-    # 🛡 Safety: keep the event loop alive
     asyncio.create_task(idle_loop())
 
 

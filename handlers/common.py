@@ -1,4 +1,3 @@
-# common.py — i18n-ready menus + language picker (EN/RU)
 from aiogram import F, Router
 from aiogram.types import (
     Message,
@@ -11,8 +10,9 @@ from aiogram.types import (
 from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
-
 from localization import _, get_locale, set_locale, TRANSLATIONS
+from handlers.common import build_premium_menu
+from notifications import add_subscriber
 
 # --- Premium access flags
 OWNER_ID = 619941697
@@ -228,6 +228,7 @@ async def premium_cta_button(message: Message, state: FSMContext):
     StateFilter("*")
 )
 async def show_premium_menu(message: Message, state: FSMContext):
+    await add_subscriber(message.from_user.id)
     await state.clear()
     loc = get_locale(message.from_user.id)
     await message.answer(
@@ -245,6 +246,7 @@ async def show_premium_menu(message: Message, state: FSMContext):
     StateFilter("*")
 )
 async def show_main_menu(message: Message, state: FSMContext):
+    await add_subscriber(message.from_user.id) 
     await state.clear()
     loc = get_locale(message.from_user.id)
     await message.answer(
@@ -256,6 +258,7 @@ async def show_main_menu(message: Message, state: FSMContext):
 # --- Unified Main Menu Handler 
 @router.message(F.text.in_(MAIN_CAPTIONS), StateFilter("*"))
 async def unified_main_menu_handler(message: Message, state: FSMContext):
+    await add_subscriber(message.from_user.id)
     choice_key = caption_to_key(message.text.strip())
     if not choice_key:
         return
@@ -289,6 +292,7 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
 # --- Unified Premium Menu Handler
 @router.message(F.text.in_(PREMIUM_CAPTIONS), StateFilter("*"))
 async def unified_premium_menu_handler(message: Message, state: FSMContext):
+    await add_subscriber(message.from_user.id)
     user_id = message.from_user.id
     loc = get_locale(user_id)
 
@@ -352,6 +356,20 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
     elif choice_key == "btn_name_vibration":
         await message.answer(_("intro_name_vibration", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
         await state.set_state(NameVibrationStates.waiting_for_full_name)
+
+
+@router.callback_query(F.data == "open_premium")
+async def open_premium_cb(call: CallbackQuery, state: FSMContext):
+    await state.clear()
+    loc = get_locale(call.from_user.id)
+    # Reuse your existing premium menu intro + keyboard
+    await call.message.answer(
+        _("premium_menu_intro", locale=loc),
+        reply_markup=build_premium_menu(loc),
+        parse_mode=ParseMode.MARKDOWN,
+        disable_web_page_preview=True,
+    )
+    await call.answer()
 
 
 
