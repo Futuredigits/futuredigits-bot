@@ -4,8 +4,7 @@ from apscheduler.triggers.cron import CronTrigger
 from pytz import timezone
 
 from db import redis
-from localization import get_locale, _  # your i18n
-from handlers.common import is_premium_user, build_premium_menu  # existing
+from localization import get_locale, _  
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime, timezone, timedelta
@@ -51,6 +50,16 @@ def teaser_text(kind: str, loc: str) -> str:
     if kind == "winback":
         return _("notif_free_winback", locale=loc)
     return "✨"
+
+
+def _is_premium(user_id: int) -> bool:
+    try:
+        from handlers.common import is_premium_user
+        return is_premium_user(user_id)
+    except Exception:
+        # fallback (treat as free) if something goes wrong
+        return False
+
 
 
 async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, InlineKeyboardMarkup]:
