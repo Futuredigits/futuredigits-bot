@@ -60,7 +60,7 @@
     "notif_moon_energy_evening": "🌙 Tonight’s Moon Energy has a message for you. Unwind and see your guidance.",
     "notif_love_vibes_midday": "❤️ Midday nudge: tune into your Love Vibe today. A small shift can attract big warmth.",
     "cta_button_unlock": "👉 Unlock Premium Access",
-    "cta_button_explore": "🔮 Explore More Insights",
+    "cta_button_explore": "🔮 Explore More Insights"
     
     "result_life_path": 
 {
@@ -317,7 +317,20 @@
          "7": "*Choose depth over noise.* Read, reflect, or simply breathe until the pattern appears. Quiet is accurate. 🔮",
          "8": "*Own your influence.* Aim clearly, act ethically, and measure honestly. When power serves meaning, results follow. 💼",
          "9": "*Complete with grace.* Bless the ending, forgive what you can, and share what you learned. Space opens for the beautiful next. 🕊️"
-      }
+      },
+
+
+      {
+      "notif_free_teaser_daily": "☀️ Get your daily numerology guidance. Unlock Premium to see today’s message.",
+      "notif_free_teaser_moon": "🌙 See tonight’s Moon Energy and how it affects you. Unlock Premium to read it now.",
+      "notif_free_teaser_love": "❤️ Curious about today’s love vibes? Unlock Premium for a personalized nudge.",
+      "notif_free_teaser_weekly": "🗓 Your week ahead forecast is ready in Premium. Tap to unlock guidance.",
+      "notif_free_winback": "✨ We saved a seat for you. Unlock Premium guidance and return to your numbers.",
+
+      "notif_premium_love_prompt": "❤️ Your Love Vibe awaits. Enter a name to tune in, or explore other Premium tools.",
+      "notif_premium_weekly_ready": "🗓 Your week ahead is ready. Open Premium to see key opportunities & cautions.",
+      "notif_premium_winback": "✨ Welcome back energy is here. Open Premium for today’s guidance and a gentle reset."
+    }
 
 }
 
