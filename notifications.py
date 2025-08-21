@@ -9,6 +9,7 @@ from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime, timedelta, timezone as dt_timezone  
 from pytz import timezone as tz  
+from datetime import date
 
 
 from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
@@ -43,16 +44,20 @@ def build_notif_cta_btn(premium: bool, loc: str) -> InlineKeyboardMarkup:
 # --- Message composers
 def teaser_text(kind: str, loc: str) -> str:
     if kind == "daily":
-        return _("notif_free_teaser_daily", locale=loc)
+        keys = ["notif_free_teaser_daily_v1","notif_free_teaser_daily_v2","notif_free_teaser_daily_v3"]
+        return _(_pick_key(keys), locale=loc)
     if kind == "moon":
-        return _("notif_free_teaser_moon", locale=loc)
+        keys = ["notif_free_teaser_moon_v1","notif_free_teaser_moon_v2","notif_free_teaser_moon_v3"]
+        return _(_pick_key(keys), locale=loc)
     if kind == "love":
-        return _("notif_free_teaser_love", locale=loc)
+        keys = ["notif_free_teaser_love_v1","notif_free_teaser_love_v2","notif_free_teaser_love_v3"]
+        return _(_pick_key(keys), locale=loc)
     if kind == "weekly":
         return _("notif_free_teaser_weekly", locale=loc)
     if kind == "winback":
         return _("notif_free_winback", locale=loc)
     return "✨"
+
 
 
 def _is_premium(user_id: int) -> bool:
@@ -77,6 +82,14 @@ def _to_int(user_id_raw):
         return None
 
 
+def _variant_index(n: int) -> int:
+    # Same variant for everyone per day (Europe/Vilnius)
+    today = datetime.now(tz("Europe/Vilnius")).timetuple().tm_yday
+    return today % n if n > 0 else 0
+
+def _pick_key(keys: list[str]) -> str:
+    idx = _variant_index(len(keys))
+    return keys[idx]
 
 
 async def send_to_user(bot, user_id: int, kind: str):
@@ -100,14 +113,15 @@ async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, Inlin
         if kind == "moon":
             return get_moon_energy_result(user_id=user_id, locale=loc), kb
         if kind == "love":
-            # Love Vibes needs a name; use a soft prompt (content lives in locales)
-            return _("notif_premium_love_prompt", locale=loc), kb
+            keys = ["notif_premium_love_prompt_v1","notif_premium_love_prompt_v2","notif_premium_love_prompt_v3"]
+            return _(_pick_key(keys), locale=loc), kb
         if kind == "weekly":
             return _("notif_premium_weekly_ready", locale=loc), kb
         if kind == "winback":
             return _("notif_premium_winback", locale=loc), kb
     else:
         return teaser_text(kind, loc), kb
+
 
 
 async def find_inactive(days: int) -> list[int]:
