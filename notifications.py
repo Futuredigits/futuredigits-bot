@@ -1,7 +1,6 @@
 from typing import Iterable
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from pytz import timezone
 
 from db import redis
 from aiogram.enums import ParseMode
@@ -29,10 +28,10 @@ async def add_subscriber(user_id: int):
 async def iter_subscribers() -> Iterable[int]:
     ids = await redis.smembers(SUBS_KEY)
     for uid in ids or []:
-        try:
-            yield int(uid)
-        except:
-            continue
+        val = _to_int(uid)
+        if val:
+            yield val
+
 
 # --- CTA button builder (inline)
 def build_notif_cta_btn(premium: bool, loc: str) -> InlineKeyboardMarkup:
@@ -58,11 +57,11 @@ def teaser_text(kind: str, loc: str) -> str:
 
 def _is_premium(user_id: int) -> bool:
     try:
-        from handlers.common import is_premium_user
+        from handlers.common import is_premium_user  # lazy import to avoid circulars
         return is_premium_user(user_id)
     except Exception:
-        # fallback (treat as free) if something goes wrong
         return False
+
 
 def _to_int(user_id_raw):
     try:
@@ -92,7 +91,7 @@ async def send_to_user(bot, user_id: int, kind: str):
 
 
 async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, InlineKeyboardMarkup]:
-    premium = is_premium_user(user_id)
+    premium = _is_premium(user_id)
     kb = build_notif_cta_btn(premium, loc)
 
     if premium:
@@ -112,14 +111,18 @@ async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, Inlin
 
 
 async def find_inactive(days: int) -> list[int]:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(dt_timezone.utc)
     raw = await redis.hgetall(LAST_ACTIVE_HASH) or {}
-    out = []
-    for uid, iso in raw.items():
+    out: list[int] = []
+    for uid_raw, iso_raw in raw.items():
         try:
-            ts = datetime.fromisoformat(iso)
+            uid = _to_int(uid_raw)
+            if not uid:
+                continue
+            iso_str = iso_raw.decode() if isinstance(iso_raw, bytes) else str(iso_raw)
+            ts = datetime.fromisoformat(iso_str)
             if now - ts >= timedelta(days=days):
-                out.append(int(uid))
+                out.append(uid)
         except Exception:
             continue
     return out

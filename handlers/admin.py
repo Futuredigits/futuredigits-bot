@@ -15,7 +15,12 @@ async def ping(message: Message):
 
 @admin_router.message(Command("whoami"))
 async def whoami(message: Message):
-    await message.answer(f"Your Telegram user id: {message.from_user.id}\nOWNER_ID env: {OWNER_ID}")
+    from aiogram.enums import ParseMode
+    await message.answer(
+        f"<b>Your Telegram user id:</b> {message.from_user.id}<br><b>OWNER_ID env:</b> {OWNER_ID}",
+        parse_mode=ParseMode.HTML
+    )
+
 
 @admin_router.message(Command("subscribe_me"))
 async def subscribe_me(message: Message):
@@ -56,6 +61,22 @@ async def list_subs(message: Message):
     ids = await redis.smembers("subs:all")
     cleaned = sorted(_to_int(i) for i in ids if _to_int(i))
     await message.answer(f"Raw: {list(ids)}\nCleaned: {cleaned}")
+
+
+@admin_router.message(Command("fixsubs"))
+async def fixsubs(message: Message):
+    if OWNER_ID not in (0, message.from_user.id):
+        await message.answer("Not allowed.")
+        return
+    ids = await redis.smembers("subs:all")
+    from notifications import _to_int
+    cleaned = {str(_to_int(i)) for i in ids if _to_int(i)}
+    # replace the set with normalized entries
+    await redis.delete("subs:all")
+    for cid in cleaned:
+        await redis.sadd("subs:all", cid)
+    n = await redis.scard("subs:all")
+    await message.answer(f"subs:all normalized. size = {n}")
 
 
 
