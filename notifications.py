@@ -21,8 +21,9 @@ LAST_ACTIVE_HASH = "subs:last_active"  # hash: { user_id: last_active_iso }
 
 
 async def add_subscriber(user_id: int):
-    await redis.sadd(SUBS_KEY, user_id)
-    await redis.hset(LAST_ACTIVE_HASH, user_id, datetime.now(dt_timezone.utc).isoformat())
+    await redis.sadd(SUBS_KEY, str(user_id))
+    await redis.hset(LAST_ACTIVE_HASH, str(user_id), datetime.now(dt_timezone.utc).isoformat())
+
 
 
 async def iter_subscribers() -> Iterable[int]:
@@ -68,10 +69,14 @@ def _to_int(user_id_raw):
         if isinstance(user_id_raw, int):
             return user_id_raw
         if isinstance(user_id_raw, bytes):
-            return int(user_id_raw.decode())
-        return int(user_id_raw)
+            s = user_id_raw.decode(errors="ignore")
+        else:
+            s = str(user_id_raw)
+        digits = "".join(ch for ch in s if ch.isdigit())
+        return int(digits) if digits else None
     except Exception:
         return None
+
 
 
 

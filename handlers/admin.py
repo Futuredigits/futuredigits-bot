@@ -2,7 +2,7 @@ import os
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command, CommandObject
-from notifications import broadcast
+from notifications import broadcast, send_to_user, _to_int
 from db import redis
 
 admin_router = Router(name="admin")
@@ -53,9 +53,9 @@ async def test_notifications(message: Message, command: CommandObject):
 
 @admin_router.message(Command("listsubs"))
 async def list_subs(message: Message):
-    from db import redis
     ids = await redis.smembers("subs:all")
-    clean = sorted(_to_int(i) for i in ids if _to_int(i))
-    await message.answer(f"Subscribers: {clean}")
+    cleaned = sorted(_to_int(i) for i in ids if _to_int(i))
+    await message.answer(f"Raw: {list(ids)}\nCleaned: {cleaned}")
+
 
 
