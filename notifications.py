@@ -147,8 +147,16 @@ async def broadcast(bot, kind: str):
                 text, kb = await compose_message(uid, kind, loc)
                 await bot.send_message(chat_id=uid, text=text, reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
                 sent += 1
+
             except Exception as e:
-                print(f"[broadcast] send failed for {uid}: {e}")
+                err = str(e)
+                print(f"[broadcast] send failed for {uid}: {err}")                
+                if ("Forbidden: bot was blocked by the user" in err) or ("chat not found" in err.lower()):
+                    await redis.srem(SUBS_KEY, str(uid))
+                    await redis.hdel(LAST_ACTIVE_HASH, str(uid))                
+                elif "user is deactivated" in err.lower():
+                    await redis.srem(SUBS_KEY, str(uid))
+                    await redis.hdel(LAST_ACTIVE_HASH, str(uid))
 
         print(f"[broadcast] kind={kind} sent={sent} total={total}")
         return sent, total
@@ -158,14 +166,21 @@ async def broadcast(bot, kind: str):
 
 
 
+
 async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
     for uid in user_ids:
         loc = get_locale(uid)
         text, kb = await compose_message(uid, kind, loc)
         try:
-            await bot.send_message(uid, text, reply_markup=kb)
-        except Exception:
+            await bot.send_message(uid, text, reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
+        except Exception as e:
+            err = str(e)
+            print(f"[broadcast_segment] send failed for {uid}: {err}")
+            if ("Forbidden: bot was blocked by the user" in err) or ("chat not found" in err.lower()) or ("user is deactivated" in err.lower()):
+                await redis.srem(SUBS_KEY, str(uid))
+                await redis.hdel(LAST_ACTIVE_HASH, str(uid))
             continue
+
 
 
 # --- Scheduler
