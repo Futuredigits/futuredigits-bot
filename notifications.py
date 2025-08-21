@@ -209,13 +209,14 @@ def init_notifications(bot: Bot):
         replace_existing=True,
     )
 
-    # 12:30 Mon/Wed/Fri love-vibes nudge (all users)
+    # 12:30 every day — Love Vibes (premium CTA)
     _scheduler.add_job(
         lambda: bot.loop.create_task(broadcast(bot, "love")),
-        CronTrigger(day_of_week="mon,wed,fri", hour=12, minute=30),
-        id="love_1230_mwf",
+        CronTrigger(hour=12, minute=30),
+        id="love_1230_daily",
         replace_existing=True,
     )
+
 
         # Sunday 17:00 — weekly upsell/ready ping (all users)
     _scheduler.add_job(
