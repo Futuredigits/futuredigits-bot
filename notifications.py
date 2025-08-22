@@ -205,46 +205,36 @@ async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
 _scheduler: AsyncIOScheduler | None = None
 
 def init_notifications(bot: Bot):
-    
     global _scheduler
     if _scheduler:
+        logging.info("[notif] scheduler already started")
         return _scheduler
 
     logging.info("[notif] starting scheduler…")
 
     _scheduler = AsyncIOScheduler(
         timezone=SCHED_TZ,
-        job_defaults={
-            "misfire_grace_time": 3600,  
-            "coalesce": True,            
-        },
+        job_defaults={"misfire_grace_time": 3600, "coalesce": True},
     )
 
-    # 08:00 daily vibe (all users)
     _scheduler.add_job(
         lambda: asyncio.create_task(broadcast(bot, "daily")),
         CronTrigger(hour=8, minute=0, timezone=SCHED_TZ),
         id="daily_vibe_0800",
         replace_existing=True,
     )
-
-    # 12:30 every day — Love Vibes (premium CTA)
     _scheduler.add_job(
         lambda: asyncio.create_task(broadcast(bot, "love")),
         CronTrigger(hour=12, minute=30, timezone=SCHED_TZ),
         id="love_1230_daily",
         replace_existing=True,
     )
-
-    # 20:00 moon energy (all users)
     _scheduler.add_job(
         lambda: asyncio.create_task(broadcast(bot, "moon")),
         CronTrigger(hour=20, minute=0, timezone=SCHED_TZ),
         id="moon_2000",
         replace_existing=True,
     )
-
-    # Sunday 17:00 — weekly upsell (all users)
     _scheduler.add_job(
         lambda: asyncio.create_task(broadcast(bot, "weekly")),
         CronTrigger(day_of_week="sun", hour=17, minute=0, timezone=SCHED_TZ),
@@ -252,7 +242,6 @@ def init_notifications(bot: Bot):
         replace_existing=True,
     )
 
-    # Daily 11:00 — win-back (FREE users inactive 3+ days)
     async def run_winback():
         uids = await find_inactive(days=3)
         if uids:
@@ -267,10 +256,10 @@ def init_notifications(bot: Bot):
 
     _scheduler.start()
 
-    # Log all jobs & next run times
     for j in _scheduler.get_jobs():
         logging.info(f"[notif] job={j.id} next={j.next_run_time}")
 
     logging.info("[notif] scheduler started ✅")
     return _scheduler
+
 

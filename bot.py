@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 import asyncio
 from localization import load_locales
 load_locales()
-from notifications import init_notifications
+from notifications import init_notifications, _scheduler as NOTIF_SCHED
 
 load_dotenv()
 
@@ -68,18 +68,21 @@ app = FastAPI()
 @app.on_event("startup")
 async def on_startup():
     logging.info("🚀 Bot is starting...")
-    print("📡 Setting webhook to:", os.getenv("WEBHOOK_URL"))
     try:
         result = await bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
-        print("✅ Webhook set result:", result)
-    except Exception as e:
-        print("❌ Failed to set webhook")
-        import traceback
-        traceback.print_exc()
-     
-    init_notifications(bot)
+        logging.info(f"📡 Webhook set: {result}")
+    except Exception:
+        logging.exception("❌ Failed to set webhook")
 
-    asyncio.create_task(idle_loop())
+    # 🔽 start scheduler here
+    try:
+        sched = init_notifications(bot)
+        logging.info(f"[notif] init returned: {sched}")
+        if sched:
+            for j in sched.get_jobs():
+                logging.info(f"[notif] job={j.id} next={j.next_run_time}")
+    except Exception:
+        logging.exception("[notif] init failed")
 
 
 async def idle_loop():

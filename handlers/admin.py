@@ -5,6 +5,7 @@ from aiogram.filters import Command, CommandObject
 from notifications import broadcast, send_to_user, _to_int
 from db import redis
 from notifications import _scheduler as NOTIF_SCHED
+from notifications import init_notifications
 
 admin_router = Router(name="admin")
 
@@ -87,14 +88,19 @@ async def jobs(message: Message):
     if NOTIF_SCHED is None:
         await message.answer("Scheduler not started.")
         return
-    lines = []
-    for j in NOTIF_SCHED.get_jobs():
-        lines.append(f"• {j.id} → next: {j.next_run_time}")
+    lines = [f"• {j.id} → next: {j.next_run_time}" for j in NOTIF_SCHED.get_jobs()]
     await message.answer("Scheduled jobs:\n" + "\n".join(lines))
+
+@admin_router.message(Command("startjobs"))
+async def startjobs(message: Message):
+    if OWNER_ID not in (0, message.from_user.id):
+        return
+    sched = init_notifications(message.bot)
+    txt = "Scheduler started ✅" if sched else "Failed to start scheduler"
+    await message.answer(txt)
 
 @admin_router.message(Command("run"))
 async def run_now(message: Message):
-    # Usage: /run daily | love | moon | weekly | winback
     if OWNER_ID not in (0, message.from_user.id):
         return
     args = (message.text or "").split()
