@@ -9,11 +9,15 @@ from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime, timedelta, timezone as dt_timezone  
 from pytz import timezone as tz  
+SCHED_TZ = tz("Europe/Vilnius")
 from datetime import date
 
 
 from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
 from tools.premium_moon_energy import get_moon_energy_result
+
+import asyncio
+import logging
 
 
 SUBS_KEY = "subs:all"  # set of chat_ids
@@ -201,41 +205,49 @@ async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
 _scheduler: AsyncIOScheduler | None = None
 
 def init_notifications(bot: Bot):
+    
     global _scheduler
     if _scheduler:
         return _scheduler
 
-    _scheduler = AsyncIOScheduler(timezone=tz("Europe/Vilnius"))
+    logging.info("[notif] starting scheduler…")
+
+    _scheduler = AsyncIOScheduler(
+        timezone=SCHED_TZ,
+        job_defaults={
+            "misfire_grace_time": 3600,  
+            "coalesce": True,            
+        },
+    )
 
     # 08:00 daily vibe (all users)
     _scheduler.add_job(
-        lambda: bot.loop.create_task(broadcast(bot, "daily")),
-        CronTrigger(hour=8, minute=0),
+        lambda: asyncio.create_task(broadcast(bot, "daily")),
+        CronTrigger(hour=8, minute=0, timezone=SCHED_TZ),
         id="daily_vibe_0800",
-        replace_existing=True,
-    )
-
-    # 20:00 moon energy (all users)
-    _scheduler.add_job(
-        lambda: bot.loop.create_task(broadcast(bot, "moon")),
-        CronTrigger(hour=20, minute=0),
-        id="moon_2000",
         replace_existing=True,
     )
 
     # 12:30 every day — Love Vibes (premium CTA)
     _scheduler.add_job(
-        lambda: bot.loop.create_task(broadcast(bot, "love")),
-        CronTrigger(hour=12, minute=30),
+        lambda: asyncio.create_task(broadcast(bot, "love")),
+        CronTrigger(hour=12, minute=30, timezone=SCHED_TZ),
         id="love_1230_daily",
         replace_existing=True,
     )
 
-
-        # Sunday 17:00 — weekly upsell/ready ping (all users)
+    # 20:00 moon energy (all users)
     _scheduler.add_job(
-        lambda: bot.loop.create_task(broadcast(bot, "weekly")),
-        CronTrigger(day_of_week="sun", hour=17, minute=0),
+        lambda: asyncio.create_task(broadcast(bot, "moon")),
+        CronTrigger(hour=20, minute=0, timezone=SCHED_TZ),
+        id="moon_2000",
+        replace_existing=True,
+    )
+
+    # Sunday 17:00 — weekly upsell (all users)
+    _scheduler.add_job(
+        lambda: asyncio.create_task(broadcast(bot, "weekly")),
+        CronTrigger(day_of_week="sun", hour=17, minute=0, timezone=SCHED_TZ),
         id="weekly_upsell_sun_1700",
         replace_existing=True,
     )
@@ -243,17 +255,22 @@ def init_notifications(bot: Bot):
     # Daily 11:00 — win-back (FREE users inactive 3+ days)
     async def run_winback():
         uids = await find_inactive(days=3)
-        if not uids:
-            return
-        await broadcast_segment(bot, "winback", uids)
+        if uids:
+            await broadcast_segment(bot, "winback", uids)
 
     _scheduler.add_job(
-        lambda: bot.loop.create_task(run_winback()),
-        CronTrigger(hour=11, minute=0),
+        lambda: asyncio.create_task(run_winback()),
+        CronTrigger(hour=11, minute=0, timezone=SCHED_TZ),
         id="winback_1100",
         replace_existing=True,
     )
 
-
     _scheduler.start()
+
+    # Log all jobs & next run times
+    for j in _scheduler.get_jobs():
+        logging.info(f"[notif] job={j.id} next={j.next_run_time}")
+
+    logging.info("[notif] scheduler started ✅")
     return _scheduler
+

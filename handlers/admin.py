@@ -4,6 +4,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, CommandObject
 from notifications import broadcast, send_to_user, _to_int
 from db import redis
+from notifications import _scheduler as NOTIF_SCHED
 
 admin_router = Router(name="admin")
 
@@ -79,4 +80,27 @@ async def fixsubs(message: Message):
     await message.answer(f"subs:all normalized. size = {n}")
 
 
+@admin_router.message(Command("jobs"))
+async def jobs(message: Message):
+    if OWNER_ID not in (0, message.from_user.id):
+        return
+    if NOTIF_SCHED is None:
+        await message.answer("Scheduler not started.")
+        return
+    lines = []
+    for j in NOTIF_SCHED.get_jobs():
+        lines.append(f"• {j.id} → next: {j.next_run_time}")
+    await message.answer("Scheduled jobs:\n" + "\n".join(lines))
 
+@admin_router.message(Command("run"))
+async def run_now(message: Message):
+    # Usage: /run daily | love | moon | weekly | winback
+    if OWNER_ID not in (0, message.from_user.id):
+        return
+    args = (message.text or "").split()
+    kind = args[1].lower() if len(args) > 1 else "daily"
+    if kind not in {"daily","love","moon","weekly","winback"}:
+        await message.answer("Usage: /run [daily|love|moon|weekly|winback]")
+        return
+    sent, total = await broadcast(message.bot, kind)
+    await message.answer(f"Ran '{kind}': sent {sent}/{total} ✅")
