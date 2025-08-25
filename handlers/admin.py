@@ -13,10 +13,14 @@ OWNER_ID = int(os.getenv("OWNER_ID", "0"))
 def is_owner(msg: Message) -> bool:
     return OWNER_ID == 0 or (msg.from_user and msg.from_user.id == OWNER_ID)
 
+# handlers/admin.py (only the lines with message.answer changed)
+
 @admin_router.message(Command("whoami"))
 async def whoami(message: Message):
     await message.answer(
-        f"Your Telegram user id: {message.from_user.id}\nOWNER_ID env: {OWNER_ID}"
+        f"Your Telegram user id: <code>{message.from_user.id}</code>\n"
+        f"OWNER_ID env: <code>{OWNER_ID}</code>",
+        parse_mode="HTML",
     )
 
 @admin_router.message(Command("jobs"))
@@ -28,8 +32,8 @@ async def jobs(message: Message):
     if sched is None:
         await message.answer("Scheduler not started. Use /startjobs to boot it.")
         return
-    lines = [f"• {j.id} → next: {j.next_run_time}" for j in sched.get_jobs()]
-    await message.answer("Scheduled jobs:\n" + "\n".join(lines))
+    lines = [f"• <code>{j.id}</code> → next: <code>{j.next_run_time}</code>" for j in sched.get_jobs()]
+    await message.answer("Scheduled jobs:\n" + "\n".join(lines), parse_mode="HTML")
 
 @admin_router.message(Command("startjobs"))
 async def startjobs(message: Message):
@@ -49,22 +53,24 @@ async def run_now(message: Message, command: CommandObject):
         await message.answer("Usage: /run [daily|love|moon|weekly|winback]")
         return
     sent, total = await broadcast(message.bot, kind)
+    # No risky markdown in this string, but we can be consistent:
     await message.answer(f"Ran '{kind}': sent {sent}/{total} ✅")
-
-@admin_router.message(Command("subscribe_me"))
-async def subscribe_me(message: Message):
-    # Quick helper to add yourself to the broadcast set
-    from notifications import add_subscriber
-    await add_subscriber(message.from_user.id)
-    await message.answer("Subscribed to notifications ✅")
 
 @admin_router.message(Command("subcount"))
 async def subcount(message: Message):
     n = await redis.scard("subs:all")
-    await message.answer(f"subs:all size = {n}")
+    await message.answer(f"subs:all size = <code>{n}</code>", parse_mode="HTML")
 
 @admin_router.message(Command("listsubs"))
 async def list_subs(message: Message):
     ids = await redis.smembers("subs:all")
-    cleaned = sorted(int(x) for x in ids if str(x).isdigit() or str(x).strip().isdigit())
-    await message.answer(f"Subscribers: {cleaned}")
+    # format IDs safely
+    cleaned: list[str] = []
+    for x in ids:
+        s = x.decode() if isinstance(x, bytes) else str(x)
+        digits = "".join(ch for ch in s if ch.isdigit())
+        if digits:
+            cleaned.append(digits)
+    cleaned_sorted = ", ".join(sorted(cleaned))
+    await message.answer(f"Subscribers: <code>{cleaned_sorted}</code>", parse_mode="HTML")
+
