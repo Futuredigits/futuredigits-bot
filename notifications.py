@@ -1,23 +1,24 @@
 from typing import Iterable
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from aiogram import Bot
+
+import asyncio
+import logging
+from pytz import timezone as tz
+
+SCHED_TZ = tz("Europe/Vilnius")
 
 from db import redis
 from aiogram.enums import ParseMode
 from localization import get_locale, _  
-from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime, timedelta, timezone as dt_timezone  
-from pytz import timezone as tz  
-SCHED_TZ = tz("Europe/Vilnius")
 from datetime import date
 
 
 from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
 from tools.premium_moon_energy import get_moon_energy_result
-
-import asyncio
-import logging
 
 
 SUBS_KEY = "subs:all"  # set of chat_ids
@@ -205,6 +206,7 @@ async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
 _scheduler: AsyncIOScheduler | None = None
 
 def init_notifications(bot: Bot):
+   
     global _scheduler
     if _scheduler:
         logging.info("[notif] scheduler already started")
@@ -212,43 +214,61 @@ def init_notifications(bot: Bot):
 
     logging.info("[notif] starting scheduler…")
 
+    
+    loop = asyncio.get_event_loop()
+
     _scheduler = AsyncIOScheduler(
+        event_loop=loop,
         timezone=SCHED_TZ,
         job_defaults={"misfire_grace_time": 3600, "coalesce": True},
     )
 
+    
+    async def job_daily():
+        await broadcast(bot, "daily")
+
+    async def job_love():
+        await broadcast(bot, "love")
+
+    async def job_moon():
+        await broadcast(bot, "moon")
+
+    async def job_weekly():
+        await broadcast(bot, "weekly")
+
+    async def job_winback():
+        uids = await find_inactive(days=3)
+        logging.info(f"[winback] candidates={len(uids)}")
+        if uids:
+            await broadcast_segment(bot, "winback", uids)
+
+    
     _scheduler.add_job(
-        lambda: asyncio.create_task(broadcast(bot, "daily")),
+        job_daily,
         CronTrigger(hour=8, minute=0, timezone=SCHED_TZ),
         id="daily_vibe_0800",
         replace_existing=True,
     )
     _scheduler.add_job(
-        lambda: asyncio.create_task(broadcast(bot, "love")),
+        job_love,
         CronTrigger(hour=12, minute=30, timezone=SCHED_TZ),
         id="love_1230_daily",
         replace_existing=True,
     )
     _scheduler.add_job(
-        lambda: asyncio.create_task(broadcast(bot, "moon")),
+        job_moon,
         CronTrigger(hour=20, minute=0, timezone=SCHED_TZ),
         id="moon_2000",
         replace_existing=True,
     )
     _scheduler.add_job(
-        lambda: asyncio.create_task(broadcast(bot, "weekly")),
+        job_weekly,
         CronTrigger(day_of_week="sun", hour=17, minute=0, timezone=SCHED_TZ),
         id="weekly_upsell_sun_1700",
         replace_existing=True,
     )
-
-    async def run_winback():
-        uids = await find_inactive(days=3)
-        if uids:
-            await broadcast_segment(bot, "winback", uids)
-
     _scheduler.add_job(
-        lambda: asyncio.create_task(run_winback()),
+        job_winback,
         CronTrigger(hour=11, minute=0, timezone=SCHED_TZ),
         id="winback_1100",
         replace_existing=True,
