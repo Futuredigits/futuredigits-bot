@@ -74,7 +74,6 @@ async def on_startup():
     except Exception:
         logging.exception("❌ Failed to set webhook")
 
-    # 🔽 start scheduler here
     try:
         sched = init_notifications(bot)
         logging.info(f"[notif] init returned: {sched}")
