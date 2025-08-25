@@ -5,6 +5,7 @@ from aiogram.filters import Command, CommandObject
 
 import notifications as notif
 from notifications import init_notifications, broadcast
+from db import redis
 
 admin_router = Router(name="admin")
 OWNER_ID = int(os.getenv("OWNER_ID", "0"))
@@ -44,8 +45,26 @@ async def run_now(message: Message, command: CommandObject):
         await message.answer("Not allowed.")
         return
     kind = (command.args or "daily").strip().lower()
-    if kind not in {"daily","love","moon","weekly","winback"}:
+    if kind not in {"daily", "love", "moon", "weekly", "winback"}:
         await message.answer("Usage: /run [daily|love|moon|weekly|winback]")
         return
     sent, total = await broadcast(message.bot, kind)
     await message.answer(f"Ran '{kind}': sent {sent}/{total} ✅")
+
+@admin_router.message(Command("subscribe_me"))
+async def subscribe_me(message: Message):
+    # Quick helper to add yourself to the broadcast set
+    from notifications import add_subscriber
+    await add_subscriber(message.from_user.id)
+    await message.answer("Subscribed to notifications ✅")
+
+@admin_router.message(Command("subcount"))
+async def subcount(message: Message):
+    n = await redis.scard("subs:all")
+    await message.answer(f"subs:all size = {n}")
+
+@admin_router.message(Command("listsubs"))
+async def list_subs(message: Message):
+    ids = await redis.smembers("subs:all")
+    cleaned = sorted(int(x) for x in ids if str(x).isdigit() or str(x).strip().isdigit())
+    await message.answer(f"Subscribers: {cleaned}")
