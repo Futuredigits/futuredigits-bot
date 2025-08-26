@@ -47,6 +47,34 @@ def build_notif_cta_btn(premium: bool, loc: str) -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text=text, callback_data="open_premium")]
     ])
 
+# notifications.py
+
+# --- CTA button builder (inline)
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+def build_notif_cta_btn(premium: bool, loc: str, kind: str | None = None) -> InlineKeyboardMarkup:
+    """
+    First row: topic deep-link (Daily / Love / Moon)
+    Second row: Upgrade (free) or Explore (premium)
+    Falls back to Premium menu if kind is unknown.
+    """
+    mapping = {
+        "daily": ("btn_daily", "open_daily"),
+        "love":  ("btn_love",  "open_love"),
+        "moon":  ("btn_moon",  "open_moon"),
+        # weekly/winback: still route them somewhere useful
+        "weekly": ("btn_daily", "open_daily"),
+        "winback": ("btn_daily", "open_daily"),
+    }
+    key, cb = mapping.get(kind or "", ("btn_daily", "open_daily"))
+    topic_btn = InlineKeyboardButton(text=_(key, locale=loc), callback_data=cb)
+
+    bottom_text = _("cta_button_explore", locale=loc) if premium else _("cta_button_unlock", locale=loc)
+    bottom_btn = InlineKeyboardButton(text=bottom_text, callback_data="open_premium")
+
+    return InlineKeyboardMarkup(inline_keyboard=[[topic_btn], [bottom_btn]])
+
+
 # --- Message composers
 def teaser_text(kind: str, loc: str) -> str:
     if kind == "daily":
@@ -111,7 +139,7 @@ async def send_to_user(bot, user_id: int, kind: str):
 
 async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, InlineKeyboardMarkup]:
     premium = _is_premium(user_id)
-    kb = build_notif_cta_btn(premium, loc)
+    kb = build_notif_cta_btn(premium, loc, kind)  # <— add kind here
 
     if premium:
         if kind == "daily":
@@ -129,7 +157,6 @@ async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, Inlin
             return _(_pick_key(keys), locale=loc), kb
     else:
         return teaser_text(kind, loc), kb
-
 
 
 async def find_inactive(days: int) -> list[int]:

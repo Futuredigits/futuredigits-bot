@@ -175,6 +175,43 @@ async def set_lang_ru(callback: CallbackQuery):
     )
     await callback.answer()
 
+
+@router.callback_query(F.data.in_({"open_daily", "open_moon", "open_love"}))
+async def notif_topic_open_cb(call: CallbackQuery, state: FSMContext):
+    user_id = call.from_user.id
+    loc = get_locale(user_id)
+
+    if not is_premium_user(user_id):
+        if user_id in USED_TRIAL:
+            await call.message.answer(
+                _("premium_locked", locale=loc),
+                parse_mode=ParseMode.MARKDOWN,
+                disable_web_page_preview=True,
+                reply_markup=build_premium_menu(loc),
+            )
+            await call.answer()
+            return
+        else:
+            USED_TRIAL.add(user_id)
+            await call.message.answer(_("premium_trial_granted", locale=loc), parse_mode=ParseMode.MARKDOWN)
+
+    # Route by topic
+    if call.data == "open_daily":
+        from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
+        result = get_daily_universal_vibe_forecast(user_id=user_id, locale=loc)
+        await call.message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
+
+    elif call.data == "open_moon":
+        from tools.premium_moon_energy import get_moon_energy_forecast
+        result = get_moon_energy_forecast(user_id=user_id, locale=loc)
+        await call.message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
+
+    else:  # open_love
+        await call.message.answer(_("intro_love_vibes", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
+        await state.set_state(LoveVibesStates.waiting_for_full_name)
+
+    await call.answer()
+
 # --- /help
 @router.message(Command("help"), StateFilter("*"))
 async def help_handler(message: Message, state: FSMContext):
