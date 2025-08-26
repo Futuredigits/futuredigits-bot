@@ -62,19 +62,27 @@
     "cta_button_unlock": "👉 Unlock Premium Access",
     "cta_button_explore": "🔮 Explore More Insights",
 
-    "notif_free_teaser_daily": "☀️ Get your daily numerology guidance. Unlock Premium to see today’s message.",
-    "notif_free_teaser_moon": "🌙 See tonight’s Moon Energy and how it affects you. Unlock Premium to read it now.",
-    "notif_free_teaser_love": "❤️ Curious about today’s love vibes? Unlock Premium for a personalized nudge.",
-    "notif_free_teaser_weekly": "🗓 Your week ahead forecast is ready in Premium. Tap to unlock guidance.",
-    "notif_free_winback": "✨ We saved a seat for you. Unlock Premium guidance and return to your numbers.",
-    "notif_premium_love_prompt": "❤️ Your Love Vibe awaits. Enter a name to tune in, or explore other Premium tools.",
-    "notif_premium_weekly_ready": "🗓 Your week ahead is ready. Open Premium to see key opportunities & cautions.",
-    "notif_premium_winback": "✨ Welcome back energy is here. Open Premium for today’s guidance and a gentle reset.",
+    "notif_free_teaser_daily": "☀️ Today’s number carries a key. Open it before the day slips away.",
+    "notif_free_teaser_moon": "🌙 Tonight’s Moon opens a soft window. See what to release before sleep.",
+    "notif_free_teaser_love": "❤️ Timing favors connection today—see your nudge before the moment passes.",
+    "notif_free_teaser_weekly": "🗓 Your 7‑day map is ready—key moves and cautions inside Premium.",
+    "notif_free_winback": "✨ We saved your place. Come back—today’s guidance is waiting.",
+    "notif_premium_love_prompt": "❤️ Today’s Love Vibe is amplified. Type a name to tune it— or explore another Premium reading.",
+    "notif_premium_weekly_ready": "🗓 Your 7-day map is ready: 3 green lights, 1 red flag. Open to plan smart.",
+    "notif_premium_winback": "✨ Welcome back. Start with today’s 60-second read and re-enter the flow.",
+
+    "notif_premium_weekly_ready_v1": "🗓 This week’s numbers are in—see key opportunities, cautions, and best days.",
+    "notif_premium_weekly_ready_v2": "🗓 Preview your week: peak days, talks to start, pitfalls to skip.",
+    "notif_premium_weekly_ready_v3": "🗓 Align the week in 60 seconds—open your forecast now.",
+
+    "notif_premium_winback_v1": "✨ We’ve kept your seat warm—open Premium and pick any reading to reset today.",
+    "notif_premium_winback_v2": "✨ A soft restart is ready. One quick read to get back in rhythm.",
+    "notif_premium_winback_v3": "✨ Your guidance resumed—open to see the one step that unlocks momentum.",
 
     
     "notif_daily_vibe_morning_v1": "☀️ Your numerology for today is ready. Tap to see the one move that will make the day flow.",
     "notif_daily_vibe_morning_v2": "☀️ Today’s number has a message for you. Open to align your next step.",
-    "notif_daily_vibe_morning_v3": "☀️ Start in sync: your daily guidance is waiting. One small action inside.",
+    "notif_daily_vibe_morning_v3": "☀️ Don’t guess the vibe—read it now and set the tone.",
 
     "notif_love_vibes_midday_v1": "❤️ Midday check-in: today’s Love Vibe includes one small action to attract warmth. Open it.",
     "notif_love_vibes_midday_v2": "❤️ Your heart’s forecast is live. See the nudge that softens and magnetizes.",
@@ -84,21 +92,21 @@
     "notif_moon_energy_evening_v2": "🌙 Lunar guidance for tonight is ready. Breathe, read, and unwind.",
     "notif_moon_energy_evening_v3": "🌙 Align with tonight’s Moon. One insight, one easeful action.",
 
-    "notif_free_teaser_daily_v1": "☀️ Your daily numerology is ready. Unlock Premium to read today’s guidance.",
-    "notif_free_teaser_daily_v2": "☀️ See today’s number and what to do with it. Unlock to read.",
+    "notif_free_teaser_daily_v1": "☀️ One move today unlocks flow. See what it is inside Premium.",
+    "notif_free_teaser_daily_v2": "☀️ Your day has a code—decode it and aim your energy.",
     "notif_free_teaser_daily_v3": "☀️ Your focused step for today is waiting. Unlock to reveal it.",
 
-    "notif_free_teaser_moon_v1": "🌙 Tonight’s Moon, decoded for you. Unlock Premium to see what it means now.",
-    "notif_free_teaser_moon_v2": "🌙 Read tonight’s lunar cue and move with it. Unlock to view.",
-    "notif_free_teaser_moon_v3": "🌙 A gentle lunar nudge is ready. Unlock to align.",
+    "notif_free_teaser_moon_v1": "🌙 The phase tonight favors one gentle step. Open Premium to align.",
+    "notif_free_teaser_moon_v2": "🌙 A lunar tailwind is here—catch it before midnight.",
+    "notif_free_teaser_moon_v3": "🌙 Read the cue, breathe easier: your lunar hint is waiting.",
 
-    "notif_free_teaser_love_v1": "❤️ See today’s personalized Love Vibe. Unlock Premium for your nudge.",
-    "notif_free_teaser_love_v2": "❤️ Your heart’s timing is highlighted today. Unlock to read it.",
-    "notif_free_teaser_love_v3": "❤️ A tiny move attracts big warmth. Unlock today’s Love Vibe.",
+    "notif_free_teaser_love_v1": "❤️ A tiny shift could warm up your day—open your Love Vibe.",
+    "notif_free_teaser_love_v2": "❤️ Your Love Vibe is active—see how to be effortlessly magnetic.",
+    "notif_free_teaser_love_v3": "❤️ Today’s heart‐timing is highlighted. Read it while it counts.",
 
-    "notif_premium_love_prompt_v1": "❤️ Your Love Vibe awaits. Enter a name to tune in, or explore other Premium tools.",
-    "notif_premium_love_prompt_v2": "❤️ Love Vibe is live for you. Send a name to personalize it—or browse more Premium insights.",
-    "notif_premium_love_prompt_v3": "❤️ Ready for today’s romantic frequency? Share a name to get your signal.",
+    "notif_premium_love_prompt_v1": "❤️ Love Vibe is live. Enter a name to personalize today’s signal.",
+    "notif_premium_love_prompt_v2": "❤️ A romantic window is open now. Send a name to see what to do while it lasts.",
+    "notif_premium_love_prompt_v3": "❤️ The heart frequency peaks today—type their name and get one warm move.",
 
     
     "result_life_path": 

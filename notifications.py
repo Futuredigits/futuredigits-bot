@@ -21,8 +21,9 @@ from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
 from tools.premium_moon_energy import get_moon_energy_result
 
 
-SUBS_KEY = "subs:all"  # set of chat_ids
+SUBS_KEY = "subs:all"  
 LAST_ACTIVE_HASH = "subs:last_active"  # hash: { user_id: last_active_iso }
+
 
 
 async def add_subscriber(user_id: int):
@@ -121,9 +122,11 @@ async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, Inlin
             keys = ["notif_premium_love_prompt_v1","notif_premium_love_prompt_v2","notif_premium_love_prompt_v3"]
             return _(_pick_key(keys), locale=loc), kb
         if kind == "weekly":
-            return _("notif_premium_weekly_ready", locale=loc), kb
+            keys = ["notif_premium_weekly_ready_v1","notif_premium_weekly_ready_v2","notif_premium_weekly_ready_v3"]
+            return _(_pick_key(keys), locale=loc), kb
         if kind == "winback":
-            return _("notif_premium_winback", locale=loc), kb
+            keys = ["notif_premium_winback_v1","notif_premium_winback_v2","notif_premium_winback_v3"]
+            return _(_pick_key(keys), locale=loc), kb
     else:
         return teaser_text(kind, loc), kb
 
@@ -185,7 +188,6 @@ async def broadcast(bot, kind: str):
 
 
 
-
 async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
     for uid in user_ids:
         loc = get_locale(uid)
@@ -199,7 +201,6 @@ async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
                 await redis.srem(SUBS_KEY, str(uid))
                 await redis.hdel(LAST_ACTIVE_HASH, str(uid))
             continue
-
 
 
 # --- Scheduler
