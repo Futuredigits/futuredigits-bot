@@ -264,10 +264,10 @@ async def premium_handler(message: Message, state: FSMContext):
     loc = get_locale(message.from_user.id)
     await message.answer(
         _("premium_intro", locale=loc),
-        parse_mode=ParseMode.MARKDOWN,
         reply_markup=_premium_kb(loc),
         disable_web_page_preview=True,
     )
+
 
 def _premium_kb(loc: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
@@ -492,8 +492,6 @@ async def open_premium_cb(call: CallbackQuery):
         disable_web_page_preview=True,
     )
     await call.answer()
-
-
 
 
 
