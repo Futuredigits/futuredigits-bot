@@ -11,6 +11,15 @@ from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from localization import _, get_locale, set_locale, TRANSLATIONS
+from aiogram.types import LabeledPrice, PreCheckoutQuery
+import time
+from datetime import datetime, timedelta, timezone
+from db import redis
+
+PRICES = {
+    "monthly": 499,   # Stars
+    "lifetime": 1999  # Stars
+}
 
 
 # --- Premium access flags
@@ -134,6 +143,11 @@ def caption_to_key(text: str) -> str | None:
             return k
     return None
 
+def _plan_label(loc: str, plan: str) -> str:
+    if loc == "ru":
+        return {"monthly": "1 месяц (подписка)", "lifetime": "Навсегда"}[plan]
+    return {"monthly": "1 month (subscription)", "lifetime": "Lifetime"}[plan]
+
 # --- Router
 router = Router(name=__name__)
 
@@ -248,7 +262,18 @@ async def language_handler(message: Message, state: FSMContext):
 async def premium_handler(message: Message, state: FSMContext):
     await state.clear()
     loc = get_locale(message.from_user.id)
-    await message.answer(_("premium_intro", locale=loc), parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
+    await message.answer(
+        _("premium_intro", locale=loc),
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=_premium_kb(loc),
+        disable_web_page_preview=True,
+    )
+
+def _premium_kb(loc: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=_("btn_buy_monthly", locale=loc),  callback_data="buy:monthly")],
+        [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
+    ])
 
 @router.message(F.text == TRANSLATIONS.get("en", {}).get("btn_upgrade", "💎 Upgrade Now"))
 @router.message(F.text == TRANSLATIONS.get("ru", {}).get("btn_upgrade", "💎 Улучшить до Премиум"))
@@ -292,6 +317,65 @@ async def show_main_menu(message: Message, state: FSMContext):
         reply_markup=build_main_menu(loc),
         parse_mode=ParseMode.MARKDOWN,
     )
+
+@router.callback_query(F.data.startswith("buy:"))
+async def on_buy_plan(call: CallbackQuery):
+    loc = get_locale(call.from_user.id)
+    plan = call.data.split(":", 1)[1]
+    if plan not in PRICES:
+        await call.answer("Unknown plan", show_alert=True)
+        return
+
+    title = _("premium_invoice_title", locale=loc)
+    desc  = _("premium_invoice_desc", locale=loc).format(plan=_plan_label(loc, plan))
+    payload = f"premium:{plan}:{call.from_user.id}:{int(time.time())}"
+    prices = [LabeledPrice(label=_plan_label(loc, plan), amount=PRICES[plan])]
+
+    kwargs = {}
+    if plan == "monthly":
+        kwargs["subscription_period"] = 2592000  # 30 days (auto-renew)
+
+    await call.bot.send_invoice(
+        chat_id=call.from_user.id,
+        title=title,
+        description=desc,
+        payload=payload,
+        currency="XTR",    # Telegram Stars
+        prices=prices,
+        **kwargs
+    )
+    await call.answer(_("toast_invoice_sent", locale=loc))
+
+@router.pre_checkout_query()
+async def on_pre_checkout(pre: PreCheckoutQuery):
+    await pre.answer(ok=True)
+
+async def _grant_premium(user_id: int, plan: str):
+    now = datetime.now(timezone.utc)
+    if plan == "lifetime":
+        await redis.sadd("premium:lifetime", user_id)
+        PAID_USERS.add(user_id)
+    elif plan == "monthly":
+        next_renewal = int((now + timedelta(days=30)).timestamp())
+        await redis.hset("premium:sub_next_renewal", str(user_id), next_renewal)
+        PAID_USERS.add(user_id)
+
+@router.message(F.successful_payment)
+async def on_successful_payment(message: Message):
+    user_id = message.from_user.id
+    loc = get_locale(user_id)
+
+    payload = (message.successful_payment or {}).invoice_payload or ""
+    plan = payload.split(":", 2)[1] if ":" in payload else "lifetime"
+
+    await _grant_premium(user_id, plan)   
+    await message.answer(
+        _("premium_menu_intro", locale=loc),
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=build_premium_menu(loc),
+        disable_web_page_preview=True,
+    )
+
 
 # --- Unified Main Menu Handler 
 @router.message(F.text.in_(MAIN_CAPTIONS), StateFilter("*"))
@@ -402,12 +486,13 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 async def open_premium_cb(call: CallbackQuery):
     loc = get_locale(call.from_user.id)
     await call.message.answer(
-        _("premium_menu_intro", locale=loc),
+        _("premium_intro", locale=loc),
         parse_mode=ParseMode.MARKDOWN,
-        reply_markup=build_premium_menu(loc),  # call directly; it's defined in this file
+        reply_markup=_premium_kb(loc),   
         disable_web_page_preview=True,
     )
     await call.answer()
+
 
 
 
