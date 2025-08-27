@@ -371,7 +371,7 @@ async def on_successful_payment(message: Message):
 
     await _grant_premium(user_id, plan)   
     await message.answer(
-        _("premium_menu_intro", locale=loc),
+        _("payment_success", locale=loc),
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=build_premium_menu(loc),
         disable_web_page_preview=True,
@@ -498,7 +498,7 @@ async def open_premium_cb(call: CallbackQuery, state: FSMContext):
     else:
         await call.message.answer(
             _("premium_intro", locale=loc),
-            parse_mode=ParseMode.HTML,       # ← and here too
+            parse_mode=ParseMode.HTML,       
             reply_markup=_premium_kb(loc),
             disable_web_page_preview=True,
         )
