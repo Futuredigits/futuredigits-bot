@@ -485,15 +485,26 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
 
 @router.callback_query(F.data == "open_premium")
-async def open_premium_cb(call: CallbackQuery):
-    loc = get_locale(call.from_user.id)
-    await call.message.answer(
-        _("premium_menu_intro", locale=loc),
-        parse_mode=ParseMode.MARKDOWN,
-        reply_markup=build_premium_menu(loc),  # call directly; it's defined in this file
-        disable_web_page_preview=True,
-    )
+async def open_premium_cb(call: CallbackQuery, state: FSMContext):
+    user_id = call.from_user.id
+    loc = get_locale(user_id)
+    await state.clear()
+
+    if is_premium_user(user_id):        
+        await call.message.answer(
+            _("premium_menu_intro", locale=loc),
+            reply_markup=build_premium_menu(loc),
+            disable_web_page_preview=True,
+        )
+    else:        
+        await call.message.answer(
+            _("premium_intro", locale=loc),
+            reply_markup=_premium_kb(loc),
+            disable_web_page_preview=True,
+        )
+
     await call.answer()
+
 
 
 
