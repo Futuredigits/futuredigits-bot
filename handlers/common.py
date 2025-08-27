@@ -262,7 +262,13 @@ async def language_handler(message: Message, state: FSMContext):
 async def premium_handler(message: Message, state: FSMContext):
     await state.clear()
     loc = get_locale(message.from_user.id)
-    await message.answer(_("premium_intro", locale=loc), parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
+    await message.answer(
+        _("premium_intro", locale=loc),
+        reply_markup=_premium_kb(loc),        
+        disable_web_page_preview=True         
+        
+    )
+
 
 
 def _premium_kb(loc: str) -> InlineKeyboardMarkup:
