@@ -321,29 +321,45 @@ async def show_main_menu(message: Message, state: FSMContext):
 
 @router.callback_query(F.data.startswith("buy:"))
 async def on_buy_plan(call: CallbackQuery):
-    loc = get_locale(call.from_user.id)
+    user_id = call.from_user.id
+    loc = get_locale(user_id)
     plan = call.data.split(":", 1)[1]
+
     if plan not in PRICES:
         await call.answer("Unknown plan", show_alert=True)
         return
 
-    title = _("premium_invoice_title", locale=loc)
-    desc  = _("premium_invoice_desc", locale=loc).format(plan=_plan_label(loc, plan))
-    payload = f"premium:{plan}:{call.from_user.id}:{int(time.time())}"
-    prices = [LabeledPrice(label=_plan_label(loc, plan), amount=PRICES[plan])]
+    title   = _("premium_invoice_title", locale=loc)
+    desc    = _("premium_invoice_desc",  locale=loc).format(plan=_plan_label(loc, plan))
+    payload = f"premium:{plan}:{user_id}:{int(time.time())}"
+    prices  = [LabeledPrice(label=_plan_label(loc, plan), amount=PRICES[plan])]
 
-    kwargs = {}
     if plan == "monthly":
-        kwargs["subscription_period"] = 2592000  # 30 days (auto-renew)
+        # Subscriptions must use createInvoiceLink with subscription_period
+        link = await call.bot.create_invoice_link(
+            title=title,
+            description=desc,
+            payload=payload,
+            currency="XTR",
+            prices=prices,
+            subscription_period=2592000  # exactly 30 days, the only allowed value
+        )
+        kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text=_("btn_buy_monthly", locale=loc), url=link)],
+            [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
+        ])
+        await call.message.answer(_("premium_intro", locale=loc), reply_markup=kb, disable_web_page_preview=True)
+        await call.answer()
+        return
 
+    # Lifetime (one-time) stays as an in-chat Stars invoice
     await call.bot.send_invoice(
-        chat_id=call.from_user.id,
+        chat_id=user_id,
         title=title,
         description=desc,
         payload=payload,
-        currency="XTR",    # Telegram Stars
+        currency="XTR",
         prices=prices,
-        **kwargs
     )
     await call.answer(_("toast_invoice_sent", locale=loc))
 
