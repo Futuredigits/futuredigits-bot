@@ -1,6 +1,8 @@
 import os
 import logging
 from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
+from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.memory import MemoryStorage
 from db import redis
 from aiogram.fsm.storage.redis import RedisStorage
@@ -17,7 +19,10 @@ load_dotenv()
 
 
 TOKEN = os.getenv("BOT_TOKEN")
-bot = Bot(token=TOKEN, parse_mode="Markdown")
+bot = Bot(
+    token=TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+)
 storage = RedisStorage(redis)
 dp = Dispatcher(storage=storage)
 
