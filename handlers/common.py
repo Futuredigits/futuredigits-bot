@@ -262,19 +262,36 @@ async def language_handler(message: Message, state: FSMContext):
 async def premium_handler(message: Message, state: FSMContext):
     await state.clear()
     loc = get_locale(message.from_user.id)
+    kb = await _premium_kb_with_link(message.bot, message.from_user.id, loc)
     await message.answer(
         _("premium_intro", locale=loc),
-        parse_mode=ParseMode.HTML,           
-        reply_markup=_premium_kb(loc),
+        parse_mode=ParseMode.HTML,
+        reply_markup=kb,
         disable_web_page_preview=True,
     )
 
 
-def _premium_kb(loc: str) -> InlineKeyboardMarkup:
+
+async def _premium_kb_with_link(bot, user_id: int, loc: str) -> InlineKeyboardMarkup:
+    title   = _("premium_invoice_title", locale=loc)
+    desc    = _("premium_invoice_desc",  locale=loc).format(plan=_plan_label(loc, "monthly"))
+    payload = f"premium:monthly:{user_id}:{int(time.time())}"
+    prices  = [LabeledPrice(label=_plan_label(loc, "monthly"), amount=PRICES["monthly"])]
+
+    monthly_link = await bot.create_invoice_link(
+        title=title,
+        description=desc,
+        payload=payload,
+        currency="XTR",
+        prices=prices,
+        subscription_period=2592000  # exactly 30 days (required by Telegram)
+    )
+
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=_("btn_buy_monthly", locale=loc),  callback_data="buy:monthly")],
+        [InlineKeyboardButton(text=_("btn_buy_monthly",  locale=loc), url=monthly_link)],
         [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
     ])
+
 
 @router.message(F.text == TRANSLATIONS.get("en", {}).get("btn_upgrade", "💎 Upgrade Now"))
 @router.message(F.text == TRANSLATIONS.get("ru", {}).get("btn_upgrade", "💎 Улучшить до Премиум"))
@@ -512,13 +529,15 @@ async def open_premium_cb(call: CallbackQuery, state: FSMContext):
             disable_web_page_preview=True,
         )
     else:
+        kb = await _premium_kb_with_link(call.bot, user_id, loc)
         await call.message.answer(
             _("premium_intro", locale=loc),
-            parse_mode=ParseMode.HTML,       
-            reply_markup=_premium_kb(loc),
+            parse_mode=ParseMode.HTML,
+            reply_markup=kb,
             disable_web_page_preview=True,
         )
     await call.answer()
+
 
 
 
