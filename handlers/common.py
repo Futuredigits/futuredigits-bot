@@ -333,19 +333,21 @@ async def show_premium_menu(message: Message, state: FSMContext):
     )
 
 async def hydrate_premium_cache():
-    
     try:
-        # Lifetime set
-        lifetimes = await redis.smembers("premium:lifetime") or set()
+        # Reset mirrors
         PAID_USERS.clear()
+        SUB_NEXT_RENEWAL.clear()
+
+        # Lifetime users -> PAID_USERS
+        lifetimes = await redis.smembers("premium:lifetime") or set()
         for u in lifetimes:
             s = u.decode() if isinstance(u, (bytes, bytearray)) else str(u)
             if s.isdigit():
                 PAID_USERS.add(int(s))
 
-        # Monthly next-renewal hash
+        # Monthly: load next-renewal timestamps, and warm active users into PAID_USERS
         h = await redis.hgetall("premium:sub_next_renewal") or {}
-        SUB_NEXT_RENEWAL.clear()
+        now_ts = int(time.time())
         for k, v in h.items():
             ks = k.decode() if isinstance(k, (bytes, bytearray)) else str(k)
             vs = v.decode() if isinstance(v, (bytes, bytearray)) else str(v)
@@ -353,12 +355,15 @@ async def hydrate_premium_cache():
                 uid = int(ks)
                 ts = int(vs)
                 SUB_NEXT_RENEWAL[uid] = ts
+                if ts > now_ts:
+                    PAID_USERS.add(uid)  # warm active monthly subs as paid
             except Exception:
                 continue
 
         logging.info(f"[premium] hydrated: lifetime={len(PAID_USERS)} monthly={len(SUB_NEXT_RENEWAL)}")
     except Exception as e:
         logging.exception(f"[premium] hydrate failed: {e}")
+
 
 
 @router.message(
@@ -427,16 +432,19 @@ async def on_buy_plan(call: CallbackQuery):
 async def on_pre_checkout(pre: PreCheckoutQuery):
     await pre.answer(ok=True)
 
-async def _grant_premium(user_id: int, plan: str):
+async def _grant_premium(user_id: int, plan: str, *, expires_ts: int | None = None, charge_id: str | None = None):
+    
     now = datetime.now(timezone.utc)
     if plan == "lifetime":
-        await redis.sadd("premium:lifetime", str(user_id))  # store as string
-        PAID_USERS.add(user_id)  # mirror
+        await redis.sadd("premium:lifetime", user_id)
+        PAID_USERS.add(user_id)
     elif plan == "monthly":
-        next_renewal = int((now + timedelta(days=30)).timestamp())
-        await redis.hset("premium:sub_next_renewal", str(user_id), next_renewal)
-        SUB_NEXT_RENEWAL[user_id] = next_renewal  # mirror
-        PAID_USERS.add(user_id)  # convenience mirror; validity enforced by timestamp
+        if not expires_ts:
+            expires_ts = int((now + timedelta(days=30)).timestamp())
+        await redis.hset("premium:sub_next_renewal", str(user_id), int(expires_ts))
+        if charge_id:
+            await redis.hset("premium:last_charge_id", str(user_id), charge_id)
+        PAID_USERS.add(user_id)
 
 
 @router.message(F.successful_payment)
@@ -444,10 +452,28 @@ async def on_successful_payment(message: Message):
     user_id = message.from_user.id
     loc = get_locale(user_id)
 
-    payload = (message.successful_payment or {}).invoice_payload or ""
+    sp = message.successful_payment
+    payload = (sp or {}).invoice_payload or ""
     plan = payload.split(":", 2)[1] if ":" in payload else "lifetime"
 
-    await _grant_premium(user_id, plan)   
+    try:
+        
+        expires_ts = getattr(sp, "subscription_expiration_date", None)
+        if isinstance(expires_ts, datetime):
+            
+            expires_ts = int(expires_ts.replace(tzinfo=timezone.utc).timestamp())
+        elif isinstance(expires_ts, (int, float)):
+            expires_ts = int(expires_ts)
+        else:
+            expires_ts = None
+
+        charge_id = getattr(sp, "telegram_payment_charge_id", None)
+    except Exception:
+        expires_ts = None
+        charge_id = None
+
+    await _grant_premium(user_id, plan, expires_ts=expires_ts, charge_id=charge_id)
+
     await message.answer(
         _("payment_success", locale=loc),
         parse_mode=ParseMode.MARKDOWN,
