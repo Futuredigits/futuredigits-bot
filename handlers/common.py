@@ -17,7 +17,7 @@ from datetime import datetime, timedelta, timezone
 from db import redis
 
 PRICES = {
-    "monthly": 499,   # Stars
+    "monthly": 199,   # Stars
     "lifetime": 1999  # Stars
 }
 
