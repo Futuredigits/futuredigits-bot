@@ -12,6 +12,7 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from localization import _, get_locale, set_locale, TRANSLATIONS
 from aiogram.types import LabeledPrice, PreCheckoutQuery
+import logging
 import time
 from datetime import datetime, timedelta, timezone
 from db import redis
@@ -24,11 +25,24 @@ PRICES = {
 
 # --- Premium access flags
 OWNER_ID = 619941697
-PAID_USERS = set()
-USED_TRIAL = set()
+PAID_USERS: set[int] = set()              
+SUB_NEXT_RENEWAL: dict[int, int] = {}     
+USED_TRIAL: set[int] = set()              
 
 def is_premium_user(user_id: int) -> bool:
-    return user_id == OWNER_ID or user_id in PAID_USERS
+    """
+    Restart-safe check:
+    - OWNER always premium
+    - Lifetime in PAID_USERS
+    - Monthly if now < next_renewal in SUB_NEXT_RENEWAL
+    """
+    if user_id == OWNER_ID:
+        return True
+    if user_id in PAID_USERS:
+        return True
+    ts = SUB_NEXT_RENEWAL.get(user_id)
+    return bool(ts and ts > int(time.time()))
+
 
 # --- FSM states 
 from states import (
@@ -318,6 +332,35 @@ async def show_premium_menu(message: Message, state: FSMContext):
         disable_web_page_preview=True,
     )
 
+async def hydrate_premium_cache():
+    
+    try:
+        # Lifetime set
+        lifetimes = await redis.smembers("premium:lifetime") or set()
+        PAID_USERS.clear()
+        for u in lifetimes:
+            s = u.decode() if isinstance(u, (bytes, bytearray)) else str(u)
+            if s.isdigit():
+                PAID_USERS.add(int(s))
+
+        # Monthly next-renewal hash
+        h = await redis.hgetall("premium:sub_next_renewal") or {}
+        SUB_NEXT_RENEWAL.clear()
+        for k, v in h.items():
+            ks = k.decode() if isinstance(k, (bytes, bytearray)) else str(k)
+            vs = v.decode() if isinstance(v, (bytes, bytearray)) else str(v)
+            try:
+                uid = int(ks)
+                ts = int(vs)
+                SUB_NEXT_RENEWAL[uid] = ts
+            except Exception:
+                continue
+
+        logging.info(f"[premium] hydrated: lifetime={len(PAID_USERS)} monthly={len(SUB_NEXT_RENEWAL)}")
+    except Exception as e:
+        logging.exception(f"[premium] hydrate failed: {e}")
+
+
 @router.message(
     F.text.in_({
         TRANSLATIONS.get("en", {}).get("btn_back", "🔙 Back to Main Menu"),
@@ -387,12 +430,14 @@ async def on_pre_checkout(pre: PreCheckoutQuery):
 async def _grant_premium(user_id: int, plan: str):
     now = datetime.now(timezone.utc)
     if plan == "lifetime":
-        await redis.sadd("premium:lifetime", user_id)
-        PAID_USERS.add(user_id)
+        await redis.sadd("premium:lifetime", str(user_id))  # store as string
+        PAID_USERS.add(user_id)  # mirror
     elif plan == "monthly":
         next_renewal = int((now + timedelta(days=30)).timestamp())
         await redis.hset("premium:sub_next_renewal", str(user_id), next_renewal)
-        PAID_USERS.add(user_id)
+        SUB_NEXT_RENEWAL[user_id] = next_renewal  # mirror
+        PAID_USERS.add(user_id)  # convenience mirror; validity enforced by timestamp
+
 
 @router.message(F.successful_payment)
 async def on_successful_payment(message: Message):

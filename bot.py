@@ -27,7 +27,7 @@ storage = RedisStorage(redis)
 dp = Dispatcher(storage=storage)
 
 
-from handlers.common import register_common_handlers
+from handlers.common import register_common_handlers, hydrate_premium_cache
 register_common_handlers(dp)
 
 from handlers.life_path import router as life_path_router
@@ -73,6 +73,7 @@ app = FastAPI()
 @app.on_event("startup")
 async def on_startup():
     logging.info("🚀 Bot is starting...")
+    await hydrate_premium_cache()
     try:
         result = await bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
         logging.info(f"📡 Webhook set: {result}")
