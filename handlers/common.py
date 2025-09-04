@@ -85,7 +85,8 @@ PREMIUM_BTN_KEYS = [
 
 # --- Helpers: labels & keyboards 
 def label(locale: str, key: str) -> str:
-    return TRANSLATIONS.get(locale, {}).get(key) or TRANSLATIONS["en"].get(key, key)
+    return TRANSLATIONS.get(locale, {}).get(key) or TRANSLATIONS.get("en", {}).get(key, key)
+
 
 def build_main_menu(locale: str) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
@@ -156,6 +157,19 @@ def caption_to_key(text: str) -> str | None:
         if text == TRANSLATIONS.get("en", {}).get(k) or text == TRANSLATIONS.get("ru", {}).get(k):
             return k
     return None
+
+def is_main_caption(text: str | None) -> bool:
+    if not text:
+        return False
+    k = caption_to_key(text.strip())
+    return k in MAIN_BTN_KEYS
+
+def is_premium_caption(text: str | None) -> bool:
+    if not text:
+        return False
+    k = caption_to_key(text.strip())
+    return k in PREMIUM_BTN_KEYS
+
 
 def _plan_label(loc: str, plan: str) -> str:
     if loc == "ru":
@@ -487,7 +501,7 @@ async def on_successful_payment(message: Message):
 
 
 # --- Unified Main Menu Handler 
-@router.message(F.text.in_(MAIN_CAPTIONS), StateFilter("*"))
+@router.message(F.text.func(is_main_caption), StateFilter("*"))
 async def unified_main_menu_handler(message: Message, state: FSMContext):
     from notifications import add_subscriber
     await add_subscriber(message.from_user.id)
@@ -522,7 +536,7 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
         await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
 
 # --- Unified Premium Menu Handler
-@router.message(F.text.in_(PREMIUM_CAPTIONS), StateFilter("*"))
+@router.message(F.text.func(is_premium_caption), StateFilter("*"))
 async def unified_premium_menu_handler(message: Message, state: FSMContext):
     from notifications import add_subscriber
     await add_subscriber(message.from_user.id)
