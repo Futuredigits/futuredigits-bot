@@ -1,28 +1,41 @@
 import os
 import logging
-from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
-from db import redis
-from aiogram.fsm.storage.redis import RedisStorage
-from fastapi import FastAPI, Request
-from aiogram.types import Update
-from fastapi.responses import JSONResponse
-from dotenv import load_dotenv
 import asyncio
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
+from aiogram.client.default import DefaultBotProperties
+from aiogram.types import Update
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.redis import RedisStorage
+from dotenv import load_dotenv
+
+from db import redis
 from localization import load_locales
-load_locales()
 from notifications import init_notifications, _scheduler as NOTIF_SCHED
 
 load_dotenv()
+load_locales()
+
+app = FastAPI()
+
+from dotenv import load_dotenv
+
+bot: Bot | None = None
+dp: Dispatcher | None = None
 
 
 TOKEN = os.getenv("BOT_TOKEN")
-bot = Bot(token=TOKEN, parse_mode="Markdown")
+bot = Bot(
+    token=TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
+)
 storage = RedisStorage(redis)
 dp = Dispatcher(storage=storage)
 
 
-from handlers.common import register_common_handlers
+from handlers.common import register_common_handlers, hydrate_premium_cache
 register_common_handlers(dp)
 
 from handlers.life_path import router as life_path_router
@@ -62,12 +75,11 @@ dp.include_router(admin_router)
 dp.include_router(notify_router)
 
 
-app = FastAPI()
-
 
 @app.on_event("startup")
 async def on_startup():
     logging.info("🚀 Bot is starting...")
+    await hydrate_premium_cache()
     try:
         result = await bot.set_webhook(url=os.getenv("WEBHOOK_URL"))
         logging.info(f"📡 Webhook set: {result}")
@@ -112,6 +124,18 @@ async def webhook(request: Request):
         print("🔥 UNHANDLED ERROR:")
         traceback.print_exc()
     return JSONResponse(content={"ok": True})
+
+
+async def choose_storage():
+    try:
+        storage = RedisStorage(redis=redis)
+        logging.info("[redis] using RedisStorage")
+    except Exception as e:
+        logging.warning("[redis] not available (%s) -> MemoryStorage", e)
+        storage = MemoryStorage()
+
+    dp = Dispatcher(storage=storage)
+
 
 
 
