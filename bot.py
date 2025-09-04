@@ -20,7 +20,6 @@ load_locales()
 
 app = FastAPI()
 
-from dotenv import load_dotenv
 
 bot: Bot | None = None
 dp: Dispatcher | None = None
@@ -31,7 +30,14 @@ bot = Bot(
     token=TOKEN,
     default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN)
 )
-storage = RedisStorage(redis)
+
+try:
+    storage = RedisStorage(redis=redis)
+    logging.info("[redis] using RedisStorage")
+except Exception as e:
+    logging.warning("[redis] unavailable (%s) -> falling back to MemoryStorage", e)
+    storage = MemoryStorage()
+
 dp = Dispatcher(storage=storage)
 
 
@@ -126,15 +132,6 @@ async def webhook(request: Request):
     return JSONResponse(content={"ok": True})
 
 
-async def choose_storage():
-    try:
-        storage = RedisStorage(redis=redis)
-        logging.info("[redis] using RedisStorage")
-    except Exception as e:
-        logging.warning("[redis] not available (%s) -> MemoryStorage", e)
-        storage = MemoryStorage()
-
-    dp = Dispatcher(storage=storage)
 
 
 

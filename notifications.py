@@ -20,7 +20,7 @@ from datetime import date
 
 
 from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
-from tools.premium_moon_energy import get_moon_energy_result
+from tools.premium_moon_energy import get_moon_energy_forecast as get_moon_energy_result
 
 
 SUBS_KEY = "subs:all"  
@@ -29,10 +29,12 @@ LAST_ACTIVE_HASH = "subs:last_active"  # hash: { user_id: last_active_iso }
 
 
 async def add_subscriber(user_id: int):
-    await redis.sadd(SUBS_KEY, str(user_id))
-    await redis.hset(LAST_ACTIVE_HASH, str(user_id), datetime.now(dt_timezone.utc).isoformat())
+    try:
+        await redis.sadd(SUBS_KEY, str(user_id))
+        await redis.hset(LAST_ACTIVE_HASH, str(user_id), datetime.now(dt_timezone.utc).isoformat()
 
-
+    except Exception as e:        
+        logging.warning("[notif] add_subscriber failed for %s: %s", user_id, e)
 
 async def iter_subscribers() -> Iterable[int]:
     ids = await redis.smembers(SUBS_KEY)
