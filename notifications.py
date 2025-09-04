@@ -7,14 +7,12 @@ import asyncio
 import logging
 from pytz import timezone as tz
 
-
 SCHED_TZ = tz("Europe/Vilnius")
 
 from db import redis
 from aiogram.enums import ParseMode
 from localization import get_locale, _  
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-import re
 from datetime import datetime, timedelta, timezone as dt_timezone  
 from datetime import date
 
@@ -42,8 +40,18 @@ async def iter_subscribers() -> Iterable[int]:
             yield val
 
 
+# --- CTA button builder (inline)
+def build_notif_cta_btn(premium: bool, loc: str) -> InlineKeyboardMarkup:
+    text = _("cta_button_explore", locale=loc) if premium else _("cta_button_unlock", locale=loc)
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=text, callback_data="open_premium")]
+    ])
+
+# notifications.py
 
 # --- CTA button builder (inline)
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
 def build_notif_cta_btn(premium: bool, loc: str, kind: str | None = None) -> InlineKeyboardMarkup:
     """
     First row: topic deep-link (Daily / Love / Moon)
@@ -57,7 +65,6 @@ def build_notif_cta_btn(premium: bool, loc: str, kind: str | None = None) -> Inl
         # weekly/winback: still route them somewhere useful
         "weekly": ("btn_daily", "open_daily"),
         "winback": ("btn_daily", "open_daily"),
-        "tomorrow": ("btn_daily", "open_daily"),
     }
     key, cb = mapping.get(kind or "", ("btn_daily", "open_daily"))
     topic_btn = InlineKeyboardButton(text=_(key, locale=loc), callback_data=cb)
@@ -78,9 +85,6 @@ def teaser_text(kind: str, loc: str) -> str:
         return _(_pick_key(keys), locale=loc)
     if kind == "love":
         keys = ["notif_free_teaser_love_v1","notif_free_teaser_love_v2","notif_free_teaser_love_v3"]
-        return _(_pick_key(keys), locale=loc)
-    if kind == "tomorrow":  
-        keys = ["notif_tomorrow_teaser_v1","notif_tomorrow_teaser_v2","notif_tomorrow_teaser_v3"]
         return _(_pick_key(keys), locale=loc)
     if kind == "weekly":
         return _("notif_free_teaser_weekly", locale=loc)
@@ -150,9 +154,6 @@ async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, Inlin
             return _(_pick_key(keys), locale=loc), kb
         if kind == "winback":
             keys = ["notif_premium_winback_v1","notif_premium_winback_v2","notif_premium_winback_v3"]
-            return _(_pick_key(keys), locale=loc), kb
-        if kind == "tomorrow":  
-            keys = ["notif_tomorrow_premium_v1","notif_tomorrow_premium_v2","notif_tomorrow_premium_v3"]
             return _(_pick_key(keys), locale=loc), kb
     else:
         return teaser_text(kind, loc), kb
@@ -233,21 +234,24 @@ async def broadcast_segment(bot: Bot, kind: str, user_ids: list[int]):
 _scheduler: AsyncIOScheduler | None = None
 
 def init_notifications(bot: Bot):
+   
     global _scheduler
     if _scheduler:
         logging.info("[notif] scheduler already started")
         return _scheduler
 
     logging.info("[notif] starting scheduler…")
+
+    
     loop = asyncio.get_event_loop()
 
     _scheduler = AsyncIOScheduler(
         event_loop=loop,
         timezone=SCHED_TZ,
-        job_defaults={"misfire_grace_time": 6 * 3600, "coalesce": True},  # 6h grace, safer on restarts
+        job_defaults={"misfire_grace_time": 3600, "coalesce": True},
     )
 
-    # --- jobs
+    
     async def job_daily():
         await broadcast(bot, "daily")
 
@@ -260,114 +264,50 @@ def init_notifications(bot: Bot):
     async def job_weekly():
         await broadcast(bot, "weekly")
 
-    async def job_tomorrow():
-        await broadcast(bot, "tomorrow")
-
     async def job_winback():
         uids = await find_inactive(days=3)
         logging.info(f"[winback] candidates={len(uids)}")
         if uids:
             await broadcast_segment(bot, "winback", uids)
-    
-    async def _reconcile_stars():
-        try:
-            offset = None
-            seen = 0
-            max_pages = 100  # safety net
-
-            def _calc_exp_ts(tx) -> int:
-                exp = tx.get("subscription_expiration_date")
-                now = int(datetime.now(dt_timezone.utc).timestamp())
-                if isinstance(exp, (int, float)):
-                    return int(exp)
-                if isinstance(exp, str) and exp.isdigit():
-                    return int(exp)
-                # fallback: tx.date + 30 days
-                tx_date = tx.get("date")
-                base = int(tx_date) if isinstance(tx_date, (int, float)) else now
-                return base + 30 * 24 * 60 * 60
-
-            pages = 0
-            while True:
-                pages += 1
-                if pages > max_pages:
-                    logging.warning("[stars] reconcile stopped: hit page cap (%s)", max_pages)
-                    break
-            
-                resp = await bot.get_star_transactions(limit=100, offset=offset)
-            
-                txs = getattr(resp, "transactions", None)
-                if not txs:
-                    txs = resp.get("transactions") if isinstance(resp, dict) else []
-                    if not txs:
-                        break
-
-                for tx in txs:
-                    payload_str = (
-                        tx.get("invoice_payload")
-                        or (tx.get("invoice") or {}).get("payload")
-                        or ""
-                    )
-                    s = str(payload_str)
-
-                    # Support monthly and lifetime; fall back to legacy monthly-only
-                    m = re.match(r"premium:(monthly|lifetime):(\d+):", s)
-                    if not m:
-                        m = re.match(r"premium:monthly:(\d+):", s)
-                        if not m:
-                            continue
-
-                    try:
-                        uid = int(m.group(2))  # new pattern
-                    except IndexError:
-                        uid = int(m.group(1))  # legacy pattern
-
-                    exp_ts = _calc_exp_ts(tx)
-
-                    await redis.hset("premium:sub_next_renewal", str(uid), exp_ts)
-
-                    if exp_ts > int(datetime.now(dt_timezone.utc).timestamp()):
-                        from handlers.common import PAID_USERS
-                        PAID_USERS.add(uid)
-
-                    seen += 1
-
-                # pagination
-                offset = getattr(resp, "next_offset", None)
-                if not offset and isinstance(resp, dict):
-                    offset = resp.get("next_offset")
-                if not offset:
-                    break
-
-            logging.info("[stars] reconcile done: seen=%s", seen)
-            return seen
-
-        except Exception as e:
-            logging.exception("[stars] reconcile failed: %s", e)
-            return 0
 
     
-    _scheduler.add_job(job_daily,  CronTrigger(hour=8,  minute=0,  timezone=SCHED_TZ), id="daily_vibe_0800",       replace_existing=True, misfire_grace_time=23 * 3600)
-    _scheduler.add_job(job_love,   CronTrigger(hour=12, minute=30, timezone=SCHED_TZ), id="love_1230_daily",       replace_existing=True)
-    _scheduler.add_job(job_moon,   CronTrigger(hour=20, minute=0,  timezone=SCHED_TZ), id="moon_2000",             replace_existing=True)
-    _scheduler.add_job(job_weekly, CronTrigger(day_of_week="sun", hour=17, minute=0, timezone=SCHED_TZ), id="weekly_upsell_sun_1700", replace_existing=True)
-    _scheduler.add_job(job_winback,CronTrigger(hour=11, minute=0,  timezone=SCHED_TZ), id="winback_1100",          replace_existing=True)    
-    _scheduler.add_job(job_tomorrow, CronTrigger(hour=21, minute=0, timezone=SCHED_TZ), id="tomorrow_teaser_2100", replace_existing=True)
-
-    _scheduler.add_job(_reconcile_stars, CronTrigger(minute="*/30", timezone=SCHED_TZ),
-                       id="stars_reconcile_30m", replace_existing=True)
-            
+    _scheduler.add_job(
+        job_daily,
+        CronTrigger(hour=8, minute=0, timezone=SCHED_TZ),
+        id="daily_vibe_0800",
+        replace_existing=True,
+    )
+    _scheduler.add_job(
+        job_love,
+        CronTrigger(hour=12, minute=30, timezone=SCHED_TZ),
+        id="love_1230_daily",
+        replace_existing=True,
+    )
+    _scheduler.add_job(
+        job_moon,
+        CronTrigger(hour=20, minute=0, timezone=SCHED_TZ),
+        id="moon_2000",
+        replace_existing=True,
+    )
+    _scheduler.add_job(
+        job_weekly,
+        CronTrigger(day_of_week="sun", hour=17, minute=0, timezone=SCHED_TZ),
+        id="weekly_upsell_sun_1700",
+        replace_existing=True,
+    )
+    _scheduler.add_job(
+        job_winback,
+        CronTrigger(hour=11, minute=0, timezone=SCHED_TZ),
+        id="winback_1100",
+        replace_existing=True,
+    )
 
     _scheduler.start()
+
     for j in _scheduler.get_jobs():
         logging.info(f"[notif] job={j.id} next={j.next_run_time}")
 
     logging.info("[notif] scheduler started ✅")
     return _scheduler
-
-
-
-
-
 
 
