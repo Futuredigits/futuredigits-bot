@@ -28,11 +28,14 @@ LAST_ACTIVE_HASH = "subs:last_active"  # hash: { user_id: last_active_iso }
 
 
 
-async def add_subscriber(user_id: int):
-    try:
+async def add_subscriber(user_id: int) -> None:    
+    try:        
         await redis.sadd(SUBS_KEY, str(user_id))
-        await redis.hset(LAST_ACTIVE_HASH, str(user_id), datetime.now(dt_timezone.utc).isoformat()
-
+        await redis.hset(
+            LAST_ACTIVE_HASH,
+            str(user_id),
+            datetime.now(dt_timezone.utc).isoformat()
+        )
     except Exception as e:        
         logging.warning("[notif] add_subscriber failed for %s: %s", user_id, e)
 
