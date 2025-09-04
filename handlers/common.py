@@ -170,6 +170,16 @@ def is_premium_caption(text: str | None) -> bool:
     k = caption_to_key(text.strip())
     return k in PREMIUM_BTN_KEYS
 
+def is_btn_premium(text: str | None) -> bool:
+    return caption_to_key((text or "").strip()) == "btn_premium"
+
+def is_btn_back(text: str | None) -> bool:
+    return caption_to_key((text or "").strip()) == "btn_back"
+
+def is_btn_upgrade(text: str | None) -> bool:
+    return caption_to_key((text or "").strip()) == "btn_upgrade"
+
+
 
 def _plan_label(loc: str, plan: str) -> str:
     if loc == "ru":
@@ -325,19 +335,12 @@ async def _premium_kb_with_link(bot, user_id: int, loc: str) -> InlineKeyboardMa
     ])
 
 
-@router.message(F.text == TRANSLATIONS.get("en", {}).get("btn_upgrade", "💎 Upgrade Now"))
-@router.message(F.text == TRANSLATIONS.get("ru", {}).get("btn_upgrade", "💎 Улучшить до Премиум"))
+@router.message(F.text.func(is_btn_upgrade))
 async def premium_cta_button(message: Message, state: FSMContext):
     await premium_handler(message, state)
 
 # --- Premium menu 
-@router.message(
-    F.text.in_({
-        TRANSLATIONS.get("en", {}).get("btn_premium", "🔓 Premium Tools"),
-        TRANSLATIONS.get("ru", {}).get("btn_premium", "🔓 Премиум‑инструменты"),
-    }),
-    StateFilter("*")
-)
+@router.message(F.text.func(is_btn_premium), StateFilter("*"))
 async def show_premium_menu(message: Message, state: FSMContext):
     from notifications import add_subscriber
     await add_subscriber(message.from_user.id)
@@ -349,6 +352,7 @@ async def show_premium_menu(message: Message, state: FSMContext):
         parse_mode=ParseMode.MARKDOWN,
         disable_web_page_preview=True,
     )
+
 
 async def hydrate_premium_cache():
     try:
@@ -384,13 +388,7 @@ async def hydrate_premium_cache():
 
 
 
-@router.message(
-    F.text.in_({
-        TRANSLATIONS.get("en", {}).get("btn_back", "🔙 Back to Main Menu"),
-        TRANSLATIONS.get("ru", {}).get("btn_back", "🔙 Назад в главное меню"),
-    }),
-    StateFilter("*")
-)
+@router.message(F.text.func(is_btn_back), StateFilter("*"))
 async def show_main_menu(message: Message, state: FSMContext):
     from notifications import add_subscriber
     await add_subscriber(message.from_user.id) 
@@ -401,6 +399,7 @@ async def show_main_menu(message: Message, state: FSMContext):
         reply_markup=build_main_menu(loc),
         parse_mode=ParseMode.MARKDOWN,
     )
+
 
 @router.callback_query(F.data.startswith("buy:"))
 async def on_buy_plan(call: CallbackQuery):
