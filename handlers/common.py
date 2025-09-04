@@ -12,23 +12,37 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from localization import _, get_locale, set_locale, TRANSLATIONS
 from aiogram.types import LabeledPrice, PreCheckoutQuery
+import logging
 import time
 from datetime import datetime, timedelta, timezone
 from db import redis
 
 PRICES = {
-    "monthly": 499,   # Stars
+    "monthly": 199,   # Stars
     "lifetime": 1999  # Stars
 }
 
 
 # --- Premium access flags
 OWNER_ID = 619941697
-PAID_USERS = set()
-USED_TRIAL = set()
+PAID_USERS: set[int] = set()              
+SUB_NEXT_RENEWAL: dict[int, int] = {}     
+USED_TRIAL: set[int] = set()              
 
 def is_premium_user(user_id: int) -> bool:
-    return user_id == OWNER_ID or user_id in PAID_USERS
+    """
+    Restart-safe check:
+    - OWNER always premium
+    - Lifetime in PAID_USERS
+    - Monthly if now < next_renewal in SUB_NEXT_RENEWAL
+    """
+    if user_id == OWNER_ID:
+        return True
+    if user_id in PAID_USERS:
+        return True
+    ts = SUB_NEXT_RENEWAL.get(user_id)
+    return bool(ts and ts > int(time.time()))
+
 
 # --- FSM states 
 from states import (
@@ -154,6 +168,8 @@ router = Router(name=__name__)
 # --- /start: language picker
 @router.message(CommandStart(), StateFilter("*"))
 async def start_handler(message: Message, state: FSMContext):
+    from notifications import add_subscriber
+    await add_subscriber(message.from_user.id)
     await state.clear()
     kb = InlineKeyboardMarkup(
         inline_keyboard=[[
@@ -260,21 +276,40 @@ async def language_handler(message: Message, state: FSMContext):
 # --- /premium CTA 
 @router.message(Command("premium"), StateFilter("*"))
 async def premium_handler(message: Message, state: FSMContext):
+    from notifications import add_subscriber
+    await add_subscriber(message.from_user.id)
     await state.clear()
     loc = get_locale(message.from_user.id)
+    kb = await _premium_kb_with_link(message.bot, message.from_user.id, loc)
     await message.answer(
         _("premium_intro", locale=loc),
-        parse_mode=ParseMode.HTML,           
-        reply_markup=_premium_kb(loc),
+        parse_mode=ParseMode.HTML,
+        reply_markup=kb,
         disable_web_page_preview=True,
     )
 
 
-def _premium_kb(loc: str) -> InlineKeyboardMarkup:
+
+async def _premium_kb_with_link(bot, user_id: int, loc: str) -> InlineKeyboardMarkup:
+    title   = _("premium_invoice_title", locale=loc)
+    desc    = _("premium_invoice_desc",  locale=loc).format(plan=_plan_label(loc, "monthly"))
+    payload = f"premium:monthly:{user_id}:{int(time.time())}"
+    prices  = [LabeledPrice(label=_plan_label(loc, "monthly"), amount=PRICES["monthly"])]
+
+    monthly_link = await bot.create_invoice_link(
+        title=title,
+        description=desc,
+        payload=payload,
+        currency="XTR",
+        prices=prices,
+        subscription_period=2592000  # exactly 30 days (required by Telegram)
+    )
+
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=_("btn_buy_monthly", locale=loc),  callback_data="buy:monthly")],
+        [InlineKeyboardButton(text=_("btn_buy_monthly",  locale=loc), url=monthly_link)],
         [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
     ])
+
 
 @router.message(F.text == TRANSLATIONS.get("en", {}).get("btn_upgrade", "💎 Upgrade Now"))
 @router.message(F.text == TRANSLATIONS.get("ru", {}).get("btn_upgrade", "💎 Улучшить до Премиум"))
@@ -300,6 +335,40 @@ async def show_premium_menu(message: Message, state: FSMContext):
         parse_mode=ParseMode.MARKDOWN,
         disable_web_page_preview=True,
     )
+
+async def hydrate_premium_cache():
+    try:
+        # Reset mirrors
+        PAID_USERS.clear()
+        SUB_NEXT_RENEWAL.clear()
+
+        # Lifetime users -> PAID_USERS
+        lifetimes = await redis.smembers("premium:lifetime") or set()
+        for u in lifetimes:
+            s = u.decode() if isinstance(u, (bytes, bytearray)) else str(u)
+            if s.isdigit():
+                PAID_USERS.add(int(s))
+
+        # Monthly: load next-renewal timestamps, and warm active users into PAID_USERS
+        h = await redis.hgetall("premium:sub_next_renewal") or {}
+        now_ts = int(time.time())
+        for k, v in h.items():
+            ks = k.decode() if isinstance(k, (bytes, bytearray)) else str(k)
+            vs = v.decode() if isinstance(v, (bytes, bytearray)) else str(v)
+            try:
+                uid = int(ks)
+                ts = int(vs)
+                SUB_NEXT_RENEWAL[uid] = ts
+                if ts > now_ts:
+                    PAID_USERS.add(uid)  # warm active monthly subs as paid
+            except Exception:
+                continue
+
+        logging.info(f"[premium] hydrated: lifetime={len(PAID_USERS)} monthly={len(SUB_NEXT_RENEWAL)}")
+    except Exception as e:
+        logging.exception(f"[premium] hydrate failed: {e}")
+
+
 
 @router.message(
     F.text.in_({
@@ -367,25 +436,48 @@ async def on_buy_plan(call: CallbackQuery):
 async def on_pre_checkout(pre: PreCheckoutQuery):
     await pre.answer(ok=True)
 
-async def _grant_premium(user_id: int, plan: str):
+async def _grant_premium(user_id: int, plan: str, *, expires_ts: int | None = None, charge_id: str | None = None):
+    
     now = datetime.now(timezone.utc)
     if plan == "lifetime":
         await redis.sadd("premium:lifetime", user_id)
         PAID_USERS.add(user_id)
     elif plan == "monthly":
-        next_renewal = int((now + timedelta(days=30)).timestamp())
-        await redis.hset("premium:sub_next_renewal", str(user_id), next_renewal)
+        if not expires_ts:
+            expires_ts = int((now + timedelta(days=30)).timestamp())
+        await redis.hset("premium:sub_next_renewal", str(user_id), int(expires_ts))
+        if charge_id:
+            await redis.hset("premium:last_charge_id", str(user_id), charge_id)
         PAID_USERS.add(user_id)
+
 
 @router.message(F.successful_payment)
 async def on_successful_payment(message: Message):
     user_id = message.from_user.id
     loc = get_locale(user_id)
 
-    payload = (message.successful_payment or {}).invoice_payload or ""
+    sp = message.successful_payment
+    payload = (sp or {}).invoice_payload or ""
     plan = payload.split(":", 2)[1] if ":" in payload else "lifetime"
 
-    await _grant_premium(user_id, plan)   
+    try:
+        
+        expires_ts = getattr(sp, "subscription_expiration_date", None)
+        if isinstance(expires_ts, datetime):
+            
+            expires_ts = int(expires_ts.replace(tzinfo=timezone.utc).timestamp())
+        elif isinstance(expires_ts, (int, float)):
+            expires_ts = int(expires_ts)
+        else:
+            expires_ts = None
+
+        charge_id = getattr(sp, "telegram_payment_charge_id", None)
+    except Exception:
+        expires_ts = None
+        charge_id = None
+
+    await _grant_premium(user_id, plan, expires_ts=expires_ts, charge_id=charge_id)
+
     await message.answer(
         _("payment_success", locale=loc),
         parse_mode=ParseMode.MARKDOWN,
@@ -512,13 +604,15 @@ async def open_premium_cb(call: CallbackQuery, state: FSMContext):
             disable_web_page_preview=True,
         )
     else:
+        kb = await _premium_kb_with_link(call.bot, user_id, loc)
         await call.message.answer(
             _("premium_intro", locale=loc),
-            parse_mode=ParseMode.HTML,       
-            reply_markup=_premium_kb(loc),
+            parse_mode=ParseMode.HTML,
+            reply_markup=kb,
             disable_web_page_preview=True,
         )
     await call.answer()
+
 
 
 
