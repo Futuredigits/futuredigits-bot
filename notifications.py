@@ -42,14 +42,25 @@ async def iter_subscribers() -> Iterable[int]:
             yield val
 
 
+def _norm_loc(loc: str | None) -> str:
+    s = (loc or "en").strip().lower()
+    # collapse 'ru-RU' -> 'ru', 'en_US' -> 'en'
+    if "-" in s:
+        s = s.split("-", 1)[0]
+    if "_" in s:
+        s = s.split("_", 1)[0]
+    return s
+
+
 
 # --- CTA button builder (inline)
-def build_notif_cta_btn(premium: bool, loc: str, kind: str | None = None) -> InlineKeyboardMarkup:
+def build_notif_cta_btn(premium: bool, loc: str, kind: str | None = None) -> InlineKeyboardMarkup:    
     """
     First row: topic deep-link (Daily / Love / Moon)
     Second row: Upgrade (free) or Explore (premium)
     Falls back to Premium menu if kind is unknown.
     """
+    loc = _norm_loc(loc)
     mapping = {
         "daily": ("btn_daily", "open_daily"),
         "love":  ("btn_love",  "open_love"),
@@ -70,6 +81,7 @@ def build_notif_cta_btn(premium: bool, loc: str, kind: str | None = None) -> Inl
 
 # --- Message composers
 def teaser_text(kind: str, loc: str) -> str:
+    loc = _norm_loc(loc)
     if kind == "daily":
         keys = ["notif_free_teaser_daily_v1","notif_free_teaser_daily_v2","notif_free_teaser_daily_v3"]
         return _(_pick_key(keys), locale=loc)
@@ -134,6 +146,7 @@ async def send_to_user(bot, user_id: int, kind: str):
 
 
 async def compose_message(user_id: int, kind: str, loc: str) -> tuple[str, InlineKeyboardMarkup]:
+    loc = _norm_loc(loc)
     premium = _is_premium(user_id)
     kb = build_notif_cta_btn(premium, loc, kind)  # <— add kind here
 
