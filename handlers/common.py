@@ -195,13 +195,41 @@ async def start_handler(message: Message, state: FSMContext):
     from notifications import add_subscriber
     await add_subscriber(message.from_user.id)
     await state.clear()
+
+    # --- Parse deep-link payload: "/start <payload>"
+    parts = (message.text or "").split(maxsplit=1)
+    payload = parts[1].strip() if len(parts) > 1 else ""
+    user_id = message.from_user.id
+
+    # Track first-touch acquisition source (ads) exactly once
+    if payload.startswith("ad_"):
+        exists = await redis.hexists("acq:campaign", str(user_id))
+        if not exists:
+            await redis.hset("acq:campaign", str(user_id), payload)
+
+    # Track referral on first join only; prevent self-ref; idempotent
+    if payload.startswith("ref_"):
+        try:
+            ref_id = int("".join(ch for ch in payload[4:] if ch.isdigit()))
+        except Exception:
+            ref_id = 0
+        if ref_id and ref_id != user_id:
+            # only set referrer once
+            already = await redis.hexists("ref:referrer_of", str(user_id))
+            if not already:
+                await redis.hset("ref:referrer_of", str(user_id), ref_id)
+                await redis.hincrby("ref:count", str(ref_id), 1)
+                # Optional: store join timestamp for analytics
+                await redis.hset("ref:joined_at", str(user_id), int(time.time()))
+
     kb = InlineKeyboardMarkup(
-        inline_keyboard=[[
+        inline_keyboard=[[  # language picker
             InlineKeyboardButton(text="English 🇬🇧", callback_data="lang_en"),
             InlineKeyboardButton(text="Русский 🇷🇺", callback_data="lang_ru"),
         ]]
     )
     await message.answer(_("choose_language"), reply_markup=kb, parse_mode=ParseMode.MARKDOWN)
+
 
 @router.callback_query(F.data == "lang_en")
 async def set_lang_en(callback: CallbackQuery):
@@ -295,6 +323,60 @@ async def language_handler(message: Message, state: FSMContext):
         reply_markup=build_lang_picker(),
         parse_mode=ParseMode.MARKDOWN,
     )
+
+@router.message(Command("invite"), StateFilter("*"))
+async def invite_handler(message: Message, state: FSMContext):
+    await state.clear()
+    user_id = message.from_user.id
+    loc = get_locale(user_id)
+
+    me = await message.bot.get_me()
+    bot_username = me.username or "YourBot"
+
+    # Personal link (deep link)
+    link = f"https://t.me/{bot_username}?start=ref_{user_id}"
+
+    # Activated referral count
+    act_raw = await redis.hget("ref:activated_count", str(user_id))
+    activated = int(act_raw) if (act_raw and str(act_raw).isdigit()) else 0
+
+    # Milestone logic: every 3 activations → +3 days premium
+    milestone = (activated // 3) * 3
+    last_awarded_raw = await redis.hget("ref:last_awarded", str(user_id))
+    last_awarded = int(last_awarded_raw) if (last_awarded_raw and str(last_awarded_raw).isdigit()) else 0
+
+    reward_note = ""
+    if milestone > last_awarded:
+        # Grant +3 days per full block achieved since last time
+        blocks = (milestone - last_awarded) // 3
+        days_to_add = 3 * blocks
+        new_exp = await _extend_premium_days(user_id, days_to_add)
+        await redis.hset("ref:last_awarded", str(user_id), milestone)
+
+        # Localized reward line
+        reward_note = _("invite_reward_granted", locale=loc) if TRANSLATIONS.get(loc, {}).get("invite_reward_granted") \
+                      else "🎁 Premium extended for inviting friends!"
+    
+    title = TRANSLATIONS.get(loc, {}).get("invite_title",
+        "✨ Invite friends — get Premium")
+    body = TRANSLATIONS.get(loc, {}).get("invite_body",
+        "Share your personal link. Every 3 activated friends → +3 days Premium.")
+    stats = TRANSLATIONS.get(loc, {}).get("invite_stats",
+        "Activated referrals: {count}. Invite {need} more to the next reward.").format(
+            count=activated, need=(3 - (activated % 3) if activated % 3 != 0 else 3)
+        )
+    btn_text = TRANSLATIONS.get(loc, {}).get("invite_copy_button", "Copy link")
+
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=btn_text, url=link)]
+    ])
+
+    text = f"{title}\n\n{body}\n\n🔗 {link}\n\n{stats}"
+    if reward_note:
+        text += f"\n\n{reward_note}"
+
+    await message.answer(text, reply_markup=kb, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
+
 
 
 # --- /premium CTA 
@@ -627,6 +709,56 @@ async def open_premium_cb(call: CallbackQuery, state: FSMContext):
     await call.answer()
 
 
+async def mark_activation_once(user_id: int) -> None:   
+    already = await redis.sismember("ref:activated_users", str(user_id))
+    if already:
+        return    
+    await redis.sadd("ref:activated_users", str(user_id))
+   
+    ref_raw = await redis.hget("ref:referrer_of", str(user_id))
+    if not ref_raw:
+        return
+    
+    try:
+        ref_id = int(ref_raw if isinstance(ref_raw, (str, int)) else ref_raw.decode())
+    except Exception:
+        return
+    if ref_id <= 0 or ref_id == user_id:
+        return
+    
+    await redis.hincrby("ref:activated_count", str(ref_id), 1)    
+    await redis.hset("ref:activated_at", str(user_id), int(time.time()))
+
+
+async def _grant_trial_days(user_id: int, days: int = 3):
+    from datetime import datetime, timedelta, timezone
+    now = int(datetime.now(timezone.utc).timestamp())
+    exp = now + days * 24 * 60 * 60
+
+    # Reuse existing storage to mark as premium until exp:
+    await redis.hset("premium:sub_next_renewal", str(user_id), exp)
+
+    # Warm in-memory mirrors immediately (no restart needed)
+    SUB_NEXT_RENEWAL[user_id] = exp
+    PAID_USERS.add(user_id)
+
+
+async def _extend_premium_days(user_id: int, days: int) -> int:
+    
+    now = int(datetime.now(timezone.utc).timestamp())
+    
+    cur_raw = await redis.hget("premium:sub_next_renewal", str(user_id))
+    cur = int(cur_raw) if (cur_raw and str(cur_raw).isdigit()) else 0
+
+    base = max(now, cur)
+    new_exp = base + days * 24 * 60 * 60
+
+    await redis.hset("premium:sub_next_renewal", str(user_id), new_exp)
+    
+    SUB_NEXT_RENEWAL[user_id] = new_exp
+    PAID_USERS.add(user_id)
+
+    return new_exp
 
 
 

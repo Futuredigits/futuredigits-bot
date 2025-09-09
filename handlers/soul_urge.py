@@ -19,6 +19,7 @@ async def handle_soul_urge(message: Message, state: FSMContext):
         number = calculate_soul_urge_number(full_name, locale=loc)
         result = get_soul_urge_result(number, user_id=message.from_user.id)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
+        await mark_activation_once(message.from_user.id)
         await state.clear()
     except Exception:
         await message.answer(_("error_invalid_name", locale=loc), parse_mode=ParseMode.MARKDOWN)

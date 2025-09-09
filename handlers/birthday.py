@@ -19,6 +19,7 @@ async def handle_birthday(message: Message, state: FSMContext):
         number = calculate_birthday_number(date_str)
         result = get_birthday_result(number, user_id=message.from_user.id)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
+        await mark_activation_once(message.from_user.id)
         await state.clear()
     except Exception:
         await message.answer(_("error_birthdate", locale=get_locale(message.from_user.id)), parse_mode=ParseMode.MARKDOWN)

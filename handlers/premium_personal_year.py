@@ -19,6 +19,7 @@ async def handle_personal_year(message: Message, state: FSMContext):
         number = calculate_personal_year(date_str)
         result = get_personal_year_result(number, user_id=message.from_user.id, locale=loc)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
+        await mark_activation_once(message.from_user.id)
         await state.clear()
     except Exception:
         await message.answer(_("error_invalid_date", locale=loc), parse_mode=ParseMode.MARKDOWN)

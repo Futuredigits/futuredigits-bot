@@ -25,6 +25,7 @@ async def handle_compatibility(message: Message, state: FSMContext):
         result = get_compatibility_result(compat, score, user_id=message.from_user.id, locale=loc)
 
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
+        await mark_activation_once(message.from_user.id)
         await state.clear()
     except Exception:
         await message.answer(_("error_two_names", locale=loc), parse_mode=ParseMode.MARKDOWN)

@@ -19,6 +19,7 @@ async def handle_destiny(message: Message, state: FSMContext):
         number = calculate_destiny_number(full_name, date_str, locale=loc)
         result = get_destiny_result(number, user_id=message.from_user.id)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
+        await mark_activation_once(message.from_user.id)
         await state.clear()
     except Exception:
         await message.answer(_("error_invalid_date", locale=loc), parse_mode=ParseMode.MARKDOWN)

@@ -19,6 +19,7 @@ async def handle_love_vibes(message: Message, state: FSMContext):
         number = calculate_love_vibe(full_name, locale=loc)
         result = get_love_vibes_result(number, user_id=message.from_user.id, locale=loc)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
+        await mark_activation_once(message.from_user.id)
         await state.clear()
     except Exception:
         await message.answer(_("error_invalid_name", locale=loc), parse_mode=ParseMode.MARKDOWN)

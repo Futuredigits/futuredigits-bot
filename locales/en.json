@@ -59,7 +59,7 @@
     "angel_number_reprompt": "🔢 *Let’s try that again.* Please send only digits — e.g. `111`, `2222`, `1010`, or `777`.",
     "intro_name_vibration": "🔮 *Name Vibration — Numerology Reading*\n\nEvery name is a tuning fork. Letters translate into numbers; numbers become a resonance people feel the moment they read or hear your name. This reading reveals the core tone your name broadcasts — how it shapes perception, magnetism, and momentum.\n\nUse it to explore your *birth name* (your blueprint), your *everyday/known-as name* (your current broadcast), or a *brand/company/stage name* (your market aura). You can test variations and feel the difference.\n\nExpect a clear, compassionate reading: strengths to lean on, blind spots to soften, and practical ways to align the name with your intention.\n\n✍️ *Type the name exactly as you use it* (first + last; middle optional). Cyrillic (Russian) is okay — we’ll read it correctly. Avoid emojis and extra symbols.",     
     "cta_explore_more": "💎 You have full access — try another Premium tool to reveal more of your unique numerology profile.",
-    "cta_try_more": "🔮 *Want deeper insight?* Unlock our Premium Tools — 🕳 Karmic Debt, ❤️ Love Vibes, 🌌 Personal Year Forecast, and more — for a complete picture of your numerology profile. Your numbers have more to tell you. 💫",
+    "cta_try_more": "🔮 *Want deeper insight?* Unlock our Premium Tools — 🕳 Karmic Debt, ❤️ Love Vibes, 🌌 Personal Year Forecast, and more — for a complete picture of your numerology profile. Or invite 3 friends and get 3 days of Premium — /invite 💫",
     "error_invalid_date": "❗ *Invalid date format.*\nPlease enter like this: `04.07.1992`",
     "notif_daily_vibe_morning": "☀️ Today’s Universal Vibe is calling. Tap to see what to lean into today.",
     "notif_moon_energy_evening": "🌙 Tonight’s Moon Energy has a message for you. Unwind and see your guidance.",
@@ -120,6 +120,13 @@
     "notif_tomorrow_premium_v1": "🗓 Tomorrow’s forecast is ready—revealing the single smart move that will guide your whole day with clarity.",
     "notif_tomorrow_premium_v2": "✨ Tomorrow’s map is revealed—unfolding peaks of opportunity, cautions to note, and windows of perfect timing. Open it now.",
     "notif_tomorrow_premium_v3": "🔮 Align ahead with tomorrow’s energy—glimpse the coming vibe and choose your step with clear intention.",
+
+    
+    "invite_title": "✨ Invite friends — get Premium",
+    "invite_body": "Share your personal link. Every 3 activated friends → +3 days of Premium.",
+    "invite_stats": "Activated referrals: {count}. Invite {need} more to the next reward.",
+    "invite_copy_button": "Copy link",
+    "invite_reward_granted": "🎁 Premium extended — thanks for inviting friends!",
 
     
     "result_life_path": 
