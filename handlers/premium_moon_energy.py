@@ -6,6 +6,7 @@ from aiogram.enums import ParseMode
 from localization import get_locale
 from handlers.common import build_premium_menu
 from tools.premium_moon_energy import get_moon_energy_result
+from handlers.common import mark_activation_once
 
 router = Router(name="moon_energy")
 

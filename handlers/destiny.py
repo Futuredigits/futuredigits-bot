@@ -6,6 +6,7 @@ from aiogram.filters import StateFilter
 
 from states import DestinyStates
 from handlers.common import build_main_menu
+from handlers.common import mark_activation_once
 from localization import _, get_locale
 from tools.destiny import parse_name_and_birthdate, calculate_destiny_number, get_destiny_result
 

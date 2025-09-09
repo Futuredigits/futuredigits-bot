@@ -8,6 +8,7 @@ from states import KarmicDebtStates
 from handlers.common import build_premium_menu
 from localization import _, get_locale
 from tools.premium_karmic_debt import calculate_karmic_debts, get_karmic_debt_result
+from handlers.common import mark_activation_once
 
 router = Router(name="premium_karmic_debt")
 

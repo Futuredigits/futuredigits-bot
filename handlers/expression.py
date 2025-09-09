@@ -8,6 +8,8 @@ from states import ExpressionStates
 from handlers.common import build_main_menu
 from localization import _, get_locale
 from tools.expression import calculate_expression_number, get_expression_result
+from handlers.common import mark_activation_once
+
 
 router = Router(name="expression")
 

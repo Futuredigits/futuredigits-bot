@@ -8,6 +8,8 @@ from states import BirthdayStates
 from tools.birthday import calculate_birthday_number, get_birthday_result
 from handlers.common import build_main_menu
 from localization import _, get_locale
+from handlers.common import mark_activation_once
+
 
 router = Router(name="birthday")
 

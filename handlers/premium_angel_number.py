@@ -8,6 +8,7 @@ from localization import _, get_locale
 from states import AngelNumberStates
 from handlers.common import build_premium_menu
 from tools.premium_angel_number import calculate_angel_key, get_angel_number_result
+from handlers.common import mark_activation_once
 
 router = Router(name="angel_number")
 

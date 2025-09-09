@@ -8,6 +8,8 @@ from states import SoulUrgeStates
 from handlers.common import build_main_menu
 from localization import _, get_locale
 from tools.soul_urge import calculate_soul_urge_number, get_soul_urge_result
+from handlers.common import mark_activation_once
+
 
 router = Router(name="soul_urge")
 

@@ -8,6 +8,7 @@ from states import PersonalYearStates
 from handlers.common import build_premium_menu
 from localization import _, get_locale
 from tools.premium_personal_year import calculate_personal_year, get_personal_year_result
+from handlers.common import mark_activation_once
 
 router = Router(name="premium_personal_year")
 

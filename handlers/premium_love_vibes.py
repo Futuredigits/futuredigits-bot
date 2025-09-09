@@ -8,6 +8,7 @@ from states import LoveVibesStates
 from handlers.common import build_premium_menu
 from localization import _, get_locale
 from tools.premium_love_vibes import calculate_love_vibe, get_love_vibes_result
+from handlers.common import mark_activation_once
 
 router = Router(name="premium_love_vibes")
 

@@ -8,6 +8,7 @@ from localization import _, get_locale
 from handlers.common import build_premium_menu
 from states import NameVibrationStates
 from tools.premium_name_vibration import calculate_name_vibration, get_name_vibration_result
+from handlers.common import mark_activation_once
 
 router = Router(name="name_vibration")
 

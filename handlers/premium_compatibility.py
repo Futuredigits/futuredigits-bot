@@ -8,6 +8,7 @@ from states import CompatibilityStates
 from handlers.common import build_premium_menu
 from localization import _, get_locale
 from tools.premium_compatibility import calculate_compatibility, get_compatibility_result
+from handlers.common import mark_activation_once
 
 router = Router(name="premium_compatibility")
 

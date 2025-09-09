@@ -8,6 +8,8 @@ from states import PassionNumberStates
 from handlers.common import build_premium_menu
 from localization import _, get_locale
 from tools.premium_passion import calculate_passion_number, get_passion_number_result
+from handlers.common import mark_activation_once
+
 
 router = Router(name="passion_number")
 

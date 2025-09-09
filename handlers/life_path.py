@@ -8,6 +8,8 @@ from states import LifePathStates
 from tools.life_path import calculate_life_path_number, get_life_path_result
 from handlers.common import build_main_menu
 from localization import _, get_locale
+from handlers.common import mark_activation_once
+
 
 router = Router(name="life_path")
 
