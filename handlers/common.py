@@ -425,9 +425,8 @@ async def premium_handler(message: Message, state: FSMContext):
         reply_markup=kb,
         disable_web_page_preview=True,
     )   
-    await message.answer(
-    "📦 Invoice created. If you already hold Stars in your wallet, Telegram will deduct them directly; otherwise it will offer to buy a Stars pack."
-    )
+    await message.answer(_("invoice_hint", locale=loc))
+
 
 
 

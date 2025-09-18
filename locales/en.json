@@ -67,6 +67,8 @@
     "cta_button_unlock": "👉 Unlock Premium Access",
     "cta_button_explore": "🔮 Explore More Insights",
     "payment_success": "✅ Payment received! Premium is now active. Enjoy unlimited access 💎",
+    "invoice_hint": "📦 Invoice created. If you already hold Stars in your wallet, Telegram will deduct them directly; otherwise it will offer to buy a Stars pack.",
+
 
     "notif_free_teaser_daily": "☀️ Every day carries a number, every number a key. Today’s vibration holds a message meant only for you—open it before the moment passes.",
     "notif_free_teaser_moon": "🌙 Tonight’s Moon opens a gentle portal of release—discover what your soul is ready to let go of before you drift into sleep.",
