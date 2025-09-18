@@ -378,6 +378,38 @@ async def invite_handler(message: Message, state: FSMContext):
     await message.answer(text, reply_markup=kb, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
 
 
+@router.message(Command("preload5000"))
+async def preload_5000_stars(message: Message):
+    # Owner-only guard
+    if message.from_user.id != OWNER_ID:
+        # stay silent for others
+        return
+
+    title = "Futuredigits • Stars Preload"
+    description = (
+        "Internal preload to move 5,000 Stars from your wallet "
+        "to the bot’s earned balance (unlocks for Ads in ~21 days)."
+    )
+
+    # Amount is in whole Stars (XTR); no provider_token for Stars
+    prices = [LabeledPrice(label="Preload 5,000 XTR", amount=5000)]
+
+    await message.bot.send_invoice(
+        chat_id=message.chat.id,
+        title=title,
+        description=description,
+        payload=f"preload:5000:{message.from_user.id}:{int(time.time())}",
+        currency="XTR",
+        prices=prices,
+        disable_notification=True,
+    )
+
+    # Optional: quick UX hint
+    await message.answer(
+        "📦 Invoice created. If you already hold Stars in your wallet, "
+        "Telegram will deduct them directly; otherwise it will offer to buy a Stars pack."
+    )
+
 
 # --- /premium CTA 
 @router.message(Command("premium"), StateFilter("*"))
