@@ -19,7 +19,7 @@ from db import redis
 
 PRICES = {
     "monthly": 199,   # Stars
-    "lifetime": 1999  # Stars
+    "lifetime": 1999,  # Stars
     "daypass": 49
 }
 
