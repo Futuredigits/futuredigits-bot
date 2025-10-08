@@ -36,6 +36,7 @@
     "btn_name_vibration": "🌀 Name Vibration", 
     "btn_buy_monthly": "⭐ 199 — Monthly (auto)",
     "btn_buy_lifetime": "⭐ 1,999 — Lifetime",
+    "btn_buy_daypass": "⭐ 49 — Day Pass (24h)",
     "premium_invoice_title": "Futuredigits Premium",
     "premium_invoice_desc": "Access all Premium tools — {plan}.",
     "toast_invoice_sent": "Opening Telegram Stars payment…", 

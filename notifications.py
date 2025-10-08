@@ -324,24 +324,61 @@ def init_notifications(bot: Bot):
                     s = str(payload_str)
 
                     # Support monthly and lifetime; fall back to legacy monthly-only
-                    m = re.match(r"premium:(monthly|lifetime):(\d+):", s)
+                    m = re.match(r"premium:(monthly|lifetime|daypass):(\d+):", s)
                     if not m:
+                        # legacy monthly-only payload
                         m = re.match(r"premium:monthly:(\d+):", s)
                         if not m:
                             continue
+                        plan = "monthly"
+                        uid = int(m.group(1))
+                    else:
+                        plan = m.group(1)
+                        uid = int(m.group(2))
 
+                    # OPTIONAL: idempotency (skip if already processed)
+                    tx_id = str(
+                        tx.get("id")
+                        or tx.get("transaction_id")
+                        or s  # payload fallback
+                    )
                     try:
-                        uid = int(m.group(2))  # new pattern
-                    except IndexError:
-                        uid = int(m.group(1))  # legacy pattern
+                        already = await redis.sismember("stars:reconciled", tx_id)
+                    except Exception:
+                        already = False
+                    if already:
+                        continue
 
-                    exp_ts = _calc_exp_ts(tx)
+                    now_ts = int(datetime.now(dt_timezone.utc).timestamp())
+                    tx_date = tx.get("date")
+                    base = int(tx_date) if isinstance(tx_date, (int, float)) else now_ts
 
-                    await redis.hset("premium:sub_next_renewal", str(uid), exp_ts)
+                    if plan == "monthly":
+                        exp_ts = _calc_exp_ts(tx)
+                        await redis.hset("premium:sub_next_renewal", str(uid), exp_ts)
+                        if exp_ts > now_ts:
+                            from handlers.common import PAID_USERS
+                            PAID_USERS.add(uid)
 
-                    if exp_ts > int(datetime.now(dt_timezone.utc).timestamp()):
+                    elif plan == "daypass":
+                        # +24h from charge time
+                        exp_ts = base + 24 * 60 * 60
+                        await redis.hset("premium:sub_next_renewal", str(uid), exp_ts)
+                        if exp_ts > now_ts:
+                            from handlers.common import PAID_USERS
+                            PAID_USERS.add(uid)
+
+                    elif plan == "lifetime":
+                        # true lifetime: store in a set, not a dated hash
+                        await redis.sadd("premium:lifetime", uid)
                         from handlers.common import PAID_USERS
                         PAID_USERS.add(uid)
+
+                    # mark processed
+                    try:
+                        await redis.sadd("stars:reconciled", tx_id)
+                    except Exception:
+                        pass
 
                     seen += 1
 

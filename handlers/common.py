@@ -20,6 +20,7 @@ from db import redis
 PRICES = {
     "monthly": 199,   # Stars
     "lifetime": 1999  # Stars
+    "daypass": 49
 }
 
 
@@ -183,8 +184,17 @@ def is_btn_upgrade(text: str | None) -> bool:
 
 def _plan_label(loc: str, plan: str) -> str:
     if loc == "ru":
-        return {"monthly": "1 месяц (подписка)", "lifetime": "Навсегда"}[plan]
-    return {"monthly": "1 month (subscription)", "lifetime": "Lifetime"}[plan]
+        return {
+            "monthly": "1 месяц (подписка)",
+            "lifetime": "Навсегда",
+            "daypass": "1 день (день-пас)"
+        }[plan]
+    return {
+        "monthly": "1 month (subscription)",
+        "lifetime": "Lifetime",
+        "daypass": "1 day (day pass)"
+    }[plan]
+
 
 # --- Router
 router = Router(name=__name__)
@@ -448,6 +458,7 @@ async def _premium_kb_with_link(bot, user_id: int, loc: str) -> InlineKeyboardMa
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=_("btn_buy_monthly",  locale=loc), url=monthly_link)],
         [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
+        [InlineKeyboardButton(text=_("btn_buy_daypass",  locale=loc), callback_data="buy:daypass")],
     ])
 
 
@@ -545,6 +556,7 @@ async def on_buy_plan(call: CallbackQuery):
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text=_("btn_buy_monthly", locale=loc), url=link)],
             [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
+            [InlineKeyboardButton(text=_("btn_buy_daypass",  locale=loc), callback_data="buy:daypass")],
         ])
         await call.message.answer(_("premium_intro", locale=loc), reply_markup=kb, disable_web_page_preview=True)
         await call.answer()
@@ -578,6 +590,8 @@ async def _grant_premium(user_id: int, plan: str, *, expires_ts: int | None = No
         if charge_id:
             await redis.hset("premium:last_charge_id", str(user_id), charge_id)
         PAID_USERS.add(user_id)
+    elif plan == "daypass":          
+        await _extend_premium_days(user_id, 1)
 
 
 @router.message(F.successful_payment)
