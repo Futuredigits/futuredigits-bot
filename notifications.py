@@ -282,23 +282,47 @@ def init_notifications(bot: Bot):
         if uids:
             await broadcast_segment(bot, "winback", uids)
     
-    async def _reconcile_stars():
+    async def _reconcile_stars():       
         try:
             offset = None
             seen = 0
             max_pages = 100  # safety net
 
-            def _calc_exp_ts(tx) -> int:
-                exp = tx.get("subscription_expiration_date")
+            def _calc_exp_ts_from_obj(tx) -> int:
+                """
+                subscription_expiration_date may be present on the object.
+                If not, we fall back to tx.date + 30 days.
+                """
+                exp = getattr(tx, "subscription_expiration_date", None)
                 now = int(datetime.now(dt_timezone.utc).timestamp())
                 if isinstance(exp, (int, float)):
                     return int(exp)
                 if isinstance(exp, str) and exp.isdigit():
                     return int(exp)
                 # fallback: tx.date + 30 days
-                tx_date = tx.get("date")
+                tx_date = getattr(tx, "date", None)
                 base = int(tx_date) if isinstance(tx_date, (int, float)) else now
                 return base + 30 * 24 * 60 * 60
+
+            def _extract_invoice_payload(tx) -> str | None:
+                """
+                For user-originated payments, Telegram exposes payload on tx.source.invoice_payload.
+                Some older clients put it under source.invoice.payload. Support both.
+                """
+                src = getattr(tx, "source", None)
+                if src is not None:
+                    payload = getattr(src, "invoice_payload", None)
+                    if payload:
+                        return str(payload)
+                    invoice = getattr(src, "invoice", None)
+                    if invoice is not None:
+                        p = getattr(invoice, "payload", None)
+                        if p:
+                            return str(p)
+                # If a dict slips in, keep backward compatibility
+                if isinstance(tx, dict):
+                    return tx.get("invoice_payload") or (tx.get("invoice") or {}).get("payload")
+                return None
 
             pages = 0
             while True:
@@ -306,9 +330,11 @@ def init_notifications(bot: Bot):
                 if pages > max_pages:
                     logging.warning("[stars] reconcile stopped: hit page cap (%s)", max_pages)
                     break
-            
+
+                # Fetch a page of transactions
                 resp = await bot.get_star_transactions(limit=100, offset=offset)
-            
+
+                # aiogram returns an object with .transactions; keep a dict fallback just in case
                 txs = getattr(resp, "transactions", None)
                 if not txs:
                     txs = resp.get("transactions") if isinstance(resp, dict) else []
@@ -316,18 +342,14 @@ def init_notifications(bot: Bot):
                         break
 
                 for tx in txs:
-                    payload_str = (
-                        tx.get("invoice_payload")
-                        or (tx.get("invoice") or {}).get("payload")
-                        or ""
-                    )
+                    # -------- payload parsing --------
+                    payload_str = _extract_invoice_payload(tx) or ""
                     s = str(payload_str)
 
-                    # Support monthly and lifetime; fall back to legacy monthly-only
+                    # Support monthly / lifetime / daypass, and legacy monthly-only
                     m = re.match(r"premium:(monthly|lifetime|daypass):(\d+):", s)
                     if not m:
-                        # legacy monthly-only payload
-                        m = re.match(r"premium:monthly:(\d+):", s)
+                        m = re.match(r"premium:monthly:(\d+):", s)  # legacy format
                         if not m:
                             continue
                         plan = "monthly"
@@ -336,12 +358,14 @@ def init_notifications(bot: Bot):
                         plan = m.group(1)
                         uid = int(m.group(2))
 
-                    # OPTIONAL: idempotency (skip if already processed)
-                    tx_id = str(
-                        tx.get("id")
-                        or tx.get("transaction_id")
-                        or s  # payload fallback
+                    # -------- idempotency key --------
+                    tx_id = (
+                        getattr(tx, "id", None)
+                        or getattr(tx, "transaction_id", None)
+                        or s  # payload fallback if no id fields
                     )
+                    tx_id = str(tx_id)
+
                     try:
                         already = await redis.sismember("stars:reconciled", tx_id)
                     except Exception:
@@ -349,19 +373,20 @@ def init_notifications(bot: Bot):
                     if already:
                         continue
 
+                    # -------- dates --------
                     now_ts = int(datetime.now(dt_timezone.utc).timestamp())
-                    tx_date = tx.get("date")
+                    tx_date = getattr(tx, "date", None)
                     base = int(tx_date) if isinstance(tx_date, (int, float)) else now_ts
 
+                    # -------- apply plan --------
                     if plan == "monthly":
-                        exp_ts = _calc_exp_ts(tx)
+                        exp_ts = _calc_exp_ts_from_obj(tx)
                         await redis.hset("premium:sub_next_renewal", str(uid), exp_ts)
                         if exp_ts > now_ts:
                             from handlers.common import PAID_USERS
                             PAID_USERS.add(uid)
 
                     elif plan == "daypass":
-                        # +24h from charge time
                         exp_ts = base + 24 * 60 * 60
                         await redis.hset("premium:sub_next_renewal", str(uid), exp_ts)
                         if exp_ts > now_ts:
@@ -369,12 +394,11 @@ def init_notifications(bot: Bot):
                             PAID_USERS.add(uid)
 
                     elif plan == "lifetime":
-                        # true lifetime: store in a set, not a dated hash
                         await redis.sadd("premium:lifetime", uid)
                         from handlers.common import PAID_USERS
                         PAID_USERS.add(uid)
 
-                    # mark processed
+                    # -------- mark processed --------
                     try:
                         await redis.sadd("stars:reconciled", tx_id)
                     except Exception:
@@ -395,6 +419,7 @@ def init_notifications(bot: Bot):
         except Exception as e:
             logging.exception("[stars] reconcile failed: %s", e)
             return 0
+
 
     
     _scheduler.add_job(job_daily,  CronTrigger(hour=8,  minute=0,  timezone=SCHED_TZ), id="daily_vibe_0800",       replace_existing=True, misfire_grace_time=23 * 3600)
