@@ -371,3 +371,31 @@
   "week_subtitle": "(Plan your moves — don’t wing it.)",
   "week_note": "Premium adds: the best/worst day for money, love, and hard conversations."
 }
+
+
+{
+  "today_title": "🗓 Today’s Guidance",
+  "today_free_hook": "🔒 Premium reveals why this day hits *you* and what shifts tomorrow.",
+  "today_premium_end": "🔮 Tomorrow shifts — Premium includes your exact best move for the next 24 hours.",
+
+  "day_pressure_free": "⚠️ Today is a *pressure day*.\nAvoiding unfinished things creates friction tomorrow.\n\n✅ What works today:\n• finish\n• decide\n• close loops\n\n⛔ What backfires today:\n• emotional confrontations\n• starting new commitments\n\n⏱ Strongest window: *before early afternoon*.\nAfter that, energy becomes reactive.",
+  "day_pressure_premium": "⚠️ Today is a *pressure day* driven by a closing cycle.\nIf you push unfinished matters today, resistance drops. If you delay, expect irritation and stalled replies tomorrow.\n\n✅ Best use of today:\n• resolve money/work matters\n• make final decisions\n• end draining conversations\n\n⛔ Biggest mistake today:\n• emotional honesty without boundaries\n• promising future actions\n\n⏱ Power window: *morning → early afternoon*\n⛔ Danger window: *late evening (reactive energy)*",
+
+  "day_opportunity_free": "✅ Today is an *opportunity day*.\nMomentum is open — the world responds if you step forward.\n\n✅ What works today:\n• outreach\n• visibility\n• taking initiative\n\n⛔ What backfires today:\n• waiting for “perfect”\n• hiding your intentions\n\n⏱ Strongest window: *mid-morning*.\nLater: fatigue → sloppy choices.",
+  "day_opportunity_premium": "✅ Today is an *opportunity day* with a clean forward push.\nIf you act early, responses come faster. If you hesitate, the window narrows quickly.\n\n✅ Best use of today:\n• messages / negotiation\n• pitching / applying\n• bold but clean decisions\n\n⛔ Biggest mistake today:\n• overexplaining\n• waiting for extra validation\n\n⏱ Power window: *mid-morning*\n⛔ Danger window: *late afternoon (low focus)*",
+
+  "day_transition_free": "🔄 Today is a *transition day*.\nEndings and beginnings overlap — expect mixed signals.\n\n✅ What works today:\n• flexible plans\n• reviewing priorities\n• soft decisions\n\n⛔ What backfires today:\n• ultimatums\n• locking in shaky agreements\n\n⏱ Clarity improves around *midday*.\nNight can trigger overthinking.",
+  "day_transition_premium": "🔄 Today is a *transition day* — not a day for final certainty.\nIf you force commitments today, you may regret the terms.\n\n✅ Best use of today:\n• adjust your plan\n• review offers/messages\n• prepare the next step\n\n⛔ Biggest mistake today:\n• demanding immediate clarity\n• trying to control other people’s timing\n\n⏱ Power window: *midday (best clarity)*\n⛔ Danger window: *late night (anxiety spiral)*",
+
+  "day_conflict_free": "⚠️ Today is *conflict-sensitive*.\nTriggers are louder — small words escalate fast.\n\n✅ What works today:\n• boundaries\n• diplomacy\n• short clear messages\n\n⛔ What backfires today:\n• “honesty bombs”\n• emotional testing\n\n⏱ Keep serious talks *earlier in the day*.\nLater becomes reactive.",
+  "day_conflict_premium": "⚠️ Today is *conflict-sensitive* — choose precision over emotion.\nPush conflict today and you may carry it for days.\n\n✅ Best use of today:\n• clarify boundaries\n• keep messages short\n• delay heavy talks unless necessary\n\n⛔ Biggest mistake today:\n• saying everything you feel\n• trying to “win” the conversation\n\n⏱ Power window: *first half of day*\n⛔ Danger window: *evening (emotional spill)*",
+
+  "day_risk_free": "⛔ Today is a *risk day*.\nImpulsive choices cost more later.\n\n✅ What works today:\n• checking facts\n• slowing decisions\n• protecting money/energy\n\n⛔ What backfires today:\n• emotional purchases\n• hard commitments\n\n⏱ Keep decisions to the *morning*.\nAfternoon increases impulse.",
+  "day_risk_premium": "⛔ Today is a *risk day* — not a day for bold bets.\nOne rushed move today becomes a repair job tomorrow.\n\n✅ Best use of today:\n• review contracts/messages\n• postpone purchases\n• choose the safer option\n\n⛔ Biggest mistake today:\n• buying to change mood\n• agreeing under pressure\n\n⏱ Power window: *calm morning*\n⛔ Danger window: *afternoon impulse*",
+
+  "day_preparation_free": "🛠️ Today is a *preparation day*.\nSetup wins — performance can wait.\n\n✅ What works today:\n• planning\n• clearing clutter\n• building systems\n\n⛔ What backfires today:\n• forcing a launch\n• demanding instant results\n\n⏱ Best use: *late morning structure*.\nEvening can feel frustrating.",
+  "day_preparation_premium": "🛠️ Today is a *preparation day* — build the base.\nIf you force results today, you’ll lose momentum tomorrow.\n\n✅ Best use of today:\n• organize tasks\n• prep messages/materials\n• fix weak points\n\n⛔ Biggest mistake today:\n• pushing big launches\n• arguing with reality\n\n⏱ Power window: *late morning (structure)*\n⛔ Danger window: *evening frustration*",
+
+  "day_quiet_power_free": "🌙 Today is a *quiet power day*.\nSubtle moves beat loud ones.\n\n✅ What works today:\n• focused work\n• steady progress\n• deep conversations\n\n⛔ What backfires today:\n• attention-seeking\n• proving yourself\n\n⏱ Best flow: *early afternoon*.\nLate night can trigger overthinking.",
+  "day_quiet_power_premium": "🌙 Today is a *quiet power day* — consistency wins.\nIf you stay focused, you create momentum that compounds.\n\n✅ Best use of today:\n• deep work\n• fixing foundations\n• calm, honest conversations\n\n⛔ Biggest mistake today:\n• chasing validation\n• starting drama for stimulation\n\n⏱ Power window: *early afternoon (flow)*\n⛔ Danger window: *late night overthinking*"
+}
