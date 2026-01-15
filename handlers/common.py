@@ -19,8 +19,7 @@ from db import redis
 
 PRICES = {
     "monthly": 199,   # Stars
-    "lifetime": 1999,  # Stars
-    "daypass": 49
+    "lifetime": 1999  # Stars
 }
 
 
@@ -64,7 +63,14 @@ from states import (
 
 # --- Button keys 
 MAIN_BTN_KEYS = [
-    "btn_life_path",
+    # Navigation
+    "btn_today_guidance",
+    "btn_week_map",
+    "btn_profile",
+    "btn_home",
+
+    # Profile tools
+"btn_life_path",
     "btn_soul_urge",
     "btn_personality",
     "btn_birthday",
@@ -90,6 +96,24 @@ def label(locale: str, key: str) -> str:
 
 
 def build_main_menu(locale: str) -> ReplyKeyboardMarkup:
+    """Home menu: guidance engine entry points."""
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=label(locale, "btn_today_guidance")),
+                KeyboardButton(text=label(locale, "btn_week_map")),
+            ],
+            [
+                KeyboardButton(text=label(locale, "btn_profile")),
+                KeyboardButton(text=label(locale, "btn_premium")),
+            ],
+        ],
+        resize_keyboard=True,
+        input_field_placeholder=label(locale, "menu_home_placeholder"),
+    )
+
+def build_profile_menu(locale: str) -> ReplyKeyboardMarkup:
+    """Profile menu: classic numerology tools (used for personalization inputs)."""
     return ReplyKeyboardMarkup(
         keyboard=[
             [
@@ -102,10 +126,10 @@ def build_main_menu(locale: str) -> ReplyKeyboardMarkup:
                 KeyboardButton(text=label(locale, "btn_expression")),
                 KeyboardButton(text=label(locale, "btn_destiny")),
             ],
-            [KeyboardButton(text=label(locale, "btn_premium"))],
+            [KeyboardButton(text=label(locale, "btn_home"))],
         ],
         resize_keyboard=True,
-        input_field_placeholder=label(locale, "menu_main_placeholder"),
+        input_field_placeholder=label(locale, "menu_profile_placeholder"),
     )
 
 def build_premium_menu(locale: str) -> ReplyKeyboardMarkup:
@@ -184,17 +208,8 @@ def is_btn_upgrade(text: str | None) -> bool:
 
 def _plan_label(loc: str, plan: str) -> str:
     if loc == "ru":
-        return {
-            "monthly": "1 месяц (подписка)",
-            "lifetime": "Навсегда",
-            "daypass": "1 день (день-пас)"
-        }[plan]
-    return {
-        "monthly": "1 month (subscription)",
-        "lifetime": "Lifetime",
-        "daypass": "1 day (day pass)"
-    }[plan]
-
+        return {"monthly": "1 месяц (подписка)", "lifetime": "Навсегда"}[plan]
+    return {"monthly": "1 month (subscription)", "lifetime": "Lifetime"}[plan]
 
 # --- Router
 router = Router(name=__name__)
@@ -289,8 +304,8 @@ async def notif_topic_open_cb(call: CallbackQuery, state: FSMContext):
 
     # Route by topic
     if call.data == "open_daily":
-        from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
-        result = get_daily_universal_vibe_forecast(user_id=user_id, locale=loc)
+        from tools.guidance_today import get_today_guidance
+        result = get_today_guidance(user_id=user_id, locale=loc, premium=True)
         await call.message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
 
     elif call.data == "open_moon":
@@ -458,7 +473,6 @@ async def _premium_kb_with_link(bot, user_id: int, loc: str) -> InlineKeyboardMa
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=_("btn_buy_monthly",  locale=loc), url=monthly_link)],
         [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
-        [InlineKeyboardButton(text=_("btn_buy_daypass",  locale=loc), callback_data="buy:daypass")],
     ])
 
 
@@ -556,7 +570,6 @@ async def on_buy_plan(call: CallbackQuery):
         kb = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text=_("btn_buy_monthly", locale=loc), url=link)],
             [InlineKeyboardButton(text=_("btn_buy_lifetime", locale=loc), callback_data="buy:lifetime")],
-            [InlineKeyboardButton(text=_("btn_buy_daypass",  locale=loc), callback_data="buy:daypass")],
         ])
         await call.message.answer(_("premium_intro", locale=loc), reply_markup=kb, disable_web_page_preview=True)
         await call.answer()
@@ -590,8 +603,6 @@ async def _grant_premium(user_id: int, plan: str, *, expires_ts: int | None = No
         if charge_id:
             await redis.hset("premium:last_charge_id", str(user_id), charge_id)
         PAID_USERS.add(user_id)
-    elif plan == "daypass":          
-        await _extend_premium_days(user_id, 1)
 
 
 @router.message(F.successful_payment)
@@ -640,29 +651,64 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
     await state.clear()
     loc = get_locale(message.from_user.id)
 
-    if choice_key == "btn_life_path":
-        await message.answer(_("intro_life_path", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
-        await state.set_state(LifePathStates.waiting_for_birthdate)
+    if choice_key == "btn_today_guidance":
+    from tools.guidance_today import get_today_guidance
+    premium = is_premium_user(message.from_user.id)
+    result = get_today_guidance(user_id=message.from_user.id, locale=loc, premium=premium)
+    await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc), disable_web_page_preview=True)
 
-    elif choice_key == "btn_soul_urge":
-        await message.answer(_("intro_soul_urge", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
-        await state.set_state(SoulUrgeStates.waiting_for_full_name)
+elif choice_key == "btn_week_map":
+    from tools.guidance_weekly import get_week_map
+    if not is_premium_user(message.from_user.id):
+        await message.answer(
+            _("premium_locked", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=build_premium_menu(loc),
+        )
+        return
+    result = get_week_map(user_id=message.from_user.id, locale=loc)
+    await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc), disable_web_page_preview=True)
 
-    elif choice_key == "btn_personality":
-        await message.answer(_("intro_personality", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
-        await state.set_state(PersonalityStates.waiting_for_full_name)
+elif choice_key == "btn_profile":
+    await message.answer(
+        _("profile_intro", locale=loc),
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=build_profile_menu(loc),
+        disable_web_page_preview=True,
+    )
 
-    elif choice_key == "btn_birthday":
-        await message.answer(_("intro_birthday", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
-        await state.set_state(BirthdayStates.waiting_for_birthdate)
+elif choice_key == "btn_home":
+    await message.answer(
+        _("back_to_home_text", locale=loc),
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=build_main_menu(loc),
+        disable_web_page_preview=True,
+    )
 
-    elif choice_key == "btn_expression":
-        await message.answer(_("intro_expression", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
-        await state.set_state(ExpressionStates.waiting_for_full_name)
+elif choice_key == "btn_life_path":
+    await message.answer(_("intro_life_path", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
+    await state.set_state(LifePathStates.waiting_for_birthdate)
 
-    elif choice_key == "btn_destiny":
-        await message.answer(_("intro_destiny", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
-        await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
+elif choice_key == "btn_soul_urge":
+    await message.answer(_("intro_soul_urge", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
+    await state.set_state(SoulUrgeStates.waiting_for_full_name)
+
+elif choice_key == "btn_personality":
+    await message.answer(_("intro_personality", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
+    await state.set_state(PersonalityStates.waiting_for_full_name)
+
+elif choice_key == "btn_birthday":
+    await message.answer(_("intro_birthday", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
+    await state.set_state(BirthdayStates.waiting_for_birthdate)
+
+elif choice_key == "btn_expression":
+    await message.answer(_("intro_expression", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
+    await state.set_state(ExpressionStates.waiting_for_full_name)
+
+elif choice_key == "btn_destiny":
+    await message.answer(_("intro_destiny", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
+    await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
 
 # --- Unified Premium Menu Handler
 @router.message(F.text.func(is_premium_caption), StateFilter("*"))
@@ -721,8 +767,8 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
 
     elif choice_key == "btn_daily":
-        from tools.premium_daily_vibe import get_daily_universal_vibe_forecast
-        result = get_daily_universal_vibe_forecast(user_id=user_id, locale=loc)
+        from tools.guidance_today import get_today_guidance
+        result = get_today_guidance(user_id=user_id, locale=loc, premium=True)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
 
     elif choice_key == "btn_angel":
