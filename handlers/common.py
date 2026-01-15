@@ -653,18 +653,6 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
 
     if choice_key == "btn_today_guidance":
         from tools.guidance_today import get_today_guidance
-        premium = is_premium_user(message.from_user.id)
-        result = get_today_guidance(
-            user_id=message.from_user.id,
-            locale=loc,
-            premium=premium,
-        )
-        await message.answer(
-            result,
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=build_main_menu(loc),
-            disable_web_page_preview=True,
-        )
 
         premium = is_premium_user(message.from_user.id)
         result = get_today_guidance(
@@ -672,12 +660,14 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
             locale=loc,
             premium=premium,
         )
+
         await message.answer(
             result,
             parse_mode=ParseMode.MARKDOWN,
             reply_markup=build_main_menu(loc),
             disable_web_page_preview=True,
         )
+
 
     elif choice_key == "btn_week_map":
         from tools.guidance_weekly import get_week_map
