@@ -652,63 +652,116 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
     loc = get_locale(message.from_user.id)
 
     if choice_key == "btn_today_guidance":
-    from tools.guidance_today import get_today_guidance
-    premium = is_premium_user(message.from_user.id)
-    result = get_today_guidance(user_id=message.from_user.id, locale=loc, premium=premium)
-    await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc), disable_web_page_preview=True)
-
-elif choice_key == "btn_week_map":
-    from tools.guidance_weekly import get_week_map
-    if not is_premium_user(message.from_user.id):
-        await message.answer(
-            _("premium_locked", locale=loc),
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-            reply_markup=build_premium_menu(loc),
+        from tools.guidance_today import get_today_guidance
+        premium = is_premium_user(message.from_user.id)
+        result = get_today_guidance(
+            user_id=message.from_user.id,
+            locale=loc,
+            premium=premium,
         )
-        return
-    result = get_week_map(user_id=message.from_user.id, locale=loc)
-    await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc), disable_web_page_preview=True)
+        await message.answer(
+            result,
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_main_menu(loc),
+            disable_web_page_preview=True,
+        )
 
-elif choice_key == "btn_profile":
-    await message.answer(
-        _("profile_intro", locale=loc),
-        parse_mode=ParseMode.MARKDOWN,
-        reply_markup=build_profile_menu(loc),
-        disable_web_page_preview=True,
-    )
+        premium = is_premium_user(message.from_user.id)
+        result = get_today_guidance(
+            user_id=message.from_user.id,
+            locale=loc,
+            premium=premium,
+        )
+        await message.answer(
+            result,
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_main_menu(loc),
+            disable_web_page_preview=True,
+        )
 
-elif choice_key == "btn_home":
-    await message.answer(
-        _("back_to_home_text", locale=loc),
-        parse_mode=ParseMode.MARKDOWN,
-        reply_markup=build_main_menu(loc),
-        disable_web_page_preview=True,
-    )
+    elif choice_key == "btn_week_map":
+        from tools.guidance_weekly import get_week_map
+        if not is_premium_user(message.from_user.id):
+            await message.answer(
+                _("premium_locked", locale=loc),
+                parse_mode=ParseMode.MARKDOWN,
+                disable_web_page_preview=True,
+                reply_markup=build_premium_menu(loc),
+            )
+            return
 
-elif choice_key == "btn_life_path":
-    await message.answer(_("intro_life_path", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
-    await state.set_state(LifePathStates.waiting_for_birthdate)
+        result = get_week_map(user_id=message.from_user.id, locale=loc)
+        await message.answer(
+            result,
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_main_menu(loc),
+            disable_web_page_preview=True,
+        )
 
-elif choice_key == "btn_soul_urge":
-    await message.answer(_("intro_soul_urge", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
-    await state.set_state(SoulUrgeStates.waiting_for_full_name)
+    elif choice_key == "btn_profile":
+        await message.answer(
+            _("profile_intro", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
+            disable_web_page_preview=True,
+        )
 
-elif choice_key == "btn_personality":
-    await message.answer(_("intro_personality", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
-    await state.set_state(PersonalityStates.waiting_for_full_name)
+    elif choice_key == "btn_home":
+        await message.answer(
+            _("back_to_home_text", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_main_menu(loc),
+            disable_web_page_preview=True,
+        )
 
-elif choice_key == "btn_birthday":
-    await message.answer(_("intro_birthday", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
-    await state.set_state(BirthdayStates.waiting_for_birthdate)
+    elif choice_key == "btn_life_path":
+        await message.answer(
+            _("intro_life_path", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
+        )
+        await state.set_state(LifePathStates.waiting_for_birthdate)
 
-elif choice_key == "btn_expression":
-    await message.answer(_("intro_expression", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
-    await state.set_state(ExpressionStates.waiting_for_full_name)
+    elif choice_key == "btn_soul_urge":
+        await message.answer(
+            _("intro_soul_urge", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
+        )
+        await state.set_state(SoulUrgeStates.waiting_for_full_name)
 
-elif choice_key == "btn_destiny":
-    await message.answer(_("intro_destiny", locale=loc), parse_mode=ParseMode.MARKDOWN, reply_markup=build_profile_menu(loc))
-    await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
+    elif choice_key == "btn_personality":
+        await message.answer(
+            _("intro_personality", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
+        )
+        await state.set_state(PersonalityStates.waiting_for_full_name)
+
+    elif choice_key == "btn_birthday":
+        await message.answer(
+            _("intro_birthday", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
+        )
+        await state.set_state(BirthdayStates.waiting_for_birthdate)
+
+    elif choice_key == "btn_expression":
+        await message.answer(
+            _("intro_expression", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
+        )
+        await state.set_state(ExpressionStates.waiting_for_full_name)
+
+    elif choice_key == "btn_destiny":
+        await message.answer(
+            _("intro_destiny", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
+        )
+        await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
+
 
 # --- Unified Premium Menu Handler
 @router.message(F.text.func(is_premium_caption), StateFilter("*"))
