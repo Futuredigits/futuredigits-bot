@@ -97,15 +97,52 @@ def compute_week_plan(date: datetime) -> dict:
     best = min(days, key=lambda x: (x["score"], priority_best[x["day_type"]]))
     worst = max(days, key=lambda x: (x["score"], -priority_best[x["day_type"]]))
 
+    
+    # Premium weekly picks
+    money_best = _pick_day_by_type_priority(
+        days, ["opportunity", "preparation", "quiet_power"]
+    )
+    money_worst = _pick_day_by_type_priority(
+        days, ["risk", "conflict"]
+    )
+
+    talk_best = _pick_day_by_type_priority(
+        days, ["quiet_power", "preparation"]
+    )
+    talk_worst = _pick_day_by_type_priority(
+        days, ["conflict", "pressure"]
+    )
+
     return {
         "days": days,
         "dominant_type": dominant_type,
         "week_kind": week_kind,
+
         "best_day": best["date"],
         "best_type": best["day_type"],
         "worst_day": worst["date"],
         "worst_type": worst["day_type"],
+
+        # Premium-only signals
+        "money_best_day": money_best,
+        "money_worst_day": money_worst,
+        "talk_best_day": talk_best,
+        "talk_worst_day": talk_worst,
     }
+
+
+def _pick_day_by_type_priority(days, priority_types):
+    """
+    Pick the first day in the week whose day_type matches priority_types.
+    days: list of dicts from compute_week_plan()
+    priority_types: list of DayType in priority order
+    """
+    for p in priority_types:
+        for d in days:
+            if d["day_type"] == p:
+                return d["date"]
+    return None
+
 
 def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
     loc = (locale or "en").lower()
