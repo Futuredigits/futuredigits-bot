@@ -16,6 +16,14 @@
   "error_invalid_date": "❗ *Invalid date format.*\nPlease enter like this: `04.07.1992`",
   "error_invalid_name": "❗ *Invalid name.* Please enter your full name using letters only.",
   "error_two_names": "❗ *Please enter two full names separated by a comma.*\nExample: `Emma Grace, John Carter`",
+  "weekday_mon": "Monday",
+  "weekday_tue": "Tuesday",
+  "weekday_wed": "Wednesday",
+  "weekday_thu": "Thursday",
+  "weekday_fri": "Friday",
+  "weekday_sat": "Saturday",
+  "weekday_sun": "Sunday",
+  "weekday_unknown": "—",
   "btn_life_path": "🔢 Life Path",
   "btn_soul_urge": "💖 Soul Urge",
   "btn_personality": "🎭 Personality",
@@ -416,7 +424,10 @@
   "week_conflict_week_premium": "Conflict-sensitive week: precision beats emotion.\n\n⚠️ Main risk:\nTrying to “win” conversations.\n\n✅ Opportunity:\nRepair through boundaries and timing.\n\n🟢 Best day: *{best_day}* — clarify and set limits.\n🔴 Worst day: *{worst_day}* — avoid starting heavy conversations.\n\n🔮 Next week calms down — Premium shows the repair window.",
 
   "week_preparation_week_free": "This week rewards preparation — not big launches.\n\n⚠️ Main risk:\nForcing results creates resistance.\n\n✅ Best use:\nBuild systems, clear clutter, prepare next moves.\n\n🟢 Strong day: *{best_day}*\n🔴 Caution day: *{worst_day}*",
-  "week_preparation_week_premium": "Preparation week: build the base and stop rushing.\n\n⚠️ Main risk:\nLaunching before you’re ready.\n\n✅ Opportunity:\nSet everything up so execution is easy later.\n\n🟢 Best day: *{best_day}* — organize, plan, prepare messages.\n🔴 Worst day: *{worst_day}* — avoid forcing decisions.\n\n🔮 Action opens next week — Premium shows the exact day."
+  "week_preparation_week_premium": "Preparation week: build the base and stop rushing.\n\n⚠️ Main risk:\nLaunching before you’re ready.\n\n✅ Opportunity:\nSet everything up so execution is easy later.\n\n🟢 Best day: *{best_day}* — organize, plan, prepare messages.\n🔴 Worst day: *{worst_day}* — avoid forcing decisions.\n\n🔮 Action opens next week — Premium shows the exact day.",
 
+  "week_premium_plan": "📅 Your Weekly Plan\n\nThis week requires controlled timing. Acting on impulse creates avoidable problems.\n\n💰 Money & work:\nBest day: *{money_best}* — negotiations, payments, applications.\nAvoid: *{money_worst}* — risky spending or commitments.\n\n🗣 Hard conversations:\nBest window: *{talk_best}* — clear, calm, short.\nAvoid: *{talk_worst}* — emotions escalate quickly.\n\n⛔ Main mistake this week:\nTrying to push outcomes instead of choosing the moment.\n\n🔮 Next week opens a cleaner window. Premium shows where momentum returns."
+
+  
 
 }

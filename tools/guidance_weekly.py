@@ -1,4 +1,3 @@
-# tools/guidance_weekly.py
 from datetime import datetime, timedelta
 from typing import Literal
 
@@ -39,27 +38,20 @@ WEEK_KIND_BY_DOMINANT: dict[DayType, WeekKind] = {
 def _t(loc: str, key: str, fallback: str = "") -> str:
     return (TRANSLATIONS.get(loc, {}) or {}).get(key) or (TRANSLATIONS.get("en", {}) or {}).get(key) or fallback
 
-def _weekday_label(loc: str, dt: datetime) -> str:
-    # Use locale file labels if you have them; fallback to English weekday names
-    # Optional keys you can add later: weekday_mon ... weekday_sun
+def _weekday_label(loc: str, dt: datetime | None) -> str:
+    if dt is None:
+        return _t(loc, "weekday_unknown", "—")
     key_map = ["weekday_mon","weekday_tue","weekday_wed","weekday_thu","weekday_fri","weekday_sat","weekday_sun"]
     key = key_map[dt.weekday()]
     fallback = dt.strftime("%A")
     return _t(loc, key, fallback)
 
+
 def _start_of_week(now: datetime) -> datetime:
     # Monday as start (0)
     return now - timedelta(days=now.weekday())
 
-def compute_week_plan(date: datetime) -> dict:
-    """
-    Returns a dict with:
-      - days: list[{date, day_type, score}]
-      - dominant_type: DayType
-      - week_kind: WeekKind
-      - best_day: datetime
-      - worst_day: datetime
-    """
+def compute_week_plan(date: datetime) -> dict:    
     start = _start_of_week(date)
     days = []
     counts: dict[DayType, int] = {k: 0 for k in DAYTYPE_SCORE.keys()}
@@ -71,20 +63,17 @@ def compute_week_plan(date: datetime) -> dict:
         days.append({"date": d, "day_type": dt, "score": score})
         counts[dt] += 1
 
-    # Dominant type = most frequent; tie-breaker by "heavier" score
     dominant_type = max(
         counts.keys(),
         key=lambda k: (counts[k], DAYTYPE_SCORE[k])
     )
-
-    # If week is very mixed (no type appears >=2), mark as mixed
+    
     max_count = max(counts.values())
     if max_count < 2:
         week_kind: WeekKind = "mixed_week"
     else:
         week_kind = WEEK_KIND_BY_DOMINANT.get(dominant_type, "mixed_week")
 
-    # Best day: lowest score; tie-breaker: opportunity > quiet_power > preparation > transition > pressure > conflict/risk
     priority_best = {
         "opportunity": 0,
         "quiet_power": 1,
@@ -100,17 +89,21 @@ def compute_week_plan(date: datetime) -> dict:
     
     # Premium weekly picks
     money_best = _pick_day_by_type_priority(
-        days, ["opportunity", "preparation", "quiet_power"]
+        days, ["opportunity", "preparation", "quiet_power"],
+        fallback_date=best["date"]
     )
     money_worst = _pick_day_by_type_priority(
-        days, ["risk", "conflict"]
+        days, ["risk", "conflict"],
+        fallback_date=worst["date"]
     )
 
     talk_best = _pick_day_by_type_priority(
-        days, ["quiet_power", "preparation"]
+        days, ["quiet_power", "preparation"],
+        fallback_date=best["date"]
     )
     talk_worst = _pick_day_by_type_priority(
-        days, ["conflict", "pressure"]
+        days, ["conflict", "pressure"],
+        fallback_date=worst["date"]
     )
 
     return {
@@ -131,17 +124,13 @@ def compute_week_plan(date: datetime) -> dict:
     }
 
 
-def _pick_day_by_type_priority(days, priority_types):
-    """
-    Pick the first day in the week whose day_type matches priority_types.
-    days: list of dicts from compute_week_plan()
-    priority_types: list of DayType in priority order
-    """
+def _pick_day_by_type_priority(days, priority_types, fallback_date=None):
     for p in priority_types:
         for d in days:
             if d["day_type"] == p:
                 return d["date"]
-    return None
+    return fallback_date
+
 
 
 def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
@@ -168,7 +157,23 @@ def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
     text = template.format(best_day=best_day, worst_day=worst_day)
 
     if premium:
-        return f"{title}\n\n{text}"
+        money_best = _weekday_label(loc, plan["money_best_day"])
+        money_worst = _weekday_label(loc, plan["money_worst_day"])
+        talk_best = _weekday_label(loc, plan["talk_best_day"])
+        talk_worst = _weekday_label(loc, plan["talk_worst_day"])
+
+        template = _t(loc, "week_premium_plan", "")
+        if not template:
+            raise RuntimeError(f"Missing locale key: week_premium_plan for loc={loc}")
+
+        return template.format(
+            money_best=money_best,
+            money_worst=money_worst,
+            talk_best=talk_best,
+            talk_worst=talk_worst,
+        )
+   
+
     else:
         hook = _t(loc, "week_free_hook", "🔒 Premium explains why these days matter for you and what shifts next week.")
         return f"{title}\n\n{text}\n\n{hook}"
