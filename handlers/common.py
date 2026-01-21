@@ -671,7 +671,11 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
 
     elif choice_key == "btn_week_map":
         from tools.guidance_weekly import get_week_map
-        if not is_premium_user(message.from_user.id):
+
+        user_id = message.from_user.id
+        premium = is_premium_user(user_id)
+
+        if not premium:
             await message.answer(
                 _("premium_locked", locale=loc),
                 parse_mode=ParseMode.MARKDOWN,
@@ -680,7 +684,9 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
             )
             return
 
-        result = get_week_map(user_id=message.from_user.id, locale=loc)
+        # ✅ IMPORTANT: pass premium=True
+        result = get_week_map(user_id=user_id, locale=loc, premium=True)
+
         await message.answer(
             result,
             parse_mode=ParseMode.MARKDOWN,
@@ -688,13 +694,6 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
             disable_web_page_preview=True,
         )
 
-    elif choice_key == "btn_profile":
-        await message.answer(
-            _("profile_intro", locale=loc),
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=build_profile_menu(loc),
-            disable_web_page_preview=True,
-        )
 
     elif choice_key == "btn_home":
         await message.answer(
