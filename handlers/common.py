@@ -177,23 +177,31 @@ def all_captions_for(key: str) -> set[str]:
 MAIN_CAPTIONS = set().union(*(all_captions_for(k) for k in MAIN_BTN_KEYS))
 PREMIUM_CAPTIONS = set().union(*(all_captions_for(k) for k in PREMIUM_BTN_KEYS))
 
+def _norm(s: str) -> str:
+    # Normalize Telegram captions (NBSP, weird whitespace, etc.)
+    return (s or "").replace("\u00a0", " ").strip()
+
 def caption_to_key(text: str) -> str | None:
+    t = _norm(text)
     for k in MAIN_BTN_KEYS + PREMIUM_BTN_KEYS + ["btn_premium", "btn_back", "btn_upgrade"]:
-        if text == TRANSLATIONS.get("en", {}).get(k) or text == TRANSLATIONS.get("ru", {}).get(k):
+        en = _norm(TRANSLATIONS.get("en", {}).get(k, ""))
+        ru = _norm(TRANSLATIONS.get("ru", {}).get(k, ""))
+        if t and (t == en or t == ru):
             return k
     return None
 
 def is_main_caption(text: str | None) -> bool:
     if not text:
         return False
-    k = caption_to_key(text.strip())
+    k = caption_to_key(text)
     return k in MAIN_BTN_KEYS
 
 def is_premium_caption(text: str | None) -> bool:
     if not text:
         return False
-    k = caption_to_key(text.strip())
+    k = caption_to_key(text)
     return k in PREMIUM_BTN_KEYS
+
 
 def is_btn_premium(text: str | None) -> bool:
     return caption_to_key((text or "").strip()) == "btn_premium"
