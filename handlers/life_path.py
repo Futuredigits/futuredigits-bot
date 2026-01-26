@@ -21,7 +21,7 @@ async def handle_life_path(message: Message, state: FSMContext):
     try:
         date_str = message.text.strip()
         number = calculate_life_path_number(date_str)
-        await set_birthdate(message.from_user.id, birthdate_str)
+        await set_birthdate(message.from_user.id, date_str)
         result = get_life_path_result(number, user_id=message.from_user.id)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
         await mark_activation_once(message.from_user.id)
