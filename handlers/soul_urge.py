@@ -6,6 +6,7 @@ from aiogram.filters import StateFilter
 
 from states import SoulUrgeStates
 from handlers.common import build_main_menu
+from tools.profile_store import set_full_name
 from localization import _, get_locale
 from tools.soul_urge import calculate_soul_urge_number, get_soul_urge_result
 from handlers.common import mark_activation_once
@@ -19,6 +20,7 @@ async def handle_soul_urge(message: Message, state: FSMContext):
     try:
         full_name = message.text.strip()
         number = calculate_soul_urge_number(full_name, locale=loc)
+        await set_full_name(message.from_user.id, full_name)
         result = get_soul_urge_result(number, user_id=message.from_user.id)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
         await mark_activation_once(message.from_user.id)

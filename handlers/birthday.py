@@ -7,6 +7,7 @@ from aiogram.filters import StateFilter
 from states import BirthdayStates
 from tools.birthday import calculate_birthday_number, get_birthday_result
 from handlers.common import build_main_menu
+from tools.profile_store import set_birthdate
 from localization import _, get_locale
 from handlers.common import mark_activation_once
 
@@ -19,6 +20,7 @@ async def handle_birthday(message: Message, state: FSMContext):
         loc = get_locale(message.from_user.id)
         date_str = message.text.strip()
         number = calculate_birthday_number(date_str)
+        await set_birthdate(message.from_user.id, date_str)
         result = get_birthday_result(number, user_id=message.from_user.id)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_main_menu(loc))
         await mark_activation_once(message.from_user.id)
