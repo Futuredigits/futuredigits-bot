@@ -70,7 +70,7 @@ MAIN_BTN_KEYS = [
     "btn_home",
 
     # Profile tools
-"btn_life_path",
+    "btn_life_path",
     "btn_soul_urge",
     "btn_personality",
     "btn_birthday",
@@ -647,6 +647,20 @@ async def on_successful_payment(message: Message):
         disable_web_page_preview=True,
     )
 
+@router.message(F.text.func(lambda t: caption_to_key(t or "") == "btn_profile"), StateFilter("*"))
+async def show_profile_menu_button(message: Message, state: FSMContext):
+    from notifications import add_subscriber
+    await add_subscriber(message.from_user.id)
+    await state.clear()
+
+    loc = get_locale(message.from_user.id)
+    await message.answer(
+        _("profile_intro", locale=loc),
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=build_profile_menu(loc),
+        disable_web_page_preview=True,
+    )
+
 
 # --- Unified Main Menu Handler 
 @router.message(F.text.func(is_main_caption), StateFilter("*"))
@@ -699,6 +713,14 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
             result,
             parse_mode=ParseMode.MARKDOWN,
             reply_markup=build_main_menu(loc),
+            disable_web_page_preview=True,
+        )
+
+    elif choice_key == "btn_profile":
+        await message.answer(
+            _("profile_intro", locale=loc),
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=build_profile_menu(loc),
             disable_web_page_preview=True,
         )
 
@@ -758,6 +780,10 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
             reply_markup=build_profile_menu(loc),
         )
         await state.set_state(DestinyStates.waiting_for_birthdate_and_name)
+
+        
+    else:
+        logging.warning(f"[menu] Unhandled choice_key={choice_key}")
 
 
 # --- Unified Premium Menu Handler
