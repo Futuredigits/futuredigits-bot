@@ -6,7 +6,7 @@ from aiogram.filters import StateFilter
 
 from states import PersonalityStates
 from handlers.common import build_main_menu
-await set_full_name(message.from_user.id, full_name)
+from tools.profile_store import set_full_name
 from localization import _, get_locale
 from tools.personality import calculate_personality_number, get_personality_result
 from handlers.common import mark_activation_once
