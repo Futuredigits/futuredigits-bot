@@ -2,6 +2,7 @@
 from datetime import datetime
 from localization import TRANSLATIONS
 from tools.day_type_engine import get_day_type
+from tools.profile_store import get_profile
 
 DAY_TYPE_KEYS = {
     "pressure": "day_pressure",
@@ -40,5 +41,13 @@ def get_today_guidance(*, user_id: int, locale: str, premium: bool = False) -> s
         body = free_text or premium_text
         hook = _t(loc, "today_free_hook", "🔒 Premium reveals why this day hits *you* and what shifts tomorrow.")
         body = f"{body}\n\n{hook}"
+
+    profile = await get_profile(user_id)  # NOTE: make get_today_guidance async if it's not already
+    has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
+
+    if has_profile:
+        body = f"{body}\n\n{_t(loc, 'profile_ready_line', '✅ Personal layer: active.')}"
+    else:
+        body = f"{body}\n\n{_t(loc, 'profile_missing_hook', '⚠️ Add Personal Data to unlock your personal layer.')}"
 
     return f"{title}\n\n{body}"

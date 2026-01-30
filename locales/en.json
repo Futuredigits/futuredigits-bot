@@ -426,7 +426,11 @@
   "week_preparation_week_free": "This week rewards preparation — not big launches.\n\n⚠️ Main risk:\nForcing results creates resistance.\n\n✅ Best use:\nBuild systems, clear clutter, prepare next moves.\n\n🟢 Strong day: *{best_day}*\n🔴 Caution day: *{worst_day}*",
   "week_preparation_week_premium": "Preparation week: build the base and stop rushing.\n\n⚠️ Main risk:\nLaunching before you’re ready.\n\n✅ Opportunity:\nSet everything up so execution is easy later.\n\n🟢 Best day: *{best_day}* — organize, plan, prepare messages.\n🔴 Worst day: *{worst_day}* — avoid forcing decisions.\n\n🔮 Action opens next week — Premium shows the exact day.",
 
-  "week_premium_plan": "📅 Your Weekly Plan\n\nThis week requires controlled timing. Acting on impulse creates avoidable problems.\n\n💰 Money & work:\nBest day: *{money_best}* — negotiations, payments, applications.\nAvoid: *{money_worst}* — risky spending or commitments.\n\n🗣 Hard conversations:\nBest window: *{talk_best}* — clear, calm, short.\nAvoid: *{talk_worst}* — emotions escalate quickly.\n\n⛔ Main mistake this week:\nTrying to push outcomes instead of choosing the moment.\n\n🔮 Next week opens a cleaner window. Premium shows where momentum returns."
+  "week_premium_plan": "📅 Your Weekly Plan\n\nThis week requires controlled timing. Acting on impulse creates avoidable problems.\n\n💰 Money & work:\nBest day: *{money_best}* — negotiations, payments, applications.\nAvoid: *{money_worst}* — risky spending or commitments.\n\n🗣 Hard conversations:\nBest window: *{talk_best}* — clear, calm, short.\nAvoid: *{talk_worst}* — emotions escalate quickly.\n\n⛔ Main mistake this week:\nTrying to push outcomes instead of choosing the moment.\n\n🔮 Next week opens a cleaner window. Premium shows where momentum returns.",
+
+  "profile_missing_hook": "⚠️ Your guidance is still general.\n\nTo personalize **Today** and **This Week**, open *Personal Data* and calculate **Life Path** or **Destiny** (birthdate + name).",
+  "profile_ready_line": "✅ Personal timing unlocked — guidance is adjusted to you."
+
 
   
 }

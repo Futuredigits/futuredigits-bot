@@ -12,6 +12,7 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 from localization import _, get_locale, set_locale, TRANSLATIONS
 from aiogram.types import LabeledPrice, PreCheckoutQuery
+from tools.profile_store import get_profile
 import logging
 import time
 from datetime import datetime, timedelta, timezone
@@ -783,7 +784,15 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
 
         
     else:
-        logging.warning(f"[menu] Unhandled choice_key={choice_key}")
+        logging.warning(f"[menu] Unhandled choice_key={choice_key}")  
+
+    profile = await get_profile(message.from_user.id)
+    has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
+
+    if has_profile:
+        result = f"{result}\n\n{_('profile_ready_line', locale=loc)}"
+    else:
+        result = f"{result}\n\n{_('profile_missing_hook', locale=loc)}"
 
 
 # --- Unified Premium Menu Handler
