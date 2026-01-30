@@ -314,7 +314,7 @@ async def notif_topic_open_cb(call: CallbackQuery, state: FSMContext):
     # Route by topic
     if call.data == "open_daily":
         from tools.guidance_today import get_today_guidance
-        result = get_today_guidance(user_id=user_id, locale=loc, premium=True)
+        result = await get_today_guidance(user_id=user_id, locale=loc, premium=True)
         await call.message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
 
     elif call.data == "open_moon":
@@ -678,7 +678,7 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
         from tools.guidance_today import get_today_guidance
 
         premium = is_premium_user(message.from_user.id)
-        result = get_today_guidance(
+        result = await get_today_guidance(
             user_id=message.from_user.id,
             locale=loc,
             premium=premium,
@@ -706,8 +706,7 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
                 reply_markup=build_premium_menu(loc),
             )
             return
-
-        # ✅ IMPORTANT: pass premium=True
+        
         result = get_week_map(user_id=user_id, locale=loc, premium=True)
 
         await message.answer(
@@ -786,14 +785,6 @@ async def unified_main_menu_handler(message: Message, state: FSMContext):
     else:
         logging.warning(f"[menu] Unhandled choice_key={choice_key}")  
 
-    profile = await get_profile(message.from_user.id)
-    has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
-
-    if has_profile:
-        result = f"{result}\n\n{_('profile_ready_line', locale=loc)}"
-    else:
-        result = f"{result}\n\n{_('profile_missing_hook', locale=loc)}"
-
 
 # --- Unified Premium Menu Handler
 @router.message(F.text.func(is_premium_caption), StateFilter("*"))
@@ -853,7 +844,7 @@ async def unified_premium_menu_handler(message: Message, state: FSMContext):
 
     elif choice_key == "btn_daily":
         from tools.guidance_today import get_today_guidance
-        result = get_today_guidance(user_id=user_id, locale=loc, premium=True)
+        result = await get_today_guidance(user_id=user_id, locale=loc, premium=True)
         await message.answer(result, parse_mode=ParseMode.MARKDOWN, reply_markup=build_premium_menu(loc))
 
     elif choice_key == "btn_angel":

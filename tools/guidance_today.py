@@ -17,12 +17,12 @@ DAY_TYPE_KEYS = {
 def _t(loc: str, key: str, fallback: str = "") -> str:
     return (TRANSLATIONS.get(loc, {}) or {}).get(key) or (TRANSLATIONS.get("en", {}) or {}).get(key) or fallback
 
-def get_today_guidance(*, user_id: int, locale: str, premium: bool = False) -> str:
+async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False) -> str:
     loc = (locale or "en").lower()
     now = datetime.now()
 
     day_type = get_day_type(now)
-    block_key = DAY_TYPE_KEYS[day_type]
+    block_key = DAY_TYPE_KEYS.get(day_type, "day_pressure")
 
     # Title shared
     title = _t(loc, "today_title", "🗓 Today’s Guidance")
@@ -42,7 +42,7 @@ def get_today_guidance(*, user_id: int, locale: str, premium: bool = False) -> s
         hook = _t(loc, "today_free_hook", "🔒 Premium reveals why this day hits *you* and what shifts tomorrow.")
         body = f"{body}\n\n{hook}"
 
-    profile = await get_profile(user_id)  # NOTE: make get_today_guidance async if it's not already
+    profile = await get_profile(user_id)
     has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
 
     if has_profile:
