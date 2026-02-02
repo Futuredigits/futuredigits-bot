@@ -42,6 +42,12 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
         hook = _t(loc, "today_free_hook", "🔒 Premium reveals why this day hits *you* and what shifts tomorrow.")
         body = f"{body}\n\n{hook}"
 
+    cons_key = f"{block_key}_consequence_{'premium' if premium else 'free'}"
+    cons = _t(loc, cons_key, "")
+    if cons:
+        body = f"{body}\n\n{cons}"
+
+
     profile = await get_profile(user_id)
     has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
 
