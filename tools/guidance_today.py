@@ -46,6 +46,12 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
     cons = _t(loc, cons_key, "")
     if cons:
         body = f"{body}\n\n{cons}"
+ 
+    if premium:
+        consequence = _t(loc, f"{block_key}_consequence", "")
+        if consequence:
+            body = f"{body}\n\n⚠️ {consequence}"
+
 
 
     profile = await get_profile(user_id)

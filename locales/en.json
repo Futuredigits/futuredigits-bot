@@ -433,15 +433,19 @@
 
   "day_pressure_consequence_free": "⚠️ If you ignore closure today, tomorrow brings delays and irritation.\n✅ If you finish one thing, pressure drops fast.",
   "day_pressure_consequence_premium": "⚠️ If you push new commitments today, resistance builds and spills into tomorrow.\n✅ If you close one loop, you reclaim momentum for the next 48 hours.",
-
+  "day_pressure_consequence": "If you avoid closure today, delays and irritation appear tomorrow from external factors.",
+  
+  
   "day_opportunity_consequence_free": "⚠️ If you hesitate too long, the window narrows and results slow down.\n✅ If you act early, replies and progress come easier.",
   "day_opportunity_consequence_premium": "⚠️ If you wait for perfect certainty, you lose the best timing.\n✅ If you move early, you get faster yes/no outcomes and cleaner momentum.",
+  "day_opportunity_consequence": "If you hesitate today, the window closes fast and does not reopen this week.",
 
   "day_transition_consequence_free": "⚠️ If you force certainty today, you’ll likely regret the terms.\n✅ If you stay flexible, clarity arrives mid-week.",
   "day_transition_consequence_premium": "⚠️ If you lock decisions today, you risk committing to the wrong direction.\n✅ If you prepare and observe, the correct move becomes obvious within 24–72 hours.",
 
   "day_conflict_consequence_free": "⚠️ If you escalate today, tension stretches into multiple days.\n✅ If you keep it short and calm, you prevent long drama.",
   "day_conflict_consequence_premium": "⚠️ If you fight for “truth” today, you pay for it all week.\n✅ If you choose precision over emotion, you keep control and avoid fallout.",
+  "day_conflict_consequence": "If emotions escalate today, this conflict stretches across several days.",
 
   "day_risk_consequence_free": "⚠️ If you act on impulse, you’ll spend tomorrow repairing the consequences.\n✅ If you slow down, you protect money and energy.",
   "day_risk_consequence_premium": "⚠️ One rushed decision today creates a chain reaction (money + mood).\n✅ If you choose the safer option, you avoid losses and regain stability fast.",
