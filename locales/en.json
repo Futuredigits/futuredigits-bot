@@ -369,6 +369,7 @@
   "back_to_home_text": "🏠 Back to Home.",
   "today_title": "🗓 Today’s Guidance",
   "today_teaser": "You don’t need more motivation today — you need clean focus.",
+  "tomorrow_tease": "🔮 Tomorrow opens a different window. Premium unlocks your exact move for the next 24 hours.",
   "today_key_line": "🔢 Today’s key number: *{n}*",
   "today_upsell": "🔒 Premium unlocks: best time window + what to do / avoid for *your* profile.",
   "today_do": "✅ Do: finish one thing that’s been dragging on.",
@@ -378,12 +379,11 @@
   "week_title": "📅 Your 7‑Day Map",
   "week_subtitle": "(Plan your moves — don’t wing it.)",
   "week_note": "Premium adds: the best/worst day for money, love, and hard conversations.",
-
+  
   
   "today_title": "🗓 Today’s Guidance",
   "today_free_hook": "🔒 Premium reveals why this day hits *you* and what shifts tomorrow.",
-  "today_premium_end": "🔮 Tomorrow shifts — Premium includes your exact best move for the next 24 hours.",
-
+  
   "day_pressure_free": "⚠️ Today is a *pressure day*.\nAvoiding unfinished things creates friction tomorrow.\n\n✅ What works today:\n• finish\n• decide\n• close loops\n\n⛔ What backfires today:\n• emotional confrontations\n• starting new commitments\n\n⏱ Strongest window: *before early afternoon*.\nAfter that, energy becomes reactive.",
   "day_pressure_premium": "🧭 Your Daily Guidance (Premium)\n\n⚠️ Today creates pressure because unfinished decisions are catching up. This is a closing phase.\n\nIf you push new commitments today, resistance builds fast. Delay closure and irritation moves into tomorrow.\n\n✅ Best use today:\n• finish\n• decide\n• close one loop\n\n⛔ Worst mistake:\n• emotional conversations\n• promising more than you can deliver\n\n🔮 Tomorrow shifts into a quieter phase — better for planning and messages.",
 
@@ -448,7 +448,7 @@
   "day_conflict_consequence": "If emotions escalate today, this conflict stretches across several days.",
 
   "day_risk_consequence_free": "⚠️ If you act on impulse, you’ll spend tomorrow repairing the consequences.\n✅ If you slow down, you protect money and energy.",
-  "day_risk_consequence_premium": "⚠️ One rushed decision today creates a chain reaction (money + mood).\n✅ If you choose the safer option, you avoid losses and regain stability fast.",
+  "day_risk_consequence_premium": "⚠️ ⚠️ A rushed decision today creates follow-up problems within 48 hours — usually financial or relational.\n✅ If you slow down now, you skip that chain entirely.",
 
   "day_preparation_consequence_free": "⚠️ If you force results today, you’ll burn energy with little payoff.\n✅ If you build structure, tomorrow becomes easier.",
   "day_preparation_consequence_premium": "⚠️ If you launch too early, you’ll fix mistakes later.\n✅ If you prepare properly, the next push lands clean and faster.",

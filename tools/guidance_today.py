@@ -24,16 +24,13 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
     day_type = get_day_type(now)
     block_key = DAY_TYPE_KEYS.get(day_type, "day_pressure")
 
-    # Title shared
     title = _t(loc, "today_title", "🗓 Today’s Guidance")
 
-    # Fetch localized day-type blocks (free + premium)
     free_text = _t(loc, f"{block_key}_free", "")
     premium_text = _t(loc, f"{block_key}_premium", "")
 
     if premium:
         body = premium_text or free_text
-        # Premium ending hook (optional)
         end = _t(loc, "today_premium_end", "")
         if end:
             body = f"{body}\n\n{end}"
@@ -42,17 +39,14 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
         hook = _t(loc, "today_free_hook", "🔒 Premium reveals why this day hits *you* and what shifts tomorrow.")
         body = f"{body}\n\n{hook}"
 
+        tomorrow = _t(loc, "tomorrow_tease", "")
+        if tomorrow:
+            body = f"{body}\n\n{tomorrow}"
+    
     cons_key = f"{block_key}_consequence_{'premium' if premium else 'free'}"
     cons = _t(loc, cons_key, "")
     if cons:
         body = f"{body}\n\n{cons}"
- 
-    if premium:
-        consequence = _t(loc, f"{block_key}_consequence", "")
-        if consequence:
-            body = f"{body}\n\n⚠️ {consequence}"
-
-
 
     profile = await get_profile(user_id)
     has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
@@ -63,3 +57,4 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
         body = f"{body}\n\n{_t(loc, 'profile_missing_hook', '⚠️ Add Personal Data to unlock your personal layer.')}"
 
     return f"{title}\n\n{body}"
+
