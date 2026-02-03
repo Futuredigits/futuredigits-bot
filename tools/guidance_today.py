@@ -63,5 +63,8 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
         body = f"{body}\n\n{_t(loc, 'profile_ready_line', '✅ Personal layer: active.')}"
     else:
         body = f"{body}\n\n{_t(loc, 'profile_missing_hook', '⚠️ Add Personal Data to unlock your personal layer.')}"
+       
+    return f"{title}\n\n{body}"
+
 
 
