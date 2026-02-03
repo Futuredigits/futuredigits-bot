@@ -51,10 +51,17 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
     profile = await get_profile(user_id)
     has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
 
+
+    if has_profile:
+        bias_key = "today_bias_premium" if premium else "today_bias_free"
+        bias = _t(loc, bias_key, "")
+        if bias:
+            body = f"{body}\n\n{bias}"
+
+
     if has_profile:
         body = f"{body}\n\n{_t(loc, 'profile_ready_line', '✅ Personal layer: active.')}"
     else:
         body = f"{body}\n\n{_t(loc, 'profile_missing_hook', '⚠️ Add Personal Data to unlock your personal layer.')}"
 
-    return f"{title}\n\n{body}"
 

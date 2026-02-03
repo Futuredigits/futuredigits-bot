@@ -454,9 +454,30 @@
   "day_preparation_consequence_premium": "⚠️ If you launch too early, you’ll fix mistakes later.\n✅ If you prepare properly, the next push lands clean and faster.",
 
   "day_quiet_power_consequence_free": "⚠️ If you chase attention today, you waste energy.\n✅ If you focus quietly, you build real progress.",
-  "day_quiet_power_consequence_premium": "⚠️ If you create drama today, you kill the best flow.\n✅ If you stay steady, you build momentum that compounds over the next few days."
+  "day_quiet_power_consequence_premium": "⚠️ If you create drama today, you kill the best flow.\n✅ If you stay steady, you build momentum that compounds over the next few days.",
 
+  "today_bias_free": "🧭 Personal note: your profile slightly shifts how today hits you.\nOpen *Premium* to unlock the decision version: what to push, what backfires, and what tomorrow changes.",
+  "today_bias_premium": "🧭 Profile bias (decisions): today reacts differently for you.\nYou’ll get better results by following the *timing* and avoiding the specific trigger that backfires for your profile.",
 
+  "lp_bias_1_free": "Life Path 1: today rewards initiative — but only on one clear target.",
+  "lp_bias_2_free": "Life Path 2: today is sensitive — choose diplomacy over forcing answers.",
+  "lp_bias_3_free": "Life Path 3: speak less, create more — attention is unstable today.",
+  "lp_bias_4_free": "Life Path 4: structure wins — small disciplined progress beats speed.",
+  "lp_bias_5_free": "Life Path 5: avoid impulse moves — flexibility is good, chaos is not.",
+  "lp_bias_6_free": "Life Path 6: protect boundaries — don’t carry other people’s stress today.",
+  "lp_bias_7_free": "Life Path 7: quiet focus pays — don’t over-explain yourself today.",
+  "lp_bias_8_free": "Life Path 8: pressure rises if you try to control everything — use strategy, not force.",
+  "lp_bias_9_free": "Life Path 9: let things end cleanly — don’t revive what’s already done.",
+
+  "lp_bias_1_premium": "Life Path 1: act early and commit to ONE target. If you scatter, you lose momentum and invite delays.",
+  "lp_bias_2_premium": "Life Path 2: avoid emotional confrontation. If you push for clarity today, it escalates and costs you energy tomorrow.",
+  "lp_bias_3_premium": "Life Path 3: don’t chase validation. If you perform for attention today, you trigger doubt and misreads.",
+  "lp_bias_4_premium": "Life Path 4: build structure and close loose ends. If you rush outcomes, you create rework within 48 hours.",
+  "lp_bias_5_premium": "Life Path 5: avoid impulse decisions and spending. One ‘quick move’ today turns into cleanup tomorrow.",
+  "lp_bias_6_premium": "Life Path 6: set boundaries hard. If you absorb others’ chaos today, your focus collapses and you lose your best window.",
+  "lp_bias_7_premium": "Life Path 7: stay quiet and precise. If you over-explain today, people resist and you lose leverage.",
+  "lp_bias_8_premium": "Life Path 8: don’t force outcomes. If you push power plays today, money and negotiations stall — strategy wins.",
+  "lp_bias_9_premium": "Life Path 9: finish and release. If you reopen old issues today, you extend the cycle and drain momentum."
 
   
 }
