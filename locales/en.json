@@ -477,7 +477,17 @@
   "lp_bias_6_premium": "Life Path 6: set boundaries hard. If you absorb others’ chaos today, your focus collapses and you lose your best window.",
   "lp_bias_7_premium": "Life Path 7: stay quiet and precise. If you over-explain today, people resist and you lose leverage.",
   "lp_bias_8_premium": "Life Path 8: don’t force outcomes. If you push power plays today, money and negotiations stall — strategy wins.",
-  "lp_bias_9_premium": "Life Path 9: finish and release. If you reopen old issues today, you extend the cycle and drain momentum."
+  "lp_bias_9_premium": "Life Path 9: finish and release. If you reopen old issues today, you extend the cycle and drain momentum.",
+
+  "lp_group_lead_free": "Your Life Path favors decisive action today. Move forward — but avoid forcing results.",
+  "lp_group_sensitive_free": "Your Life Path reacts strongly to emotional tension today. Choose calm responses over quick reactions.",
+  "lp_group_expressive_free": "Your Life Path works best when communication stays clear and simple today.",
+  "lp_group_inner_free": "Your Life Path favors patience today. Slow thinking leads to better outcomes.",
+
+  "lp_group_lead_premium": "Your Life Path amplifies action energy today. Strategic moves bring gains — impulsive pressure backfires.",
+  "lp_group_sensitive_premium": "Your Life Path is sensitive to emotional shifts today. Calm decisions protect your momentum.",
+  "lp_group_expressive_premium": "Your Life Path favors smart communication today. Choose clarity over impulse.",
+  "lp_group_inner_premium": "Your Life Path benefits from patience today. Careful steps outperform rushed decisions."
 
   
 }
