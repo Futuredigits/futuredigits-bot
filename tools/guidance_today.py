@@ -1,8 +1,8 @@
-# tools/guidance_today.py
 from datetime import datetime
 from localization import TRANSLATIONS
 from tools.day_type_engine import get_day_type
 from tools.profile_store import get_profile
+from tools.life_path_bias import get_user_life_path_bias
 
 DAY_TYPE_KEYS = {
     "pressure": "day_pressure",
@@ -51,6 +51,14 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
     profile = await get_profile(user_id)
     has_profile = bool(profile.get("birthdate")) and bool(profile.get("full_name"))
 
+    life_path, group_key = await get_user_life_path_bias(user_id)
+
+    if life_path and group_key:
+        bias_text_key = f"{group_key}_{'premium' if premium else 'free'}"
+        lp_bias = _t(loc, bias_text_key, "")
+
+        if lp_bias:
+            body = f"{body}\n\n{lp_bias}"
 
     if has_profile:
         bias_key = "today_bias_premium" if premium else "today_bias_free"
