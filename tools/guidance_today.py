@@ -60,9 +60,8 @@ async def get_today_guidance(*, user_id: int, locale: str, premium: bool = False
         if lp_bias:
             body = f"{body}\n\n{lp_bias}"
 
-    if has_profile:
-        bias_key = "today_bias_premium" if premium else "today_bias_free"
-        bias = _t(loc, bias_key, "")
+    if has_profile and not premium:
+        bias = _t(loc, "today_bias_free", "")
         if bias:
             body = f"{body}\n\n{bias}"
 
