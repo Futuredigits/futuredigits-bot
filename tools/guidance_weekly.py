@@ -156,6 +156,10 @@ def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
 
     text = template.format(best_day=best_day, worst_day=worst_day)
 
+    mistake = _t(loc, "week_core_mistake", "")
+    if mistake:
+        text = f"{text}\n\n{mistake}"
+
     if premium:
         money_best = _weekday_label(loc, plan["money_best_day"])
         money_worst = _weekday_label(loc, plan["money_worst_day"])
