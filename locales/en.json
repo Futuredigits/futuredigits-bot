@@ -408,7 +408,10 @@
   "week_title_new": "📅 This Week",
   "week_free_hook": "🔒 Premium explains why these days matter for *you* and how next week shifts.",
 
-  "week_core_mistake": "⚠️ Biggest mistake this week: pushing in the wrong window.\nThis creates delays, resistance, or unnecessary losses.",
+  "week_opening_strong": "⚠️ This week punishes bad timing.\nMove at the wrong moment — and you create problems you’ll have to fix later.",
+  "week_core_mistake": "⛔️ Main mistake this week:\nPushing at the wrong time — this leads to delays, resistance, or wasted effort.",
+  "week_consequence_premium": "⚠️ If you ignore timing this week, progress slows and friction builds.\n✅ If you move with the right days, results come faster and cleaner.",
+  "week_consequence_free": "⚠️ If you ignore the stronger and weaker days, this week feels heavier than it needs to.\n✅ Use the better windows well, and the week flows more smoothly.",
 
   "week_mixed_week_free": "This week is mixed — avoid forcing certainty too early.\n\n⚠️ Main risk:\nDecisions made before the facts settle.\n\n✅ Best use:\nKeep plans flexible, close loose ends, and choose timing over speed.\n\n🟢 Strong day: *{best_day}*\n🔴 Caution day: *{worst_day}*",
   "week_mixed_week_premium": "This is a mixed week — signals change quickly.\n\n⚠️ Main risk:\nLocking agreements or starting serious talks while the tone is unstable.\n\n✅ Opportunity:\nWin through timing: finish what’s pending and move when the window opens.\n\n🟢 Best day: *{best_day}* — messages, decisions, momentum.\n🔴 Worst day: *{worst_day}* — avoid heavy talks and emotional choices.\n\n🔮 Next week brings clearer direction — Premium shows the first strong window.",

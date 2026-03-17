@@ -156,9 +156,18 @@ def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
 
     text = template.format(best_day=best_day, worst_day=worst_day)
 
+    opening = _t(loc, "week_opening_strong", "")
+    if opening:
+        text = f"{opening}\n\n{text}"
+
     mistake = _t(loc, "week_core_mistake", "")
     if mistake:
         text = f"{text}\n\n{mistake}"
+
+    cons_key = "week_consequence_premium" if premium else "week_consequence_free"
+    cons = _t(loc, cons_key, "")
+    if cons:
+        text = f"{text}\n\n{cons}"
 
     if premium:
         money_best = _weekday_label(loc, plan["money_best_day"])
@@ -170,12 +179,14 @@ def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
         if not template:
             raise RuntimeError(f"Missing locale key: week_premium_plan for loc={loc}")
 
-        return template.format(
+        premium_text = template.format(
             money_best=money_best,
             money_worst=money_worst,
             talk_best=talk_best,
             talk_worst=talk_worst,
         )
+
+        return f"{title}\n\n{text}\n\n{premium_text}"
    
 
     else:
