@@ -140,34 +140,11 @@ def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
     plan = compute_week_plan(now)
 
     title = _t(loc, "week_title_new", "📅 This Week")
-    best_day = _weekday_label(loc, plan["best_day"])
-    worst_day = _weekday_label(loc, plan["worst_day"])
-
-    kind = plan["week_kind"]
-    key = f"week_{kind}_{'premium' if premium else 'free'}"
-    template = _t(loc, key, "")
-
-    if not template:
-        # Safe fallback
-        template = (
-            "🟢 Strong day: *{best_day}*\n"
-            "🔴 Caution day: *{worst_day}*"
-        )
-
-    text = template.format(best_day=best_day, worst_day=worst_day)
 
     opening = _t(loc, "week_opening_strong", "")
-    if opening:
-        text = f"{opening}\n\n{text}"
-
     mistake = _t(loc, "week_core_mistake", "")
-    if mistake:
-        text = f"{text}\n\n{mistake}"
-
     cons_key = "week_consequence_premium" if premium else "week_consequence_free"
     cons = _t(loc, cons_key, "")
-    if cons:
-        text = f"{text}\n\n{cons}"
 
     if premium:
         money_best = _weekday_label(loc, plan["money_best_day"])
@@ -175,21 +152,53 @@ def get_week_map(*, user_id: int, locale: str, premium: bool = False) -> str:
         talk_best = _weekday_label(loc, plan["talk_best_day"])
         talk_worst = _weekday_label(loc, plan["talk_worst_day"])
 
-        template = _t(loc, "week_premium_plan", "")
-        if not template:
+        premium_template = _t(loc, "week_premium_plan", "")
+        if not premium_template:
             raise RuntimeError(f"Missing locale key: week_premium_plan for loc={loc}")
 
-        premium_text = template.format(
+        text = premium_template.format(
             money_best=money_best,
             money_worst=money_worst,
             talk_best=talk_best,
             talk_worst=talk_worst,
         )
 
-        return f"{title}\n\n{text}\n\n{premium_text}"
-   
+        if opening:
+            text = f"{opening}\n\n{text}"
+
+        if mistake:
+            text = f"{text}\n\n{mistake}"
+
+        if cons:
+            text = f"{text}\n\n{cons}"
+
+        return f"{title}\n\n{text}"
 
     else:
+        best_day = _weekday_label(loc, plan["best_day"])
+        worst_day = _weekday_label(loc, plan["worst_day"])
+
+        kind = plan["week_kind"]
+        key = f"week_{kind}_free"
+        template = _t(loc, key, "")
+
+        if not template:
+            template = (
+                "🟢 Strong day: *{best_day}*\n"
+                "🔴 Caution day: *{worst_day}*"
+            )
+
+        text = template.format(best_day=best_day, worst_day=worst_day)
+
+        if opening:
+            text = f"{opening}\n\n{text}"
+
+        if mistake:
+            text = f"{text}\n\n{mistake}"
+
+        if cons:
+            text = f"{text}\n\n{cons}"
+
         hook = _t(loc, "week_free_hook", "🔒 Premium explains why these days matter for you and what shifts next week.")
         return f"{title}\n\n{text}\n\n{hook}"
 
